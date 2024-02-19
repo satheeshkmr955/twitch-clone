@@ -6,7 +6,7 @@ import { redirect, usePathname } from "next/navigation";
 
 import type { Session } from "next-auth";
 
-import { SIGN_IN, SIGN_UP } from "@/constants/route.constants";
+import { SIGN_IN, SIGN_UP, TESTING } from "@/constants/route.constants";
 
 type AuthProviderProps = {
   session: Session | null;
@@ -19,7 +19,12 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const pathName = usePathname();
 
   useEffect(() => {
-    if (session === null && pathName !== SIGN_IN && pathName !== SIGN_UP) {
+    if (
+      session === null &&
+      pathName !== SIGN_IN &&
+      pathName !== SIGN_UP &&
+      pathName !== TESTING
+    ) {
       redirect(SIGN_IN);
     }
   }, [session, pathName]);
