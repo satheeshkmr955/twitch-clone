@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import type { AxiosResponse } from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,13 +26,32 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { SIGN_IN } from "@/constants/route.constants";
+import { CHECK_EMAIL_EXISTS } from "@/constants/api.constants";
+import { passwordValidation } from "@/constants/regex.constants";
+import { publicAxios } from "@/lib/fetcher";
 
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-const passwordValidation = new RegExp(
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-);
+type checkEmailsExistsProps = {
+  isEmailExists: boolean;
+  message: string;
+};
 
-const formSchema = z
+const checkEmailsExistsApi = async ({ email }: { email: string }) => {
+  try {
+    const response: AxiosResponse = await publicAxios({
+      data: { email },
+      url: CHECK_EMAIL_EXISTS,
+      method: "POST",
+    });
+    const data: checkEmailsExistsProps = response.data;
+    return data.isEmailExists;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const signUpSchema = z
   .object({
     name: z.string().min(3, {
       message: "Name must be at least 3 characters.",
@@ -37,11 +59,11 @@ const formSchema = z
     email: z
       .string()
       .min(1, { message: "Please enter a email" })
-      .email("This is not a valid email."),
-    // .refine(async (e) => {
-    //   const emails = await checkEmailsExists();
-    //   return emails.includes(e);
-    // }, "Email already exists"),
+      .email("This is not a valid email.")
+      .refine(async (email) => {
+        const isEmailExists = await checkEmailsExistsApi({ email });
+        return !isEmailExists;
+      }, "Email already exists"),
     password: z
       .string()
       .min(1, { message: "Please enter a password" })
@@ -57,9 +79,11 @@ const formSchema = z
   });
 
 const SignUp = () => {
+  const router = useRouter();
+
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -69,11 +93,15 @@ const SignUp = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = (values: z.infer<typeof signUpSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-  }
+  };
+
+  const signInHandler = () => {
+    router.push(SIGN_IN);
+  };
 
   return (
     <div className="m-6 w-1/4">
@@ -191,6 +219,16 @@ const SignUp = () => {
                 </Button>
               </form>
             </Form>
+          </div>
+          <div className="mt-4">
+            <span className="text-sm text-gray-500">Have an account?</span>
+            <Button
+              variant={"link"}
+              className="text-purple-600 pl-2"
+              onClick={signInHandler}
+            >
+              Sign in
+            </Button>
           </div>
         </CardContent>
       </Card>

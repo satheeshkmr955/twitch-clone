@@ -1,0 +1,5 @@
+- [x] signup redirect => signin
+- [x] signin redirect => signup
+- [x] checkEmailsExists in client
+- [ ] signup api call in client
+- [ ] signin api call in client

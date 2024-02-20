@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,23 +24,22 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { SIGN_UP } from "@/constants/route.constants";
 
-const formSchema = z.object({
+const signInSchema = z.object({
   email: z
     .string()
     .min(1, { message: "Please enter a email" })
     .email("This is not a valid email."),
-  // .refine(async (e) => {
-  //   const emails = await checkEmailsExists();
-  //   return emails.includes(e);
-  // }, "Email already exists"),
   password: z.string().min(1, { message: "Please enter a password" }),
 });
 
 const SignIn = () => {
+  const router = useRouter();
+
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -47,11 +47,15 @@ const SignIn = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = (values: z.infer<typeof signInSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-  }
+  };
+
+  const signUpHandler = () => {
+    router.push(SIGN_UP);
+  };
 
   return (
     <div className="m-6 w-1/4">
@@ -133,6 +137,16 @@ const SignIn = () => {
                 </Button>
               </form>
             </Form>
+          </div>
+          <div className="mt-4">
+            <span className="text-sm text-gray-500">No account?</span>
+            <Button
+              variant={"link"}
+              className="text-purple-600 pl-2"
+              onClick={signUpHandler}
+            >
+              Sign up
+            </Button>
           </div>
         </CardContent>
       </Card>
