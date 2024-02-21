@@ -25,14 +25,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { SIGN_UP } from "@/constants/route.constants";
-
-const signInSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Please enter a email" })
-    .email("This is not a valid email."),
-  password: z.string().min(1, { message: "Please enter a password" }),
-});
+import { signInSchema } from "@/lib/validation.schema";
 
 const SignIn = () => {
   const router = useRouter();

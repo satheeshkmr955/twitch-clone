@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import type { AxiosResponse } from "axios";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,62 +26,18 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { SIGN_IN } from "@/constants/route.constants";
-import { CHECK_EMAIL_EXISTS } from "@/constants/api.constants";
-import { passwordValidation } from "@/constants/regex.constants";
-import { publicAxios } from "@/lib/fetcher";
+import { signUpSchema } from "@/lib/validation.schema";
+import { SignUpApiProps, signUpApiHandler } from "../_service/api";
+import { SignupError, SignupSuccess } from "@/app/_types";
 
-type checkEmailsExistsProps = {
-  isEmailExists: boolean;
-  message: string;
-};
-
-const checkEmailsExistsApi = async ({ email }: { email: string }) => {
-  try {
-    const response: AxiosResponse = await publicAxios({
-      data: { email },
-      url: CHECK_EMAIL_EXISTS,
-      method: "POST",
-    });
-    const data: checkEmailsExistsProps = response.data;
-    return data.isEmailExists;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
-
-const signUpSchema = z
-  .object({
-    name: z.string().min(3, {
-      message: "Name must be at least 3 characters.",
-    }),
-    email: z
-      .string()
-      .min(1, { message: "Please enter a email" })
-      .email("This is not a valid email.")
-      .refine(async (email) => {
-        const isEmailExists = await checkEmailsExistsApi({ email });
-        return !isEmailExists;
-      }, "Email already exists"),
-    password: z
-      .string()
-      .min(1, { message: "Please enter a password" })
-      .regex(passwordValidation, {
-        message:
-          "Please check password contains 1 uppercase, 1 lowercase, 1 number, 1 special character and minimum 8 characters",
-      }),
-    confirm: z.string().min(1, { message: "Please retype your password" }),
-  })
-  .refine((data) => data.password === data.confirm, {
-    message: "Passwords don't match",
-    path: ["confirm"],
-  });
+type SignUpSchemaType = z.infer<typeof signUpSchema>;
+type SignUpKeys = keyof Omit<SignUpSchemaType, "confirm">;
 
 const SignUp = () => {
   const router = useRouter();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof signUpSchema>>({
+  const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
@@ -93,10 +48,38 @@ const SignUp = () => {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = (values: z.infer<typeof signUpSchema>) => {
+  const onSubmit = async (values: SignUpSchemaType) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    const { confirm, ...body } = values;
+
+    const config: SignUpApiProps = {
+      body,
+      onSuccess(data) {
+        toast.success(data.toast.text);
+      },
+      onError(error, statusCode) {
+        if (statusCode === 500) {
+          const err = error as SignupSuccess;
+          toast.error(err.toast.text);
+        }
+        if (statusCode === 400) {
+          const err = error as SignupError;
+          const fields = Object.keys(err.errors) as SignUpKeys[];
+          fields.forEach((key) => {
+            form.setError(
+              key,
+              {
+                message: err.errors[key]![0],
+              },
+              { shouldFocus: true }
+            );
+          });
+        }
+      },
+    };
+
+    await signUpApiHandler(config);
   };
 
   const signInHandler = () => {

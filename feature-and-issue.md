@@ -1,5 +1,11 @@
 - [x] signup redirect => signin
 - [x] signin redirect => signup
 - [x] checkEmailsExists in client
+- [x] move validation schema to lib/validation-schema
+- [x] move all api to _service/api
+- [x] generate type for api response
+- [ ] signUpSchema checkEmailsExistsApiHandler
 - [ ] signup api call in client
 - [ ] signin api call in client
+- [ ] error constructor/class
+- [ ] verify email in graphql
