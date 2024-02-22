@@ -4,6 +4,9 @@
 - [x] move validation schema to lib/validation-schema
 - [x] move all api to _service/api
 - [x] generate type for api response
+- [ ] constants file for error messages
+- [ ] use axios response interceptors to show toast
+- [ ] 400 support errors and toast key in api response
 - [ ] signUpSchema checkEmailsExistsApiHandler
 - [ ] signup api call in client
 - [ ] signin api call in client
