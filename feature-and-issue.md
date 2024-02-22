@@ -5,10 +5,13 @@
 - [x] move all api to _service/api
 - [x] generate type for api response
 - [x] constants file for error messages
-- [ ] use axios response interceptors to show toast
-- [ ] 400 support errors and toast key in api response
-- [ ] signUpSchema checkEmailsExistsApiHandler
-- [ ] signup api call in client
-- [ ] signin api call in client
+- [x] use axios request, response interceptors to show toast
+- [x] 400 support errors and toast key in api response
+-  ~signUpSchema checkEmailsExistsApiHandler~
+- [x] signup api call in client
+  - [x] onsuccess added user email auto-fill in signin 
+- [x] signin api call in client
+  - [x] google signin
+  - [x] credentials signin
 - [ ] error constructor/class
 - [ ] verify email in graphql

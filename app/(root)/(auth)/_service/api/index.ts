@@ -3,11 +3,10 @@ import axios from "axios";
 import { CHECK_EMAIL_EXISTS, SIGNUP_EXISTS } from "@/constants/api.constants";
 import { publicAxios } from "@/lib/fetcher";
 import {
-  CheckEmailExistsSuccess,
-  CheckEmailsExistsInput,
-  SignupError,
+  Success,
+  Error,
   SignupInput,
-  SignupSuccess,
+  CheckEmailsExistsInput,
 } from "@/app/_types";
 
 import type { AxiosResponse } from "axios";
@@ -27,7 +26,7 @@ export const checkEmailsExistsApiHandler = async (
       url: CHECK_EMAIL_EXISTS,
       method: POST,
     });
-    const data: CheckEmailExistsSuccess = response.data;
+    const data: Success = response.data;
     return data.isEmailExists;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -41,8 +40,8 @@ export const checkEmailsExistsApiHandler = async (
 
 export type SignUpApiProps = {
   body: SignupInput;
-  onSuccess: (data: SignupSuccess, statusCode: number) => void;
-  onError: (error: SignupError | SignupSuccess, statusCode: number) => void;
+  onSuccess: (data: Success, statusCode: number) => void;
+  onError: (error: Error | Success, statusCode: number) => void;
 };
 
 export const signUpApiHandler = async (obj: SignUpApiProps) => {

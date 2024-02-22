@@ -9,7 +9,10 @@ export const PASSWORD_REGEX =
 export const NAME_REQUIRED = "Name must be at least 3 characters.";
 export const PASSWORD_CONFIRM_REQUIRED = "Please retype your password";
 export const PASSWORD_NOT_MATCH = "Passwords don't match";
-export const WARN = "warn";
+
 export const SUCCESS = "success";
+export const INFO = "info";
+export const WARNING = "warning";
 export const ERROR = "error";
+
 export const POST = "POST";

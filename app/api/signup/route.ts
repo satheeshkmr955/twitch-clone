@@ -11,6 +11,7 @@ import {
   ERROR,
   SUCCESS,
   USER_CREATED,
+  WARNING,
 } from "@/constants/message.constants";
 
 export async function POST(req: NextRequest) {
@@ -29,7 +30,13 @@ export async function POST(req: NextRequest) {
     const user = await db.user.findUnique({ where: { email } });
     if (user !== null) {
       return NextResponse.json(
-        { errors: { email: [EMAIL_EXISTS] } },
+        {
+          errors: { email: [EMAIL_EXISTS] },
+          toast: {
+            text: EMAIL_EXISTS,
+            type: WARNING,
+          },
+        },
         { status: HttpStatusCode.BadRequest }
       );
     }

@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth";
+import { Toaster } from "sonner";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -19,6 +20,7 @@ const HomeLayout = async (props: LayoutProps) => {
 
   return (
     <AuthProvider session={session}>
+      <Toaster />
       <QueryProvider>{children}</QueryProvider>
     </AuthProvider>
   );

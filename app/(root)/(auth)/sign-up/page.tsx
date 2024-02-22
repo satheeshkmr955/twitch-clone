@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "sonner";
 import { HttpStatusCode } from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { SIGN_IN } from "@/constants/route.constants";
 import { signUpSchema } from "@/lib/validation.schema";
 import { SignUpApiProps, signUpApiHandler } from "../_service/api";
-import { SignupError, SignupSuccess } from "@/app/_types";
+import { Error } from "@/app/_types";
 
 type SignUpSchemaType = z.infer<typeof signUpSchema>;
 type SignUpKeys = keyof Omit<SignUpSchemaType, "confirm">;
@@ -56,22 +56,21 @@ const SignUp = () => {
 
     const config: SignUpApiProps = {
       body,
-      onSuccess(data) {
-        toast.success(data.toast.text);
+      onSuccess() {
+        const searchParams = new URLSearchParams();
+        searchParams.append("email", values.email);
+        const qs = "?" + searchParams.toString();
+        router.push(SIGN_IN + qs);
       },
       onError(error, statusCode) {
-        if (statusCode === HttpStatusCode.InternalServerError) {
-          const err = error as SignupSuccess;
-          toast.error(err.toast.text);
-        }
         if (statusCode === HttpStatusCode.BadRequest) {
-          const err = error as SignupError;
-          const fields = Object.keys(err.errors) as SignUpKeys[];
+          const err = error as Error;
+          const fields = Object.keys(err.errors!) as SignUpKeys[];
           fields.forEach((key) => {
             form.setError(
               key,
               {
-                message: err.errors[key]![0],
+                message: err.errors![key]![0],
               },
               { shouldFocus: true }
             );
@@ -81,10 +80,6 @@ const SignUp = () => {
     };
 
     await signUpApiHandler(config);
-  };
-
-  const signInHandler = () => {
-    router.push(SIGN_IN);
   };
 
   return (
@@ -206,12 +201,8 @@ const SignUp = () => {
           </div>
           <div className="mt-4">
             <span className="text-sm text-gray-500">Have an account?</span>
-            <Button
-              variant={"link"}
-              className="text-purple-600 pl-2"
-              onClick={signInHandler}
-            >
-              Sign in
+            <Button variant={"link"} className="text-purple-600 pl-2" asChild>
+              <Link href={SIGN_IN}>Sign in</Link>
             </Button>
           </div>
         </CardContent>
