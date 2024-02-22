@@ -14,6 +14,7 @@ import { getToken } from "next-auth/jwt";
 import { useResponseCache } from "@envelop/response-cache";
 import { createRedisCache } from "@envelop/response-cache-redis";
 // import { useDataLoader } from "@envelop/dataloader";
+import { HttpStatusCode } from "axios";
 
 import type { ExecutionArgs } from "graphql";
 import type { PrismaClient, User } from "@prisma/client";
@@ -164,7 +165,7 @@ async function start(
         }
       } catch (err) {
         console.error(`Error while handling ${req.url}`, err);
-        res.writeHead(500).end();
+        res.writeHead(HttpStatusCode.InternalServerError).end();
       }
     }
   );

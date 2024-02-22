@@ -11,6 +11,7 @@ import {
 } from "@/app/_types";
 
 import type { AxiosResponse } from "axios";
+import { POST } from "@/constants/message.constants";
 
 type CheckEmailsExistsApiHandlerProps = {
   body: CheckEmailsExistsInput;
@@ -24,7 +25,7 @@ export const checkEmailsExistsApiHandler = async (
     const response: AxiosResponse = await publicAxios({
       data: body,
       url: CHECK_EMAIL_EXISTS,
-      method: "POST",
+      method: POST,
     });
     const data: CheckEmailExistsSuccess = response.data;
     return data.isEmailExists;
@@ -51,7 +52,7 @@ export const signUpApiHandler = async (obj: SignUpApiProps) => {
     const response: AxiosResponse = await publicAxios({
       data: body,
       url: SIGNUP_EXISTS,
-      method: "POST",
+      method: POST,
     });
     onSuccess?.(response.data, response.status);
   } catch (error) {

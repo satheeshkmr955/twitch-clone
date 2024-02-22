@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { HttpStatusCode } from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -59,11 +60,11 @@ const SignUp = () => {
         toast.success(data.toast.text);
       },
       onError(error, statusCode) {
-        if (statusCode === 500) {
+        if (statusCode === HttpStatusCode.InternalServerError) {
           const err = error as SignupSuccess;
           toast.error(err.toast.text);
         }
-        if (statusCode === 400) {
+        if (statusCode === HttpStatusCode.BadRequest) {
           const err = error as SignupError;
           const fields = Object.keys(err.errors) as SignUpKeys[];
           fields.forEach((key) => {

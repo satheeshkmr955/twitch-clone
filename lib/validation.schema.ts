@@ -1,6 +1,16 @@
 import { z } from "zod";
 
 import { checkEmailsExistsApiHandler } from "@/app/(root)/(auth)/_service/api";
+import {
+  EMAIL_EXISTS,
+  EMAIL_NOT_VALID,
+  EMAIL_REQUIRED,
+  NAME_REQUIRED,
+  PASSWORD_CONFIRM_REQUIRED,
+  PASSWORD_NOT_MATCH,
+  PASSWORD_REGEX,
+  PASSWORD_REQUIRED,
+} from "@/constants/message.constants";
 
 // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 export const passwordValidation = new RegExp(
@@ -8,62 +18,51 @@ export const passwordValidation = new RegExp(
 );
 
 export const signInSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Please enter a email" })
-    .email("This is not a valid email."),
-  password: z.string().min(1, { message: "Please enter a password" }),
+  email: z.string().min(1, { message: EMAIL_REQUIRED }).email(EMAIL_NOT_VALID),
+  password: z.string().min(1, { message: PASSWORD_REQUIRED }),
 });
 
 export const signUpSchema = z
   .object({
     name: z.string().min(3, {
-      message: "Name must be at least 3 characters.",
+      message: NAME_REQUIRED,
     }),
     email: z
       .string()
-      .min(1, { message: "Please enter a email" })
-      .email("This is not a valid email.")
+      .min(1, { message: EMAIL_REQUIRED })
+      .email(EMAIL_NOT_VALID)
       .refine(async (email) => {
         const isEmailExists = await checkEmailsExistsApiHandler({
           body: { email },
         });
         return !isEmailExists;
-      }, "Email already exists"),
+      }, EMAIL_EXISTS),
     password: z
       .string()
-      .min(1, { message: "Please enter a password" })
+      .min(1, { message: PASSWORD_REQUIRED })
       .regex(passwordValidation, {
-        message:
-          "Please check password contains 1 uppercase, 1 lowercase, 1 number, 1 special character and minimum 8 characters",
+        message: PASSWORD_REGEX,
       }),
-    confirm: z.string().min(1, { message: "Please retype your password" }),
+    confirm: z.string().min(1, { message: PASSWORD_CONFIRM_REQUIRED }),
   })
   .refine((data) => data.password === data.confirm, {
-    message: "Passwords don't match",
+    message: PASSWORD_NOT_MATCH,
     path: ["confirm"],
   });
 
 export const signUpApiSchema = z.object({
   name: z.string().min(3, {
-    message: "Name must be at least 3 characters.",
+    message: NAME_REQUIRED,
   }),
-  email: z
-    .string()
-    .min(1, { message: "Please enter a email" })
-    .email("This is not a valid email."),
+  email: z.string().min(1, { message: EMAIL_REQUIRED }).email(EMAIL_NOT_VALID),
   password: z
     .string()
-    .min(1, { message: "Please enter a password" })
+    .min(1, { message: PASSWORD_REQUIRED })
     .regex(passwordValidation, {
-      message:
-        "Please check password contains 1 uppercase, 1 lowercase, 1 number, 1 special character and minimum 8 characters",
+      message: PASSWORD_REGEX,
     }),
 });
 
 export const checkEmailsExistsSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Please enter a email" })
-    .email("This is not a valid email."),
+  email: z.string().min(1, { message: EMAIL_REQUIRED }).email(EMAIL_NOT_VALID),
 });

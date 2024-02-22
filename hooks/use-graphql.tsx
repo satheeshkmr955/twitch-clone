@@ -7,6 +7,7 @@ import {
   type UseMutationResult,
   UseMutationOptions,
 } from "@tanstack/react-query";
+import { HttpStatusCode } from "axios";
 
 import { axiosGraphQL } from "@/lib/fetcher";
 
@@ -22,7 +23,7 @@ async function customFetcher<TResult, TVariables>(
     },
   });
 
-  if (responseAxios.status !== 200) {
+  if (responseAxios.status !== HttpStatusCode.Ok) {
     throw new Error(
       `Failed to fetch: ${responseAxios.statusText}. Body: ${responseAxios.request?.responseText}`
     );

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { HttpStatusCode } from "axios";
 
 import { db } from "@/lib/db";
 import { checkEmailsExistsSchema } from "@/lib/validation.schema";
 import { jsonParse } from "@/lib/utils";
+import { DEFAULT_API_ERROR, ERROR } from "@/constants/message.constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +14,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { errors: result.error.formErrors.fieldErrors },
-        { status: 400 }
+        { status: HttpStatusCode.BadRequest }
       );
     }
     const { email } = jsonBody;
@@ -28,18 +30,18 @@ export async function POST(req: NextRequest) {
       {
         isEmailExists,
       },
-      { status: 200 }
+      { status: HttpStatusCode.Ok }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       {
         toast: {
-          text: "An error occurred while checking the email",
-          type: "error",
+          text: DEFAULT_API_ERROR,
+          type: ERROR,
         },
       },
-      { status: 500 }
+      { status: HttpStatusCode.InternalServerError }
     );
   }
 }

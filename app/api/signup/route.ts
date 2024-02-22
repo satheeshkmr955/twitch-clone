@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { HttpStatusCode } from "axios";
 
 import { db } from "@/lib/db";
 import { signUpApiSchema } from "@/lib/validation.schema";
 import { jsonParse } from "@/lib/utils";
+import {
+  DEFAULT_API_ERROR,
+  EMAIL_EXISTS,
+  ERROR,
+  SUCCESS,
+  USER_CREATED,
+} from "@/constants/message.constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,7 +21,7 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { errors: result.error.formErrors.fieldErrors },
-        { status: 400 }
+        { status: HttpStatusCode.BadRequest }
       );
     }
     const { email, password, name } = jsonBody;
@@ -21,8 +29,8 @@ export async function POST(req: NextRequest) {
     const user = await db.user.findUnique({ where: { email } });
     if (user !== null) {
       return NextResponse.json(
-        { errors: { email: ["Email already exists"] } },
-        { status: 400 }
+        { errors: { email: [EMAIL_EXISTS] } },
+        { status: HttpStatusCode.BadRequest }
       );
     }
 
@@ -35,22 +43,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         toast: {
-          text: "User registered.",
-          type: "success",
+          text: USER_CREATED,
+          type: SUCCESS,
         },
       },
-      { status: 201 }
+      { status: HttpStatusCode.Created }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       {
         toast: {
-          text: "An error occurred while signup the email",
-          type: "error",
+          text: DEFAULT_API_ERROR,
+          type: ERROR,
         },
       },
-      { status: 500 }
+      { status: HttpStatusCode.InternalServerError }
     );
   }
 }
