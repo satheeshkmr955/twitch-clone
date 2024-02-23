@@ -10,8 +10,10 @@
 -  ~signUpSchema checkEmailsExistsApiHandler~
 - [x] signup api call in client
   - [x] onsuccess added user email auto-fill in signin 
+  - [x] focus password input once email is available
 - [x] signin api call in client
   - [x] google signin
   - [x] credentials signin
+  - [x] password show/hide
 - [ ] error constructor/class
 - [ ] verify email in graphql

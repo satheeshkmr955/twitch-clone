@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -7,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +37,15 @@ const SignIn = () => {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
 
+  const [isPasswordShow, setPasswordShow] = useState(false);
+
+  const EyeIconClassName =
+    "w-[20px] absolute top-[10px] right-[10px] text-gray-400 cursor-pointer hover:text-gray-600";
+
+  const onClickTogglePasswordHandler = () => {
+    setPasswordShow((prevState) => !prevState);
+  };
+
   // 1. Define your form.
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(signInSchema),
@@ -43,6 +54,12 @@ const SignIn = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (email) {
+      form.setFocus("password");
+    }
+  }, [email, form]);
 
   // 2. Define a submit handler.
   const onSubmit = (values: SignInSchemaType) => {
@@ -70,7 +87,7 @@ const SignIn = () => {
           >
             <span className="pr-2">
               <Image
-                src={"/google.svg"}
+                src={"/images/google.svg"}
                 width={20}
                 height={20}
                 alt="google"
@@ -120,12 +137,25 @@ const SignIn = () => {
                         Password
                         <span className="pl-1 text-red-600 text-[18px]">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Your password"
-                          {...field}
-                          type="password"
-                        />
+                      <FormControl className="relative">
+                        <div>
+                          <Input
+                            placeholder="Your password"
+                            {...field}
+                            type={isPasswordShow ? "text" : "password"}
+                          />
+                          {isPasswordShow ? (
+                            <EyeOffIcon
+                              className={EyeIconClassName}
+                              onClick={onClickTogglePasswordHandler}
+                            />
+                          ) : (
+                            <EyeIcon
+                              className={EyeIconClassName}
+                              onClick={onClickTogglePasswordHandler}
+                            />
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

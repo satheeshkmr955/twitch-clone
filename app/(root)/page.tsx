@@ -1,3 +1,5 @@
+import { UserButton } from "@/components/UserButton/UserButton";
+
 export default function Home() {
-  return <p className="text-red-500 font-bold">Hello Twitch Clone</p>;
+  return <UserButton />;
 }

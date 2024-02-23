@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -7,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { HttpStatusCode } from "axios";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +38,11 @@ type SignUpKeys = keyof Omit<SignUpSchemaType, "confirm">;
 
 const SignUp = () => {
   const router = useRouter();
+  const [isPasswordShow, setPasswordShow] = useState(false);
+  const [isConfirmPasswordShow, setConfirmPasswordShow] = useState(false);
+
+  const EyeIconClassName =
+    "w-[20px] absolute top-[10px] right-[10px] text-gray-400 cursor-pointer hover:text-gray-600";
 
   // 1. Define your form.
   const form = useForm<SignUpSchemaType>({
@@ -47,6 +54,14 @@ const SignUp = () => {
       confirm: "",
     },
   });
+
+  const onClickTogglePasswordHandler = () => {
+    setPasswordShow((prevState) => !prevState);
+  };
+
+  const onClickToggleConfirmPasswordHandler = () => {
+    setConfirmPasswordShow((prevState) => !prevState);
+  };
 
   // 2. Define a submit handler.
   const onSubmit = async (values: SignUpSchemaType) => {
@@ -93,7 +108,7 @@ const SignUp = () => {
           <Button variant={"outline"} className="w-full justify-start">
             <span className="pr-2">
               <Image
-                src={"/google.svg"}
+                src={"/images/google.svg"}
                 width={20}
                 height={20}
                 alt="google"
@@ -159,12 +174,25 @@ const SignUp = () => {
                         Password
                         <span className="pl-1 text-red-600 text-[18px]">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Your password"
-                          {...field}
-                          type="password"
-                        />
+                      <FormControl className="relative">
+                        <div>
+                          <Input
+                            placeholder="Your password"
+                            {...field}
+                            type={isPasswordShow ? "text" : "password"}
+                          />
+                          {isPasswordShow ? (
+                            <EyeOffIcon
+                              className={EyeIconClassName}
+                              onClick={onClickTogglePasswordHandler}
+                            />
+                          ) : (
+                            <EyeIcon
+                              className={EyeIconClassName}
+                              onClick={onClickTogglePasswordHandler}
+                            />
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -179,12 +207,25 @@ const SignUp = () => {
                         Confirm password
                         <span className="pl-1 text-red-600 text-[18px]">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Renter your password"
-                          {...field}
-                          type="password"
-                        />
+                      <FormControl className="relative">
+                        <div>
+                          <Input
+                            placeholder="Renter your password"
+                            {...field}
+                            type={isConfirmPasswordShow ? "text" : "password"}
+                          />
+                          {isConfirmPasswordShow ? (
+                            <EyeOffIcon
+                              className={EyeIconClassName}
+                              onClick={onClickToggleConfirmPasswordHandler}
+                            />
+                          ) : (
+                            <EyeIcon
+                              className={EyeIconClassName}
+                              onClick={onClickToggleConfirmPasswordHandler}
+                            />
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

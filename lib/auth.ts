@@ -62,6 +62,13 @@ export const authConfigOptions = {
     // Set to jwt, when Credentials provided is used, then only user will be authenticated
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/sign-in",
+    signOut: "/auth/signout",
+    error: "/auth/error", // Error code passed in query string as ?error=
+    verifyRequest: "/auth/verify-request", // (used for check email message)
+    newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
   jwt: {
     maxAge: 60 * 60 * 24 * 1,
   },
