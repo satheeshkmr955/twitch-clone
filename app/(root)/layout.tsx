@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { authConfigOptions } from "@/lib/auth";
 
 type LayoutProps = {
@@ -19,10 +20,19 @@ const HomeLayout = async (props: LayoutProps) => {
   const session = await getSession();
 
   return (
-    <AuthProvider session={session}>
-      <Toaster />
-      <QueryProvider>{children}</QueryProvider>
-    </AuthProvider>
+    <ThemeProvider
+      attribute="class"
+      forcedTheme="dark"
+      storageKey="twitch-clone"
+      // defaultTheme="system"
+      // enableSystem
+      // disableTransitionOnChange
+    >
+      <AuthProvider session={session}>
+        <Toaster />
+        <QueryProvider>{children}</QueryProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 

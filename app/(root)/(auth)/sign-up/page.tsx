@@ -99,7 +99,7 @@ const SignUp = () => {
 
   return (
     <div className="m-6 w-1/4">
-      <Card>
+      <Card className="shadow-gray-500 shadow-md">
         <CardHeader>
           <CardTitle className="text-xl">Create your account</CardTitle>
           <CardDescription>to continue</CardDescription>
