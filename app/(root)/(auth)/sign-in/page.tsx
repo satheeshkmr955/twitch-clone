@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -34,10 +34,19 @@ import { signInSchema } from "@/lib/validation.schema";
 type SignInSchemaType = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
 
   const [isPasswordShow, setPasswordShow] = useState(false);
+
+  useEffect(() => {
+    if (status !== "loading") {
+      if (session !== null) {
+        redirect(HOME);
+      }
+    }
+  }, [session, status]);
 
   const EyeIconClassName =
     "w-[20px] absolute top-[10px] right-[10px] text-gray-400 cursor-pointer hover:text-gray-600";

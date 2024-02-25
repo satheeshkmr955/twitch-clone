@@ -61,7 +61,7 @@ export const UserButton = forwardRef<HTMLDivElement, UserButtonProps>(
                 name={avatarName}
               />
               <div className="flex flex-col ml-4">
-                <div className="text-2xl text-gray-950 capitalize cursor-default">
+                <div className="text-2xl capitalize cursor-default">
                   {name}
                 </div>
                 <div className="text-sm text-gray-500 cursor-default">

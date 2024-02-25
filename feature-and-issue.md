@@ -15,5 +15,10 @@
   - [x] google signin
   - [x] credentials signin
   - [x] password show/hide
+- [ ] manage user
+  - [ ] user update
+    - [ ] name
+  - [ ] user deletion
 - [ ] error constructor/class
 - [ ] verify email in graphql
+- [ ] learn theming

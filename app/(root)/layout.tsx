@@ -1,17 +1,12 @@
-import { getServerSession } from "next-auth";
 import { Toaster } from "sonner";
 
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { authConfigOptions } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 
 type LayoutProps = {
   children: React.ReactNode;
-};
-
-const getSession = async () => {
-  return await getServerSession(authConfigOptions);
 };
 
 const HomeLayout = async (props: LayoutProps) => {
@@ -24,6 +19,7 @@ const HomeLayout = async (props: LayoutProps) => {
       attribute="class"
       forcedTheme="dark"
       storageKey="twitch-clone"
+      // forcedTheme="light"
       // defaultTheme="system"
       // enableSystem
       // disableTransitionOnChange

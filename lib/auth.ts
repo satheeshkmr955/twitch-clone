@@ -2,11 +2,13 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { getServerSession } from "next-auth";
 
 import type { NextAuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 
 import { db } from "@/lib/db";
+import { HOME, SIGN_IN } from "@/constants/route.constants";
 
 export const authConfigOptions = {
   adapter: PrismaAdapter(db) as Adapter,
@@ -63,13 +65,13 @@ export const authConfigOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/sign-in",
+    signIn: SIGN_IN,
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify-request", // (used for check email message)
-    newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: HOME, // New users will be directed here on first sign in (leave the property out if not of interest)
   },
-  debug: process.env.NODE_ENV !== "production",
+  // debug: process.env.NODE_ENV !== "production",
   jwt: {
     maxAge: 60 * 60 * 24 * 1,
   },
@@ -82,3 +84,7 @@ export const authConfigOptions = {
     },
   },
 } satisfies NextAuthOptions;
+
+export const getSession = async () => {
+  return await getServerSession(authConfigOptions);
+};

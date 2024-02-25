@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,7 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { SIGN_IN } from "@/constants/route.constants";
+import { HOME, SIGN_IN } from "@/constants/route.constants";
 import { signUpSchema } from "@/lib/validation.schema";
 import { SignUpApiProps, signUpApiHandler } from "../_service/api";
 import { Error } from "@/app/_types";
@@ -37,12 +38,21 @@ type SignUpSchemaType = z.infer<typeof signUpSchema>;
 type SignUpKeys = keyof Omit<SignUpSchemaType, "confirm">;
 
 const SignUp = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isPasswordShow, setPasswordShow] = useState(false);
   const [isConfirmPasswordShow, setConfirmPasswordShow] = useState(false);
 
   const EyeIconClassName =
     "w-[20px] absolute top-[10px] right-[10px] text-gray-400 cursor-pointer hover:text-gray-600";
+
+    useEffect(() => {
+      if (status !== "loading") {
+        if (session !== null) {
+          redirect(HOME);
+        }
+      }
+    }, [session, status]);
 
   // 1. Define your form.
   const form = useForm<SignUpSchemaType>({
@@ -97,6 +107,10 @@ const SignUp = () => {
     await signUpApiHandler(config);
   };
 
+  const onGoogleSignIn = () => {
+    signIn("google", { callbackUrl: HOME });
+  };
+
   return (
     <div className="m-6 w-1/4">
       <Card className="shadow-gray-500 shadow-md">
@@ -105,7 +119,11 @@ const SignUp = () => {
           <CardDescription>to continue</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant={"outline"} className="w-full justify-start">
+          <Button
+            variant={"outline"}
+            className="w-full justify-start"
+            onClick={onGoogleSignIn}
+          >
             <span className="pr-2">
               <Image
                 src={"/images/google.svg"}
