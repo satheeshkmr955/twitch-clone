@@ -33,7 +33,7 @@ services:
     container_name: twitch_redisinsight
     restart: always
     ports:
-      - "8006:5000"
+      - "8006:5540"
     volumes:
       - redis_db:/db
 

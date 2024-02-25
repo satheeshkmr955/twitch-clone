@@ -15,6 +15,7 @@
   - [x] google signin
   - [x] credentials signin
   - [x] password show/hide
+- [x] not showing skeleton of sidebar since 
 - [ ] manage user
   - [ ] user update
     - [ ] name

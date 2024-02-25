@@ -37,8 +37,6 @@ export const UserButton = forwardRef<HTMLDivElement, UserButtonProps>(
       image,
     } = session.user || {};
 
-    const avatarName = name!.slice(0, 1);
-
     const onClickSignOut = () => {
       signOut();
     };
@@ -46,24 +44,18 @@ export const UserButton = forwardRef<HTMLDivElement, UserButtonProps>(
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <UserAvatar
-            className="cursor-pointer"
-            url={image!}
-            name={avatarName}
-          />
+          <UserAvatar className="cursor-pointer" image={image!} name={name!} />
         </PopoverTrigger>
         <PopoverContent ref={ref} className="w-fit">
           <div className="flex flex-col">
             <div className="flex items-center">
               <UserAvatar
                 className="cursor-default"
-                url={image!}
-                name={avatarName}
+                image={image!}
+                name={name!}
               />
               <div className="flex flex-col ml-4">
-                <div className="text-2xl capitalize cursor-default">
-                  {name}
-                </div>
+                <div className="text-2xl capitalize cursor-default">{name}</div>
                 <div className="text-sm text-gray-500 cursor-default">
                   {email}
                 </div>

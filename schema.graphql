@@ -1,3 +1,28 @@
 type Query {
   greeting: String
+  getRecommended(input: GetRecommendedInput): Users!
+}
+
+type Users {
+  items: [User!]!
+  pagination: Pagination!
+}
+
+type Pagination {
+  totalRecords: Int!
+  currentLimit: Int!
+  currentPage: Int!
+  hasNextPage: Boolean!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  image: String
+}
+
+input GetRecommendedInput {
+  limit: Int
+  page: Int
 }

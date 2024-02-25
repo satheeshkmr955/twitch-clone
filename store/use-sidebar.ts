@@ -19,7 +19,7 @@ export const useSidebar = create<SidebarStore>()(
     })),
     {
       name: "sidebar",
-      enabled: process.env.NODE_ENV == "development",
+      // enabled: process.env.NODE_ENV !== "production",
     }
   )
 );
