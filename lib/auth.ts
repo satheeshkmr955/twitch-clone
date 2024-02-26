@@ -7,8 +7,18 @@ import { getServerSession } from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 
+declare module "next-auth" {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface DefaultSession {
+    accessToken: string | null;
+  }
+}
+
 import { db } from "@/lib/db";
 import { HOME, SIGN_IN } from "@/constants/route.constants";
+import { encode } from "next-auth/jwt";
 
 export const authConfigOptions = {
   adapter: PrismaAdapter(db) as Adapter,
@@ -79,7 +89,9 @@ export const authConfigOptions = {
     async jwt({ token }) {
       return token;
     },
-    async session({ session }) {
+    async session({ session, token }) {
+      const jwt = await encode({ token, secret: process.env.NEXTAUTH_SECRET! });
+      session.accessToken = jwt;
       return session;
     },
   },

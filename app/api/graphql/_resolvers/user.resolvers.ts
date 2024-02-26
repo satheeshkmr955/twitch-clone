@@ -1,8 +1,10 @@
 import { Resolvers } from "@/gql/types";
 
+import type { Prisma } from "@prisma/client";
+
 export const UsersResolvers: Resolvers = {
   Query: {
-    getRecommended: async (_, { input }, { db }) => {
+    getRecommended: async (_, { input }, { db, user }) => {
       const pagination = {
         totalRecords: 0,
         currentLimit: 0,
@@ -25,11 +27,17 @@ export const UsersResolvers: Resolvers = {
       pagination["currentLimit"] = defaultLimit;
       pagination["currentPage"] = defaultPage;
 
-      const users = await db.user.findMany({
+      const query: Prisma.UserFindManyArgs = {
         skip: defaultPage * defaultLimit,
         take: defaultLimit + 1,
         orderBy: { createdAt: "desc" },
-      });
+      };
+
+      if (user) {
+        query.where = { NOT: { id: user.id } };
+      }
+
+      const users = await db.user.findMany(query);
 
       if (users.length > defaultLimit) {
         pagination["hasNextPage"] = true;

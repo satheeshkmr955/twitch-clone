@@ -94,12 +94,12 @@ const { handleRequest } = createYoga({
     // }),
     useResponseCache({
       cache,
-      session: () => null,
+      session: ({ user }: GraphQLContext) => user?.id ?? null,
       ttlPerSchemaCoordinate: {
         // "Query.hello": 1000 * 60 * 5,
       },
       // includeExtensionMetadata: false,
-      // ttl: 1000 * 60 * 60 * 1,
+      ttl: 1000 * 60 * 60 * 1,
     }),
   ],
 });

@@ -16,6 +16,8 @@
   - [x] credentials signin
   - [x] password show/hide
 - [x] not showing skeleton of sidebar since 
+- [ ] need to add rating limiting, ban on fail
+- [ ] loader on sign up and sign in
 - [ ] manage user
   - [ ] user update
     - [ ] name

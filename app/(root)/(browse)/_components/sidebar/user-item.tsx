@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import slugify from "slugify";
 
 import { User } from "@/gql/graphql";
 import { cn } from "@/lib/utils";
@@ -21,7 +22,8 @@ export const UserItem = (props: UserItemProps) => {
 
   const { collapsed } = useSidebar((state) => state);
 
-  const href = `/${name}`;
+  const slugName = slugify(name);
+  const href = `/${slugName}`;
   const isActive = pathName === href;
 
   return (

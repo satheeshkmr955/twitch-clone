@@ -2,7 +2,7 @@
 
 import { User } from "@/gql/types";
 import { useSidebar } from "@/store/use-sidebar";
-import { UserItem } from "./user-item";
+import { UserItem, UserItemSkeleton } from "./user-item";
 
 interface RecommendedProps {
   data: User[];
@@ -34,7 +34,7 @@ export const RecommendedSkeleton = () => {
   return (
     <ul className="px-2">
       {new Array(3).fill(1).map((_, i) => (
-        <UserItem.Skeleton key={i} />
+        <UserItemSkeleton key={i} />
       ))}
     </ul>
   );

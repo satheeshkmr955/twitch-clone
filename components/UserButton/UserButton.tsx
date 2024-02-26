@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 
-import { UserAvatar } from "@/components/UserAvatar/UserAvatar";
+import {
+  UserAvatar,
+  UserAvatarSkeleton,
+} from "@/components/UserAvatar/UserAvatar";
 
 import type { Session } from "next-auth";
 
@@ -28,7 +31,7 @@ export const UserButton = forwardRef<HTMLDivElement, UserButtonProps>(
     }, [status, data]);
 
     if (status === "loading" || session === null) {
-      return <UserAvatar.Skeleton />;
+      return <UserAvatarSkeleton />;
     }
 
     const {

@@ -1,6 +1,7 @@
 type Query {
   greeting: String
   getRecommended(input: GetRecommendedInput): Users!
+  isFollowingUser(input: UserId): Boolean!
 }
 
 type Users {
@@ -20,6 +21,10 @@ type User {
   name: String!
   email: String!
   image: String
+}
+
+input UserId {
+  id: ID!
 }
 
 input GetRecommendedInput {

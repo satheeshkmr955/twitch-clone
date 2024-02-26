@@ -1,20 +1,30 @@
 import { Suspense } from "react";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 import { Navbar } from "./_components/navbar";
 import { Container } from "./_components/container";
 import { Sidebar, SidebarSkeleton } from "./_components/sidebar";
 
-const BrowseLayout = ({
+import { useServerGraphQL } from "@/hooks/use-graphql";
+import { GetRecommendedDocument } from "@/gql/graphql";
+
+const BrowseLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const queryClient = await useServerGraphQL(GetRecommendedDocument, {
+    input: { limit: 10, page: 0 },
+  });
+
   return (
     <>
       <Navbar />
       <div className="flex h-full pt-20">
         <Suspense fallback={<SidebarSkeleton />}>
-          <Sidebar />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <Sidebar />
+          </HydrationBoundary>
         </Suspense>
         <Container>{children}</Container>
       </div>

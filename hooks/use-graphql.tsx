@@ -10,6 +10,7 @@ import {
 import { HttpStatusCode } from "axios";
 
 import { axiosGraphQL } from "@/lib/fetcher";
+import { getQueryClient } from "@/lib/queryclient";
 
 /** Your custom fetcher function */
 async function customFetcher<TResult, TVariables>(
@@ -40,6 +41,18 @@ export function useGraphQL<TResult, TVariables>(
     queryKey: [getCacheKey(document), variables],
     queryFn: () => customFetcher(document, variables!),
   });
+}
+
+export async function useServerGraphQL<TResult, TVariables>(
+  document: TypedDocumentNode<TResult, TVariables>,
+  variables?: TVariables extends Record<string, never> ? {} : TVariables
+) {
+  const clientQuery = getQueryClient();
+  await clientQuery.prefetchQuery({
+    queryKey: [getCacheKey(document), variables],
+    queryFn: () => customFetcher(document, variables!),
+  });
+  return clientQuery;
 }
 
 export function useMutationGraphQL<TResult, TVariables>(

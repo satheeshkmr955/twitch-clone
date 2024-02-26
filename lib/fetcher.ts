@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 import { Error, Success, Toast } from "@/app/_types";
+import { getSession } from "./auth";
 
 export const axiosGraphQL = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
@@ -10,7 +11,13 @@ export const axiosGraphQL = axios.create({
 });
 
 axiosGraphQL.interceptors.request.use(
-  function (config) {
+  async function (config) {
+    const session = await getSession();
+
+    if (session?.accessToken) {
+      config.headers["Authorization"] = `Bearer ${session.accessToken}`;
+    }
+
     return config;
   },
   function (error) {
