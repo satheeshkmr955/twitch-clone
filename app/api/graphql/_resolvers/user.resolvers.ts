@@ -46,5 +46,9 @@ export const UsersResolvers: Resolvers = {
 
       return { items: users, pagination };
     },
+    getUserByName: async (_, { input }, { user, db }) => {
+      const { name } = input || {};
+      return db.user.findFirst({ where: { name } });
+    },
   },
 };

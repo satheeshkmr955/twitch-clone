@@ -5,12 +5,18 @@ import {
   EMAIL_EXISTS,
   EMAIL_NOT_VALID,
   EMAIL_REQUIRED,
+  NAME_REGEX,
   NAME_REQUIRED,
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_NOT_MATCH,
   PASSWORD_REGEX,
   PASSWORD_REQUIRED,
 } from "@/constants/message.constants";
+
+// Minimum 1 character,
+export const userNameValidation = new RegExp(
+  /^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$/
+);
 
 // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 export const passwordValidation = new RegExp(
@@ -24,9 +30,14 @@ export const signInSchema = z.object({
 
 export const signUpSchema = z
   .object({
-    name: z.string().min(3, {
-      message: NAME_REQUIRED,
-    }),
+    name: z
+      .string()
+      .min(3, {
+        message: NAME_REQUIRED,
+      })
+      .regex(userNameValidation, {
+        message: NAME_REGEX,
+      }),
     email: z
       .string()
       .min(1, { message: EMAIL_REQUIRED })
@@ -51,9 +62,14 @@ export const signUpSchema = z
   });
 
 export const signUpApiSchema = z.object({
-  name: z.string().min(3, {
-    message: NAME_REQUIRED,
-  }),
+  name: z
+    .string()
+    .min(3, {
+      message: NAME_REQUIRED,
+    })
+    .regex(userNameValidation, {
+      message: NAME_REGEX,
+    }),
   email: z.string().min(1, { message: EMAIL_REQUIRED }).email(EMAIL_NOT_VALID),
   password: z
     .string()

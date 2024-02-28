@@ -23,3 +23,21 @@ export const UserNotFoundError = (message: string) => {
     extensions: { code: "USER_NOT_FOUND" },
   });
 };
+
+export const NotAuthorized = (message: string) => {
+  return new GraphQLError(message, {
+    extensions: { code: "NOT_AUTHORIZED" },
+  });
+};
+
+export const CannotFollowYourself = (message: string) => {
+  return new GraphQLError(message, {
+    extensions: { code: "CANNOT_FOLLOW_YOURSELF" },
+  });
+};
+
+export const AlreadyFollowing = (message: string) => {
+  return new GraphQLError(message, {
+    extensions: { code: "ALREADY_FOLLOWING" },
+  });
+};

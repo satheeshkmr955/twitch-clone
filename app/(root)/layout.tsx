@@ -25,7 +25,7 @@ const HomeLayout = async (props: LayoutProps) => {
       // disableTransitionOnChange
     >
       <AuthProvider session={session}>
-        <Toaster />
+        <Toaster theme="light" />
         <QueryProvider>{children}</QueryProvider>
       </AuthProvider>
     </ThemeProvider>

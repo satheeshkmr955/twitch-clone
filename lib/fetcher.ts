@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
 
-import { Error, Success, Toast } from "@/app/_types";
+import { Error, Success, Toast, ToastTypes } from "@/app/_types";
 import { getSession } from "./auth";
 
 export const axiosGraphQL = axios.create({
@@ -12,10 +12,12 @@ export const axiosGraphQL = axios.create({
 
 axiosGraphQL.interceptors.request.use(
   async function (config) {
-    const session = await getSession();
-
-    if (session?.accessToken) {
-      config.headers["Authorization"] = `Bearer ${session.accessToken}`;
+    const isServer = typeof window === "undefined";
+    if (isServer) {
+      const session = await getSession();
+      if (session?.accessToken) {
+        config.headers["Authorization"] = `Bearer ${session.accessToken}`;
+      }
     }
 
     return config;
@@ -27,6 +29,9 @@ axiosGraphQL.interceptors.request.use(
 
 axiosGraphQL.interceptors.response.use(
   function (response) {
+    if (response.data?.errors) {
+      return Promise.reject(response.data?.errors);
+    }
     return response;
   },
   function (error) {
@@ -43,7 +48,9 @@ publicAxios.interceptors.response.use(
     const data = response.data as Success;
     if (data?.toast !== undefined) {
       const toastObj = data?.toast as Toast;
-      const toastByType = toast[toastObj.type] as typeof toast.success;
+      const toastByType = toast[
+        toastObj.type as ToastTypes
+      ] as typeof toast.success;
       toastByType(toastObj.text);
     }
     return response;
@@ -52,7 +59,9 @@ publicAxios.interceptors.response.use(
     const data = error.response?.data as Error;
     if (data?.toast !== undefined) {
       const toastObj = data?.toast as Toast;
-      const toastByType = toast[toastObj.type] as typeof toast.success;
+      const toastByType = toast[
+        toastObj.type as ToastTypes
+      ] as typeof toast.success;
       toastByType(toastObj.text);
     }
     return Promise.reject(error);

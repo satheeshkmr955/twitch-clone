@@ -9,6 +9,9 @@ import { SIGN_IN } from "@/constants/route.constants";
 export const Actions = async () => {
   const session = await getSession();
 
+  const slugName = decodeURI(session?.user?.name! || "")
+  const href = `/u/${slugName}`;
+
   return (
     <div className="flex items-center justify-end gap-x-2 ml-4 lg:ml-0">
       {!session && (
@@ -24,7 +27,7 @@ export const Actions = async () => {
             className="text-muted-foreground hover:text-primary"
             asChild
           >
-            <Link href={`/u/${session.user?.name}`}>
+            <Link href={href}>
               <ClapperboardIcon className="h-5 w-5 lg:mr-2" />
               <span className="hidden lg:block">Dashboard</span>
             </Link>

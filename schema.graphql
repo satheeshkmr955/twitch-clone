@@ -1,12 +1,25 @@
 type Query {
   greeting: String
   getRecommended(input: GetRecommendedInput): Users!
-  isFollowingUser(input: UserId): Boolean!
+  isFollowingUser(input: IsFollowingUserInput!): Boolean!
+  getUserByName(input: GetUserByNameInput!): User
+}
+
+type Mutation {
+  followUser(input: FollowUserInput!): Follow!
 }
 
 type Users {
   items: [User!]!
   pagination: Pagination!
+}
+
+type Follow {
+  id: ID!
+  followerId: String!
+  followingId: String!
+  follower: User!
+  following: User!
 }
 
 type Pagination {
@@ -23,11 +36,19 @@ type User {
   image: String
 }
 
-input UserId {
+input IsFollowingUserInput {
   id: ID!
+}
+
+input GetUserByNameInput {
+  name: String!
 }
 
 input GetRecommendedInput {
   limit: Int
   page: Int
+}
+
+input FollowUserInput {
+  id: ID!
 }

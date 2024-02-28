@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 export interface Success {
   toast?: Toast;
   isEmailExists?: boolean;
@@ -8,9 +10,14 @@ export interface Error {
   toast?: Toast;
 }
 
+export type ToastTypes = keyof Pick<
+  typeof toast,
+  "success" | "info" | "warning" | "error"
+>;
+
 export interface Toast {
   text?: string;
-  type?: string;
+  type?: ToastTypes;
 }
 
 export interface Errors {

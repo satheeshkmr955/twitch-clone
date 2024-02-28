@@ -1,5 +1,7 @@
 "use client";
 
+import { useIsClient } from "usehooks-ts";
+
 import { User } from "@/gql/types";
 import { useSidebar } from "@/store/use-sidebar";
 import { UserItem, UserItemSkeleton } from "./user-item";
@@ -10,9 +12,12 @@ interface RecommendedProps {
 
 export const Recommended = (props: RecommendedProps) => {
   const { data } = props;
+  const isClient = useIsClient();
   const { collapsed } = useSidebar((state) => state);
 
   const showLabel = !collapsed && data.length > 0;
+
+  if (!isClient) return null;
 
   return (
     <div>

@@ -16,7 +16,13 @@
   - [x] credentials signin
   - [x] password show/hide
 - [x] not showing skeleton of sidebar since 
+- [x] don't allow space for username while signup
+- [ ] cache clientquery react-query
 - [ ] need to add rating limiting, ban on fail
+- [x] Typings
+  - [x] toast[toastObj.type]
+  - [x] useMutationGraphQL
+    - [x] onSuccess 
 - [ ] loader on sign up and sign in
 - [ ] manage user
   - [ ] user update

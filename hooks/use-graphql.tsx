@@ -10,13 +10,13 @@ import {
 import { HttpStatusCode } from "axios";
 
 import { axiosGraphQL } from "@/lib/fetcher";
-import { getQueryClient } from "@/lib/queryclient";
+import { getServerQueryClient } from "@/lib/queryclient";
 
 /** Your custom fetcher function */
 async function customFetcher<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   variables: TVariables extends Record<string, never> ? {} : TVariables
-): Promise<TResult> {
+): Promise<ExecutionResult<TResult>> {
   const responseAxios = await axiosGraphQL({
     data: {
       query: print(document),
@@ -47,7 +47,7 @@ export async function useServerGraphQL<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   variables?: TVariables extends Record<string, never> ? {} : TVariables
 ) {
-  const clientQuery = getQueryClient();
+  const clientQuery = getServerQueryClient();
   await clientQuery.prefetchQuery({
     queryKey: [getCacheKey(document), variables],
     queryFn: () => customFetcher(document, variables!),
@@ -58,8 +58,8 @@ export async function useServerGraphQL<TResult, TVariables>(
 export function useMutationGraphQL<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   variables: TVariables extends Record<string, never> ? {} : TVariables,
-  mutateOptions?: UseMutationOptions
-): UseMutationResult<ExecutionResult<TResult>> {
+  mutateOptions?: UseMutationOptions<ExecutionResult<TResult>>
+): UseMutationResult<ExecutionResult<TResult>, Error, void, unknown> {
   return useMutation({
     mutationKey: [getCacheKey(document), variables],
     mutationFn: () => customFetcher(document, variables),

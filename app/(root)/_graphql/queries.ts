@@ -5,7 +5,6 @@ import { graphql } from "@/gql";
 export const UserDetails = graphql(/* GraphQL */ `
   fragment UserDetails on User {
     id
-    image
     name
     email
   }
@@ -16,12 +15,43 @@ export const GetRecommendedUsers = graphql(/* GraphQL */ `
     getRecommended(input: $input) {
       items {
         ...UserDetails
+        image
       }
       pagination {
         totalRecords
         currentLimit
         currentPage
         hasNextPage
+      }
+    }
+  }
+`);
+
+export const isFollowingUser = graphql(/* GraphQL */ `
+  query IsFollowingUser($input: IsFollowingUserInput!) {
+    isFollowingUser(input: $input)
+  }
+`);
+
+export const GetUserByName = graphql(/* GraphQL */ `
+  query GetUserByName($input: GetUserByNameInput!) {
+    getUserByName(input: $input) {
+      ...UserDetails
+    }
+  }
+`);
+
+export const FollowUser = graphql(/* GraphQL */ `
+  mutation FollowUser($input: FollowUserInput!) {
+    followUser(input: $input) {
+      id
+      followerId
+      followingId
+      follower {
+        ...UserDetails
+      }
+      following {
+        ...UserDetails
       }
     }
   }
