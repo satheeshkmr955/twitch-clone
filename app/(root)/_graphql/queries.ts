@@ -44,14 +44,20 @@ export const GetUserByName = graphql(/* GraphQL */ `
 export const FollowUser = graphql(/* GraphQL */ `
   mutation FollowUser($input: FollowUserInput!) {
     followUser(input: $input) {
-      id
-      followerId
-      followingId
-      follower {
-        ...UserDetails
+      follow {
+        id
+        followerId
+        followingId
+        follower {
+          ...UserDetails
+        }
+        following {
+          ...UserDetails
+        }
       }
-      following {
-        ...UserDetails
+      toast {
+        text
+        type
       }
     }
   }

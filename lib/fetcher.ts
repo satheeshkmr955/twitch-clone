@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { toast } from "sonner";
+import { GraphQLError } from "graphql";
 
-import { Error, Success, Toast, ToastTypes } from "@/app/_types";
+import { Error, Success, TriggerToastProps } from "@/app/_types";
 import { getSession } from "./auth";
+import { triggerToast } from "./utils";
 
 export const axiosGraphQL = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
@@ -29,9 +30,24 @@ axiosGraphQL.interceptors.request.use(
 
 axiosGraphQL.interceptors.response.use(
   function (response) {
+    const isClient = typeof window === "object";
+
     if (response.data?.errors) {
+      if (
+        Array.isArray(response.data?.errors) &&
+        response.data?.errors.length > 0 &&
+        isClient
+      ) {
+        const errors: GraphQLError[] = response.data.errors;
+
+        errors.forEach((error) => {
+          triggerToast(error.extensions?.toast as TriggerToastProps);
+        });
+      }
+
       return Promise.reject(response.data?.errors);
     }
+
     return response;
   },
   function (error) {
@@ -46,24 +62,12 @@ export const publicAxios = axios.create({
 publicAxios.interceptors.response.use(
   function (response: AxiosResponse) {
     const data = response.data as Success;
-    if (data?.toast !== undefined) {
-      const toastObj = data?.toast as Toast;
-      const toastByType = toast[
-        toastObj.type as ToastTypes
-      ] as typeof toast.success;
-      toastByType(toastObj.text);
-    }
+    triggerToast(data?.toast as TriggerToastProps);
     return response;
   },
   function (error: AxiosError) {
     const data = error.response?.data as Error;
-    if (data?.toast !== undefined) {
-      const toastObj = data?.toast as Toast;
-      const toastByType = toast[
-        toastObj.type as ToastTypes
-      ] as typeof toast.success;
-      toastByType(toastObj.text);
-    }
+    triggerToast(data?.toast as TriggerToastProps);
     return Promise.reject(error);
   }
 );

@@ -15,6 +15,7 @@ export const USER_NOT_FOUND = "User not found";
 export const CANNOT_FOLLOW_YOURSELF = "Cannot follow yourself";
 export const ALREADY_FOLLOWING = "Already Following";
 export const NOT_AUTHORIZED = "Not authorized";
+export const FOLLOWED_THE_USER = "Followed the user";
 
 export const SUCCESS = "success";
 export const INFO = "info";

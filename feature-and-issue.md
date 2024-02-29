@@ -19,6 +19,7 @@
 - [x] don't allow space for username while signup
 - [ ] cache clientquery react-query
 - [ ] need to add rating limiting, ban on fail
+- [ ] onfollow invalidate the cache of redis and react-query
 - [x] Typings
   - [x] toast[toastObj.type]
   - [x] useMutationGraphQL

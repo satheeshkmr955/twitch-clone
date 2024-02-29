@@ -1,10 +1,11 @@
 import {
   ALREADY_FOLLOWING,
   CANNOT_FOLLOW_YOURSELF,
+  FOLLOWED_THE_USER,
   NOT_AUTHORIZED,
   USER_NOT_FOUND,
 } from "@/constants/message.constants";
-import { Resolvers } from "@/gql/types";
+import { Resolvers, Toast, ToastTypes } from "@/gql/types";
 import {
   AlreadyFollowing,
   CannotFollowYourself,
@@ -76,7 +77,12 @@ export const FollowResolvers: Resolvers = {
         },
       });
 
-      return follow;
+      const toast: Toast = {
+        text: FOLLOWED_THE_USER,
+        type: ToastTypes.Success,
+      };
+
+      return { follow, toast };
     },
   },
 };

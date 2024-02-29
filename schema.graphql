@@ -6,12 +6,29 @@ type Query {
 }
 
 type Mutation {
-  followUser(input: FollowUserInput!): Follow!
+  followUser(input: FollowUserInput!): FollowUser!
 }
 
 type Users {
   items: [User!]!
   pagination: Pagination!
+}
+
+type FollowUser {
+  follow: Follow!
+  toast: Toast!
+}
+
+enum ToastTypes {
+  success
+  info
+  warning
+  error
+}
+
+type Toast {
+  text: String!
+  type: ToastTypes!
 }
 
 type Follow {

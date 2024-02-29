@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useMutationGraphQL } from "@/hooks/use-graphql";
 
 import { FollowUserDocument } from "@/gql/graphql";
+import { triggerToast } from "@/lib/utils";
+import { TriggerToastProps } from "@/app/_types";
 
 interface ActionProps {
   isFollowingUser: boolean;
@@ -23,7 +25,8 @@ export const Actions = (props: ActionProps) => {
     },
     {
       onSuccess: (data) => {
-        // console.log("data", data.data?.followUser);
+        triggerToast(data.data?.followUser?.toast! as TriggerToastProps);
+        // triggerToast(data.data?.toast);
       },
       onError(error) {
         // console.log("error", error);
