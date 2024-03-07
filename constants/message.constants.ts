@@ -13,9 +13,13 @@ export const PASSWORD_CONFIRM_REQUIRED = "Please retype your password";
 export const PASSWORD_NOT_MATCH = "Passwords don't match";
 export const USER_NOT_FOUND = "User not found";
 export const CANNOT_FOLLOW_YOURSELF = "Cannot follow yourself";
+export const CANNOT_UNFOLLOW_YOURSELF = "Cannot unfollow yourself";
+export const NOT_FOLLOWING = "Not following";
+export const YOU_HAVE_UNFOLLOWED = "you have unfollowed";
 export const ALREADY_FOLLOWING = "Already Following";
 export const NOT_AUTHORIZED = "Not authorized";
 export const FOLLOWED_THE_USER = "Followed the user";
+export const YOU_ARE_NOW_FOLLOWING = "You are now following";
 
 export const SUCCESS = "success";
 export const INFO = "info";

@@ -75,7 +75,7 @@ model Follow {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([followerId, followingId])
+  @@unique(name: "followCompoundId", [followerId, followingId])
   @@index([followerId])
   @@index([followingId])
 }

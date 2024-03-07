@@ -29,7 +29,22 @@ export const GetRecommendedUsers = graphql(/* GraphQL */ `
 
 export const isFollowingUser = graphql(/* GraphQL */ `
   query IsFollowingUser($input: IsFollowingUserInput!) {
-    isFollowingUser(input: $input)
+    isFollowingUser(input: $input) {
+      isFollowing
+    }
+  }
+`);
+
+export const GetUserByNameWithFollowingStatus = graphql(/* GraphQL */ `
+  query GetUserByNameWithFollowingStatus(
+    $input: GetUserByNameWithFollowingStatus!
+  ) {
+    getUserByNameWithFollowingStatus(input: $input) {
+      user {
+        ...UserDetails
+      }
+      isFollowing
+    }
   }
 `);
 
@@ -51,6 +66,25 @@ export const FollowUser = graphql(/* GraphQL */ `
         follower {
           ...UserDetails
         }
+        following {
+          ...UserDetails
+        }
+      }
+      toast {
+        text
+        type
+      }
+    }
+  }
+`);
+
+export const UnFollowUser = graphql(/* GraphQL */ `
+  mutation UnFollowUser($input: FollowUserInput!) {
+    unFollowUser(input: $input) {
+      follow {
+        id
+        followerId
+        followingId
         following {
           ...UserDetails
         }

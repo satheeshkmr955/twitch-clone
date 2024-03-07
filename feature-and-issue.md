@@ -17,9 +17,8 @@
   - [x] password show/hide
 - [x] not showing skeleton of sidebar since 
 - [x] don't allow space for username while signup
-- [ ] cache clientquery react-query
-- [ ] need to add rating limiting, ban on fail
-- [ ] onfollow invalidate the cache of redis and react-query
+- [x] cache clientquery react-query
+- [x] onfollow invalidate the cache of redis and react-query
 - [x] Typings
   - [x] toast[toastObj.type]
   - [x] useMutationGraphQL
@@ -31,4 +30,5 @@
   - [ ] user deletion
 - [ ] error constructor/class
 - [ ] verify email in graphql
+- [ ] need to add rating limiting, ban on fail
 - [ ] learn theming

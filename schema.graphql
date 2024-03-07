@@ -1,17 +1,30 @@
 type Query {
   greeting: String
   getRecommended(input: GetRecommendedInput): Users!
-  isFollowingUser(input: IsFollowingUserInput!): Boolean!
+  isFollowingUser(input: IsFollowingUserInput!): IsUserFollowing!
   getUserByName(input: GetUserByNameInput!): User
+  getUserByNameWithFollowingStatus(
+    input: GetUserByNameWithFollowingStatus!
+  ): UserWithFollowingStatus!
 }
 
 type Mutation {
   followUser(input: FollowUserInput!): FollowUser!
+  unFollowUser(input: FollowUserInput!): FollowUser!
+}
+
+type IsUserFollowing {
+  isFollowing: Boolean!
 }
 
 type Users {
   items: [User!]!
   pagination: Pagination!
+}
+
+type UserWithFollowingStatus {
+  user: User
+  isFollowing: Boolean!
 }
 
 type FollowUser {
@@ -55,6 +68,10 @@ type User {
 
 input IsFollowingUserInput {
   id: ID!
+}
+
+input GetUserByNameWithFollowingStatus {
+  name: String!
 }
 
 input GetUserByNameInput {

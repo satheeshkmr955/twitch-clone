@@ -85,6 +85,34 @@ export const CannotFollowYourself = (message: string) => {
   });
 };
 
+export const CannotUnfollowYourself = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "CANNOT_UNFOLLOW_YOURSELF",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
+export const NotFollowing = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "NOT_FOLLOWING",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
 export const AlreadyFollowing = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "ALREADY_FOLLOWING",
