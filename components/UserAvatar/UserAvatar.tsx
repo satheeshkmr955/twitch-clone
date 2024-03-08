@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LiveBadge } from "@/components/live-badge";
 import { cn } from "@/lib/utils";
-import { User } from "@/gql/types";
+import { User } from "@/gql/graphql";
 
 interface UserAvatarProps
   extends React.HTMLAttributes<HTMLDivElement>,

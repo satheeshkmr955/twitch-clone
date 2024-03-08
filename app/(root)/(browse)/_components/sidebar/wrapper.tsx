@@ -7,6 +7,7 @@ import { useSidebar } from "@/store/use-sidebar";
 
 import { ToggleSkeleton } from "./toggle";
 import { RecommendedSkeleton } from "./recommended";
+import { FollowingSkeleton } from "./following";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export const Wrapper = (props: WrapperProps) => {
     return (
       <aside className="fixed left-0 flex flex-col w-60 h-full bg-background border-r border-[#2D2E35] z-50">
         <ToggleSkeleton />
+        <FollowingSkeleton />
         <RecommendedSkeleton />
       </aside>
     );

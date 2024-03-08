@@ -6,16 +6,19 @@ import { Container } from "./_components/container";
 import { Sidebar, SidebarSkeleton } from "./_components/sidebar";
 
 import { useServerGraphQL } from "@/hooks/use-graphql";
-import { GetRecommendedDocument } from "@/gql/graphql";
+import { GetFollowedAndRecommendedUserDocument } from "@/gql/graphql";
 
 const BrowseLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const queryClient = await useServerGraphQL(GetRecommendedDocument, {
-    input: { limit: 10, page: 0 },
-  });
+  const queryClient = await useServerGraphQL(
+    GetFollowedAndRecommendedUserDocument,
+    {
+      input: { limit: 10, page: 0 },
+    }
+  );
 
   return (
     <>

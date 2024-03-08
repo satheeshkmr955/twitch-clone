@@ -7,6 +7,7 @@ import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 
 import {
   FollowUserDocument,
+  GetFollowedAndRecommendedUserDocument,
   GetUserByNameWithFollowingStatusDocument,
   UnFollowUserDocument,
 } from "@/gql/graphql";
@@ -34,14 +35,18 @@ export const Actions = (props: ActionProps) => {
         triggerToast(data.data?.followUser?.toast! as TriggerToastProps);
         // triggerToast(data.data?.toast);
         if (data.data?.followUser?.follow) {
-          const queryKey = [
+          const queryKey1 = [
             getCacheKey(GetUserByNameWithFollowingStatusDocument),
             {
               input: { name: data.data.followUser.follow.following.name },
             },
           ];
+          const queryKey2 = [
+            getCacheKey(GetFollowedAndRecommendedUserDocument),
+          ];
           const queryClient = getQueryClient();
-          queryClient.invalidateQueries({ queryKey });
+          queryClient.invalidateQueries({ queryKey: queryKey1 });
+          queryClient.invalidateQueries({ queryKey: queryKey2 });
         }
       },
       onError(error) {
@@ -60,14 +65,18 @@ export const Actions = (props: ActionProps) => {
         triggerToast(data.data?.unFollowUser?.toast! as TriggerToastProps);
         // triggerToast(data.data?.toast);
         if (data.data?.unFollowUser?.follow) {
-          const queryKey = [
+          const queryKey1 = [
             getCacheKey(GetUserByNameWithFollowingStatusDocument),
             {
               input: { name: data.data.unFollowUser.follow.following.name },
             },
           ];
+          const queryKey2 = [
+            getCacheKey(GetFollowedAndRecommendedUserDocument),
+          ];
           const queryClient = getQueryClient();
-          queryClient.invalidateQueries({ queryKey });
+          queryClient.invalidateQueries({ queryKey: queryKey1 });
+          queryClient.invalidateQueries({ queryKey: queryKey2 });
         }
       },
       onError(error) {

@@ -10,6 +10,15 @@ export const UserDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const PaginationDetails = graphql(/* GraphQL */ `
+  fragment PaginationDetails on Pagination {
+    totalRecords
+    currentLimit
+    currentPage
+    hasNextPage
+  }
+`);
+
 export const GetRecommendedUsers = graphql(/* GraphQL */ `
   query GetRecommended($input: GetRecommendedInput) {
     getRecommended(input: $input) {
@@ -18,10 +27,7 @@ export const GetRecommendedUsers = graphql(/* GraphQL */ `
         image
       }
       pagination {
-        totalRecords
-        currentLimit
-        currentPage
-        hasNextPage
+        ...PaginationDetails
       }
     }
   }
@@ -92,6 +98,41 @@ export const UnFollowUser = graphql(/* GraphQL */ `
       toast {
         text
         type
+      }
+    }
+  }
+`);
+
+export const GetFollowedUsers = graphql(/* GraphQL */ `
+  query GetFollowedUsers {
+    getFollowedUsers {
+      items {
+        id
+        following {
+          ...UserDetails
+        }
+      }
+    }
+  }
+`);
+
+export const GetFollowedAndRecommendedUser = graphql(/* GraphQL */ `
+  query GetFollowedAndRecommendedUser($input: GetRecommendedInput!) {
+    getFollowedUsers {
+      items {
+        id
+        following {
+          ...UserDetails
+        }
+      }
+    }
+    getRecommended(input: $input) {
+      items {
+        ...UserDetails
+        image
+      }
+      pagination {
+        ...PaginationDetails
       }
     }
   }

@@ -6,6 +6,7 @@ type Query {
   getUserByNameWithFollowingStatus(
     input: GetUserByNameWithFollowingStatus!
   ): UserWithFollowingStatus!
+  getFollowedUsers: FollowedUsers!
 }
 
 type Mutation {
@@ -15,6 +16,10 @@ type Mutation {
 
 type IsUserFollowing {
   isFollowing: Boolean!
+}
+
+type FollowedUsers {
+  items: [Follow!]!
 }
 
 type Users {

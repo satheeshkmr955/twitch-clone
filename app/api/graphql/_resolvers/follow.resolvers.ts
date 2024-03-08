@@ -66,6 +66,22 @@ export const FollowResolvers: Resolvers = {
 
       return { user: isUserExists, isFollowing: !!existingFollow };
     },
+    getFollowedUsers: async (_, {}, { db, user }) => {
+      if (!user) {
+        return { items: [] };
+      }
+
+      const follows = await db.follow.findMany({
+        where: {
+          followerId: user.id,
+        },
+        include: {
+          following: true,
+        },
+      });
+
+      return { items: follows };
+    },
   },
   Mutation: {
     followUser: async (_, { input }, { db, user }) => {
