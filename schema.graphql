@@ -4,6 +4,7 @@ type Query {
   isFollowingUser(input: IsFollowingUserInput!): IsUserFollowing!
   isBlockedByUser(input: IsBlockedByUserInput!): IsUserBlocked!
   getUserByName(input: GetUserByNameInput!): User
+  getSelfByName(input: GetSelfByNameInput!): User
   getUserByNameWithAllDetails(
     input: GetUserByNameWithAllDetailsInput!
   ): UserWithAllDetails!
@@ -114,6 +115,10 @@ input UnBlockUserInput {
 
 input BlockUserInput {
   id: ID!
+}
+
+input GetSelfByNameInput {
+  name: String!
 }
 
 input GetRecommendedInput {

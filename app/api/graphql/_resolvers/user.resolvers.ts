@@ -1,9 +1,11 @@
+import { NOT_AUTHORIZED, USER_NOT_FOUND } from "@/constants/message.constants";
 import {
   DEFAULT_LIMIT,
   DEFAULT_PAGE,
   PAGINATION,
 } from "@/constants/pagination.constants";
 import { Resolvers } from "@/gql/types";
+import { NotAuthorized, UserNotFoundError } from "@/lib/errors";
 
 import type { Prisma } from "@prisma/client";
 
@@ -75,6 +77,30 @@ export const UsersResolvers: Resolvers = {
     getUserByName: async (_, { input }, { user, db }) => {
       const { name } = input || {};
       return db.user.findFirst({ where: { name } });
+    },
+
+    getSelfByName: async (_, { input }, { user, db }) => {
+      if (!user) {
+        throw NotAuthorized(NOT_AUTHORIZED);
+      }
+
+      const { name } = input || {};
+
+      const userByName = await db.user.findFirst({
+        where: {
+          name,
+        },
+      });
+
+      if (!userByName) {
+        throw UserNotFoundError(USER_NOT_FOUND);
+      }
+
+      if (user.name !== userByName.name) {
+        throw NotAuthorized(NOT_AUTHORIZED);
+      }
+
+      return userByName;
     },
   },
 };

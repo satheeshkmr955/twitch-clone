@@ -178,3 +178,11 @@ export const UnBlockUser = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export const GetSelfByName = graphql(/* GraphQL */ `
+  query GetSelfByName($input: GetSelfByNameInput!) {
+    getSelfByName(input: $input) {
+      ...UserDetails
+    }
+  }
+`);

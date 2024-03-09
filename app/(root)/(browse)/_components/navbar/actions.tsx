@@ -9,7 +9,7 @@ import { SIGN_IN } from "@/constants/route.constants";
 export const Actions = async () => {
   const session = await getSession();
 
-  const slugName = decodeURI(session?.user?.name! || "")
+  const slugName = decodeURI(session?.user?.name! || "");
   const href = `/u/${slugName}`;
 
   return (
