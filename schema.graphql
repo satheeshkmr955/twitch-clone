@@ -2,16 +2,23 @@ type Query {
   greeting: String
   getRecommended(input: GetRecommendedInput): Users!
   isFollowingUser(input: IsFollowingUserInput!): IsUserFollowing!
+  isBlockedByUser(input: IsBlockedByUserInput!): IsUserBlocked!
   getUserByName(input: GetUserByNameInput!): User
-  getUserByNameWithFollowingStatus(
-    input: GetUserByNameWithFollowingStatus!
-  ): UserWithFollowingStatus!
+  getUserByNameWithAllDetails(
+    input: GetUserByNameWithAllDetailsInput!
+  ): UserWithAllDetails!
   getFollowedUsers: FollowedUsers!
 }
 
 type Mutation {
   followUser(input: FollowUserInput!): FollowUser!
   unFollowUser(input: FollowUserInput!): FollowUser!
+  blockUser(input: BlockUserInput!): BlockedUser!
+  unBlockUser(input: UnBlockUserInput): BlockedUser!
+}
+
+type IsUserBlocked {
+  isBlocked: Boolean!
 }
 
 type IsUserFollowing {
@@ -27,9 +34,23 @@ type Users {
   pagination: Pagination!
 }
 
-type UserWithFollowingStatus {
+type Block {
+  id: ID!
+  blockerId: String!
+  blockedId: String!
+  blocker: User!
+  blocked: User!
+}
+
+type BlockedUser {
+  block: Block!
+  toast: Toast!
+}
+
+type UserWithAllDetails {
   user: User
   isFollowing: Boolean!
+  isBlocked: Boolean!
 }
 
 type FollowUser {
@@ -75,12 +96,24 @@ input IsFollowingUserInput {
   id: ID!
 }
 
-input GetUserByNameWithFollowingStatus {
+input IsBlockedByUserInput {
+  id: ID!
+}
+
+input GetUserByNameWithAllDetailsInput {
   name: String!
 }
 
 input GetUserByNameInput {
   name: String!
+}
+
+input UnBlockUserInput {
+  id: ID!
+}
+
+input BlockUserInput {
+  id: ID!
 }
 
 input GetRecommendedInput {

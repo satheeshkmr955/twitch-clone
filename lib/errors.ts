@@ -126,3 +126,59 @@ export const AlreadyFollowing = (message: string) => {
     extensions,
   });
 };
+
+export const CannotBlockYourself = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "CANNOT_BLOCK_YOURSELF",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
+export const CannotUnblockYourself = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "CANNOT_UNBLOCK_YOURSELF",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
+export const AlreadyBlocked = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "ALREADY_BLOCKED",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
+export const NotBlocked = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "NOT_BLOCKED",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};

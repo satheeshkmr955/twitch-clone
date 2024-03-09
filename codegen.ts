@@ -12,6 +12,7 @@ const config: CodegenConfig = {
         mappers: {
           User: "@prisma/client#User",
           Follow: "@prisma/client#Follow",
+          Block: "@prisma/client#Block",
         },
         contextType: "../app/api/graphql/route#GraphQLContext",
       },

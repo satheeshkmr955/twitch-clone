@@ -50,6 +50,15 @@ export const UsersResolvers: Resolvers = {
                 },
               },
             },
+            {
+              NOT: {
+                blocking: {
+                  some: {
+                    blockedId: user.id,
+                  },
+                },
+              },
+            },
           ],
         };
       }

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 
-import { GetUserByNameWithFollowingStatusDocument } from "@/gql/graphql";
+import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
 import { useGraphQL } from "@/hooks/use-graphql";
 
 import { UserProps } from "./types";
@@ -13,14 +13,14 @@ const User = (props: UserProps) => {
   const { params } = props;
   const { username } = params;
 
-  const { data } = useGraphQL(GetUserByNameWithFollowingStatusDocument, {
+  const { data } = useGraphQL(GetUserByNameWithAllDetailsDocument, {
     input: { name: decodeURI(username) },
   });
 
-  const isUserExists =
-    data?.data?.getUserByNameWithFollowingStatus.user || null;
+  const isUserExists = data?.data?.getUserByNameWithAllDetails.user || null;
 
-  const isFollowing = data?.data?.getUserByNameWithFollowingStatus.isFollowing;
+  const isFollowing = data?.data?.getUserByNameWithAllDetails.isFollowing;
+  const isBlocked = data?.data?.getUserByNameWithAllDetails.isBlocked;
 
   if (!isUserExists) {
     notFound();
@@ -32,7 +32,8 @@ const User = (props: UserProps) => {
       <p>email: {isUserExists.email}</p>
       <p>id: {isUserExists.id}</p>
       <p>is following: {`${isFollowing!}`}</p>
-      <Actions userId={isUserExists.id} isFollowingUser={isFollowing!} />
+      <p>is blocked by this user: {`${isBlocked}`}</p>
+      <Actions userId={isUserExists.id} isFollowingUser={isFollowing!} isBlocked={isBlocked!} />
     </div>
   );
 };

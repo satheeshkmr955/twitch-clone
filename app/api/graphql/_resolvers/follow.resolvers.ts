@@ -33,13 +33,18 @@ export const FollowResolvers: Resolvers = {
         return { isFollowing: true };
       }
 
-      const existingFollow = await db.follow.findFirst({
-        where: { followerId: user?.id, followingId: otherUser.id },
+      const existingFollow = await db.follow.findUnique({
+        where: {
+          followCompoundId: {
+            followerId: user?.id!,
+            followingId: otherUser.id,
+          },
+        },
       });
 
       return { isFollowing: !!existingFollow };
     },
-    getUserByNameWithFollowingStatus: async (_, { input }, { db, user }) => {
+    getUserByNameWithAllDetails: async (_, { input }, { db, user }) => {
       const { name } = input || {};
 
       const isUserExists = await db.user.findFirst({ where: { name } });
@@ -57,14 +62,38 @@ export const FollowResolvers: Resolvers = {
       }
 
       if (otherUser.id === user?.id) {
-        return { user: isUserExists, isFollowing: true };
+        return { user: isUserExists, isFollowing: true, isBlocked: false };
       }
 
-      const existingFollow = await db.follow.findFirst({
-        where: { followerId: user?.id, followingId: otherUser.id },
+      const existingFollow = await db.follow.findUnique({
+        where: {
+          followCompoundId: {
+            followerId: user?.id!,
+            followingId: otherUser.id,
+          },
+        },
       });
 
-      return { user: isUserExists, isFollowing: !!existingFollow };
+      let isBlocked = false;
+
+      if (user) {
+        const existingBlock = await db.block.findUnique({
+          where: {
+            blockCompoundId: {
+              blockerId: otherUser.id,
+              blockedId: user.id,
+            },
+          },
+        });
+
+        isBlocked = !!existingBlock;
+      }
+
+      return {
+        user: isUserExists,
+        isFollowing: !!existingFollow,
+        isBlocked,
+      };
     },
     getFollowedUsers: async (_, {}, { db, user }) => {
       if (!user) {
@@ -74,6 +103,13 @@ export const FollowResolvers: Resolvers = {
       const follows = await db.follow.findMany({
         where: {
           followerId: user.id,
+          following: {
+            blocking: {
+              none: {
+                blockedId: user.id,
+              },
+            },
+          },
         },
         include: {
           following: true,
@@ -103,10 +139,12 @@ export const FollowResolvers: Resolvers = {
         throw CannotFollowYourself(CANNOT_FOLLOW_YOURSELF);
       }
 
-      const existingFollow = await db.follow.findFirst({
+      const existingFollow = await db.follow.findUnique({
         where: {
-          followerId: user.id,
-          followingId: otherUser.id,
+          followCompoundId: {
+            followerId: user.id,
+            followingId: otherUser.id,
+          },
         },
       });
 
@@ -151,10 +189,12 @@ export const FollowResolvers: Resolvers = {
         throw CannotUnfollowYourself(CANNOT_UNFOLLOW_YOURSELF);
       }
 
-      const existingFollow = await db.follow.findFirst({
+      const existingFollow = await db.follow.findUnique({
         where: {
-          followerId: user.id,
-          followingId: otherUser.id,
+          followCompoundId: {
+            followerId: user.id,
+            followingId: otherUser.id,
+          },
         },
       });
 

@@ -41,15 +41,14 @@ export const isFollowingUser = graphql(/* GraphQL */ `
   }
 `);
 
-export const GetUserByNameWithFollowingStatus = graphql(/* GraphQL */ `
-  query GetUserByNameWithFollowingStatus(
-    $input: GetUserByNameWithFollowingStatus!
-  ) {
-    getUserByNameWithFollowingStatus(input: $input) {
+export const GetUserByNameWithAllDetails = graphql(/* GraphQL */ `
+  query GetUserByNameWithAllDetails($input: GetUserByNameWithAllDetailsInput!) {
+    getUserByNameWithAllDetails(input: $input) {
       user {
         ...UserDetails
       }
       isFollowing
+      isBlocked
     }
   }
 `);
@@ -133,6 +132,48 @@ export const GetFollowedAndRecommendedUser = graphql(/* GraphQL */ `
       }
       pagination {
         ...PaginationDetails
+      }
+    }
+  }
+`);
+
+export const IsBlockedByUser = graphql(/* GraphQL */ `
+  query IsBlockedByUser($input: IsBlockedByUserInput!) {
+    isBlockedByUser(input: $input) {
+      isBlocked
+    }
+  }
+`);
+
+export const BlockUser = graphql(/* GraphQL */ `
+  mutation BlockUser($input: BlockUserInput!) {
+    blockUser(input: $input) {
+      block {
+        id
+        blocked {
+          ...UserDetails
+        }
+      }
+      toast {
+        text
+        type
+      }
+    }
+  }
+`);
+
+export const UnBlockUser = graphql(/* GraphQL */ `
+  mutation UnBlockUser($input: UnBlockUserInput!) {
+    unBlockUser(input: $input) {
+      block {
+        id
+        blocked {
+          ...UserDetails
+        }
+      }
+      toast {
+        text
+        type
       }
     }
   }

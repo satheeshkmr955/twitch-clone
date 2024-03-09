@@ -122,6 +122,10 @@ const yoga = createYoga({
       ttlPerSchemaCoordinate: {
         // "Query.hello": 1000 * 60 * 5,
       },
+      ttlPerType: {
+        IsUserFollowing: 1000 * 30,
+        IsUserBlocked: 1000 * 30,
+      },
       // includeExtensionMetadata: false,
       ttl: 1000 * 60 * 60 * 1,
     }),
