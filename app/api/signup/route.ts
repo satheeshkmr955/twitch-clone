@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { HttpStatusCode } from "axios";
+import slugify from "slugify";
 
 import { db } from "@/lib/db";
 import { signUpApiSchema } from "@/lib/validation.schema";
@@ -13,6 +14,7 @@ import {
   USER_CREATED,
   WARNING,
 } from "@/constants/message.constants";
+import { SLUGIFY_OPTIONS } from "@/constants/common.constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,8 +45,20 @@ export async function POST(req: NextRequest) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const slugName = slugify(name, SLUGIFY_OPTIONS);
+
     await db.user.create({
-      data: { email, password: hashedPassword, name },
+      data: {
+        email,
+        password: hashedPassword,
+        name,
+        slugName,
+        Stream: {
+          create: {
+            name: `${slugName}'s stream`,
+          },
+        },
+      },
     });
 
     return NextResponse.json(

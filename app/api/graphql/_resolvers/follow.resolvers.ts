@@ -36,7 +36,7 @@ export const FollowResolvers: Resolvers = {
       const existingFollow = await db.follow.findUnique({
         where: {
           followCompoundId: {
-            followerId: user?.id!,
+            followerId: user?.id! || "",
             followingId: otherUser.id,
           },
         },
@@ -47,7 +47,9 @@ export const FollowResolvers: Resolvers = {
     getUserByNameWithAllDetails: async (_, { input }, { db, user }) => {
       const { name } = input || {};
 
-      const isUserExists = await db.user.findFirst({ where: { name } });
+      const isUserExists = await db.user.findFirst({
+        where: { slugName: name },
+      });
 
       if (!isUserExists) {
         throw UserNotFoundError(USER_NOT_FOUND);
@@ -68,7 +70,7 @@ export const FollowResolvers: Resolvers = {
       const existingFollow = await db.follow.findUnique({
         where: {
           followCompoundId: {
-            followerId: user?.id!,
+            followerId: user?.id! || "",
             followingId: otherUser.id,
           },
         },

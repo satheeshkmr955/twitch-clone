@@ -11,7 +11,7 @@ import { User } from "@/gql/graphql";
 interface UserAvatarProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof avatarSizes>,
-    Omit<User, "email" | "id"> {
+    Omit<User, "email" | "id" | "slugName"> {
   isLive?: boolean;
   showBadge?: boolean;
 }

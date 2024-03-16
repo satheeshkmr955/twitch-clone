@@ -7,6 +7,7 @@ export const UserDetails = graphql(/* GraphQL */ `
     id
     name
     email
+    slugName
   }
 `);
 

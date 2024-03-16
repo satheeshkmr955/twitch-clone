@@ -76,7 +76,7 @@ export const UsersResolvers: Resolvers = {
     },
     getUserByName: async (_, { input }, { user, db }) => {
       const { name } = input || {};
-      return db.user.findFirst({ where: { name } });
+      return db.user.findFirst({ where: { slugName: name } });
     },
 
     getSelfByName: async (_, { input }, { user, db }) => {
@@ -88,7 +88,7 @@ export const UsersResolvers: Resolvers = {
 
       const userByName = await db.user.findFirst({
         where: {
-          name,
+          slugName: name,
         },
       });
 

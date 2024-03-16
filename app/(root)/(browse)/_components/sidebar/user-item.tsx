@@ -16,13 +16,13 @@ interface UserItemProps extends User {
 }
 
 export const UserItem = (props: UserItemProps) => {
-  const { name, image, isLive } = props;
+  const { name, image, isLive, slugName } = props;
   const pathName = usePathname();
 
   const { collapsed } = useSidebar((state) => state);
 
-  const slugName = decodeURI(name);
-  const href = `/${slugName}`;
+  const decodedName = decodeURI(slugName);
+  const href = `/${decodedName}`;
   const isActive = pathName === href;
 
   return (

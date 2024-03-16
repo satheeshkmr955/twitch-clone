@@ -18,27 +18,27 @@ export const Navigation = () => {
   const routes = [
     {
       label: "Stream",
-      href: `/u/${session?.user?.name}`,
+      href: `/u/${session?.user?.slugName}`,
       icon: FullscreenIcon,
     },
     {
       label: "Keys",
-      href: `/u/${session?.user?.name}/keys`,
+      href: `/u/${session?.user?.slugName}/keys`,
       icon: KeyRoundIcon,
     },
     {
       label: "Chat",
-      href: `/u/${session?.user?.name}/chat`,
+      href: `/u/${session?.user?.slugName}/chat`,
       icon: MessageSquareIcon,
     },
     {
       label: "Community",
-      href: `/u/${session?.user?.name}/community`,
+      href: `/u/${session?.user?.slugName}/community`,
       icon: UsersIcon,
     },
   ];
 
-  if (!session?.user?.name) {
+  if (!session?.user?.slugName) {
     return (
       <ul className="space-y-2">
         {new Array(4).fill(1).map((_, i) => (

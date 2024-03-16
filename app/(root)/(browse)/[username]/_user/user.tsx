@@ -29,6 +29,7 @@ const User = (props: UserProps) => {
   return (
     <div className="flex flex-col gap-y-4">
       <p>name: {isUserExists.name}</p>
+      <p>slugName: {isUserExists.slugName}</p>
       <p>email: {isUserExists.email}</p>
       <p>id: {isUserExists.id}</p>
       <p>is following: {`${isFollowing!}`}</p>

@@ -89,6 +89,7 @@ type Pagination {
 type User {
   id: ID!
   name: String!
+  slugName: String!
   email: String!
   image: String
 }

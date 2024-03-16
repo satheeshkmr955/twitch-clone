@@ -41,7 +41,7 @@ export const Actions = (props: ActionProps) => {
           const queryKey1 = [
             getCacheKey(GetUserByNameWithAllDetailsDocument),
             {
-              input: { name: data.data.followUser.follow.following.name },
+              input: { name: data.data.followUser.follow.following.slugName },
             },
           ];
           const queryKey2 = [
@@ -71,7 +71,7 @@ export const Actions = (props: ActionProps) => {
           const queryKey1 = [
             getCacheKey(GetUserByNameWithAllDetailsDocument),
             {
-              input: { name: data.data.unFollowUser.follow.following.name },
+              input: { name: data.data.unFollowUser.follow.following.slugName },
             },
           ];
           const queryKey2 = [

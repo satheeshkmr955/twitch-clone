@@ -3,29 +3,53 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession } from "next-auth";
+import slugify from "slugify";
 
-import type { NextAuthOptions } from "next-auth";
+import type { DefaultSession, NextAuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
-
-declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface DefaultSession {
-    accessToken: string | null;
-  }
-}
+import type { PrismaClient } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { HOME, SIGN_IN } from "@/constants/route.constants";
 import { encode } from "next-auth/jwt";
+import { SLUGIFY_OPTIONS } from "@/constants/common.constants";
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    accessToken?: string;
+    user?: DefaultSession["user"] & { slugName: string };
+  }
+
+  interface User {
+    slugName?: string | null;
+  }
+
+  interface DefaultUser {
+    slugName?: string | null;
+  }
+}
+
+function CustomAdapter(p: PrismaClient) {
+  return {
+    ...PrismaAdapter(p),
+  };
+}
 
 export const authConfigOptions = {
-  adapter: PrismaAdapter(db) as Adapter,
+  adapter: CustomAdapter(db) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          slugName: slugify(profile.name, SLUGIFY_OPTIONS),
+        };
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -86,12 +110,32 @@ export const authConfigOptions = {
     maxAge: 60 * 60 * 24 * 1,
   },
   callbacks: {
-    async jwt({ token }) {
+    async jwt({ token, trigger, user }) {
+      if (trigger === "signUp") {
+        const dbUser = await db.user.findUnique({ where: { id: user.id } });
+        if (dbUser) {
+          await db.stream.create({
+            data: {
+              name: `${dbUser.slugName!}'s stream`,
+              userId: dbUser.id!,
+            },
+          });
+        }
+      }
+      if (user) {
+        token.slugName = user?.slugName || "";
+      }
       return token;
     },
     async session({ session, token }) {
       const jwt = await encode({ token, secret: process.env.NEXTAUTH_SECRET! });
       session.accessToken = jwt;
+      if (session?.user) {
+        session.user.slugName = "";
+        if (token?.slugName) {
+          session.user.slugName = token.slugName as string;
+        }
+      }
       return session;
     },
   },
