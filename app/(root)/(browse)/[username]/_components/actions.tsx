@@ -36,7 +36,6 @@ export const Actions = (props: ActionProps) => {
     {
       onSuccess: (data) => {
         triggerToast(data.data?.followUser?.toast! as TriggerToastProps);
-        // triggerToast(data.data?.toast);
         if (data.data?.followUser?.follow) {
           const queryKey1 = [
             getCacheKey(GetUserByNameWithAllDetailsDocument),
@@ -66,7 +65,6 @@ export const Actions = (props: ActionProps) => {
     {
       onSuccess: (data) => {
         triggerToast(data.data?.unFollowUser?.toast! as TriggerToastProps);
-        // triggerToast(data.data?.toast);
         if (data.data?.unFollowUser?.follow) {
           const queryKey1 = [
             getCacheKey(GetUserByNameWithAllDetailsDocument),
@@ -116,7 +114,6 @@ export const Actions = (props: ActionProps) => {
     {
       onSuccess: (data) => {
         triggerToast(data.data?.blockUser?.toast! as TriggerToastProps);
-        // triggerToast(data.data?.toast);
         if (data.data?.blockUser?.block) {
           const queryKey2 = [
             getCacheKey(GetFollowedAndRecommendedUserDocument),
@@ -139,7 +136,6 @@ export const Actions = (props: ActionProps) => {
     {
       onSuccess: (data) => {
         triggerToast(data.data?.unBlockUser?.toast! as TriggerToastProps);
-        // triggerToast(data.data?.toast);
         if (data.data?.unBlockUser?.block) {
           const queryKey2 = [
             getCacheKey(GetFollowedAndRecommendedUserDocument),

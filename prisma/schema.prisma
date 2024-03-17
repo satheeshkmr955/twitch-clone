@@ -112,7 +112,7 @@ model Stream {
   isLive              Boolean @default(false)
   isChatEnabled       Boolean @default(true)
   isChatDelayed       Boolean @default(false)
-  isChatFollowersObly Boolean @default(false)
+  isChatFollowersOnly Boolean @default(false)
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

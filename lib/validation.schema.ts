@@ -82,3 +82,10 @@ export const signUpApiSchema = z.object({
 export const checkEmailsExistsSchema = z.object({
   email: z.string().min(1, { message: EMAIL_REQUIRED }).email(EMAIL_NOT_VALID),
 });
+
+export const streamUpdateInputSchema = z.object({
+  name: z.string().optional(),
+  isChatEnabled: z.boolean().optional(),
+  isChatDelayed: z.boolean().optional(),
+  isChatFollowersOnly: z.boolean().optional(),
+});

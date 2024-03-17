@@ -5,7 +5,7 @@ import {
   PAGINATION,
 } from "@/constants/pagination.constants";
 import { Resolvers } from "@/gql/types";
-import { NotAuthorized, UserNotFoundError } from "@/lib/errors";
+import { NotAuthorized, UserNotFound } from "@/lib/errors";
 
 import type { Prisma } from "@prisma/client";
 
@@ -93,7 +93,7 @@ export const UsersResolvers: Resolvers = {
       });
 
       if (!userByName) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (user.name !== userByName.name) {

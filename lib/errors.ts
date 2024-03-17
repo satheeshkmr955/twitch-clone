@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { CustomerExtensions } from "@/app/_types";
 
-export const NotFoundError = (message: string) => {
+export const NotFound = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "NOT_FOUND",
     toast: {
@@ -15,7 +15,7 @@ export const NotFoundError = (message: string) => {
   });
 };
 
-export const InvalidInputError = (message: string) => {
+export const InvalidInput = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "INVALID_INPUT",
     toast: {
@@ -29,7 +29,7 @@ export const InvalidInputError = (message: string) => {
   });
 };
 
-export const InvalidTokenError = (message: string) => {
+export const InvalidToken = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "INVALID_TOKEN",
     toast: {
@@ -43,7 +43,7 @@ export const InvalidTokenError = (message: string) => {
   });
 };
 
-export const UserNotFoundError = (message: string) => {
+export const UserNotFound = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "USER_NOT_FOUND",
     toast: {
@@ -158,6 +158,20 @@ export const CannotUnblockYourself = (message: string) => {
 export const AlreadyBlocked = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "ALREADY_BLOCKED",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
+export const StreamNotFound = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "STREAM_NOT_FOUND",
     toast: {
       text: message,
       type: "error",

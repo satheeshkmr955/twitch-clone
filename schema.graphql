@@ -9,13 +9,15 @@ type Query {
     input: GetUserByNameWithAllDetailsInput!
   ): UserWithAllDetails!
   getFollowedUsers: FollowedUsers!
+  getStreamByUserId(input: GetStreamByUserIdInput!): Stream
 }
 
 type Mutation {
   followUser(input: FollowUserInput!): FollowUser!
   unFollowUser(input: FollowUserInput!): FollowUser!
   blockUser(input: BlockUserInput!): BlockedUser!
-  unBlockUser(input: UnBlockUserInput): BlockedUser!
+  unBlockUser(input: UnBlockUserInput!): BlockedUser!
+  updateStream(input: UpdateStreamInput!): UpdatedStream!
 }
 
 type IsUserBlocked {
@@ -43,8 +45,31 @@ type Block {
   blocked: User!
 }
 
+type Stream {
+  id: ID!
+  name: String!
+  thumbnailUrl: String
+
+  ingressId: String
+  serverUrl: String
+  streamKey: String
+
+  isLive: Boolean!
+  isChatEnabled: Boolean!
+  isChatDelayed: Boolean!
+  isChatFollowersOnly: Boolean!
+
+  userId: String!
+  user: User!
+}
+
 type BlockedUser {
   block: Block!
+  toast: Toast!
+}
+
+type UpdatedStream {
+  stream: Stream!
   toast: Toast!
 }
 
@@ -114,8 +139,19 @@ input UnBlockUserInput {
   id: ID!
 }
 
+input GetStreamByUserIdInput {
+  userId: ID!
+}
+
 input BlockUserInput {
   id: ID!
+}
+
+input UpdateStreamInput {
+  name: String
+  isChatEnabled: Boolean
+  isChatDelayed: Boolean
+  isChatFollowersOnly: Boolean
 }
 
 input GetSelfByNameInput {

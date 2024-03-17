@@ -15,7 +15,7 @@ import {
   CannotUnfollowYourself,
   NotAuthorized,
   NotFollowing,
-  UserNotFoundError,
+  UserNotFound,
 } from "@/lib/errors";
 
 export const FollowResolvers: Resolvers = {
@@ -26,7 +26,7 @@ export const FollowResolvers: Resolvers = {
       const otherUser = await db.user.findUnique({ where: { id } });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (otherUser.id === user?.id) {
@@ -52,7 +52,7 @@ export const FollowResolvers: Resolvers = {
       });
 
       if (!isUserExists) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       const otherUser = await db.user.findUnique({
@@ -60,7 +60,7 @@ export const FollowResolvers: Resolvers = {
       });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (otherUser.id === user?.id) {
@@ -134,7 +134,7 @@ export const FollowResolvers: Resolvers = {
       });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (otherUser.id === user.id) {
@@ -184,7 +184,7 @@ export const FollowResolvers: Resolvers = {
       });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (otherUser.id === user.id) {

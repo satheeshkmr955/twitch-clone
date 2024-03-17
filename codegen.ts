@@ -13,6 +13,7 @@ const config: CodegenConfig = {
           User: "@prisma/client#User",
           Follow: "@prisma/client#Follow",
           Block: "@prisma/client#Block",
+          Stream: "@prisma/client#Stream",
         },
         contextType: "../app/api/graphql/route#GraphQLContext",
       },

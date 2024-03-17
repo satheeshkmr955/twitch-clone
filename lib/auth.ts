@@ -17,15 +17,17 @@ import { SLUGIFY_OPTIONS } from "@/constants/common.constants";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     accessToken?: string;
-    user?: DefaultSession["user"] & { slugName: string };
+    user?: DefaultSession["user"] & { slugName: string; id: string };
   }
 
   interface User {
     slugName?: string | null;
+    id: string;
   }
 
   interface DefaultUser {
     slugName?: string | null;
+    id: string;
   }
 }
 
@@ -124,6 +126,7 @@ export const authConfigOptions = {
       }
       if (user) {
         token.slugName = user?.slugName || "";
+        token.id = user?.id || "";
       }
       return token;
     },
@@ -134,6 +137,9 @@ export const authConfigOptions = {
         session.user.slugName = "";
         if (token?.slugName) {
           session.user.slugName = token.slugName as string;
+        }
+        if (token?.id) {
+          session.user.id = token.id as string;
         }
       }
       return session;

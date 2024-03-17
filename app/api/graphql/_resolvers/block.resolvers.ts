@@ -4,7 +4,7 @@ import {
   CannotUnblockYourself,
   NotAuthorized,
   NotBlocked,
-  UserNotFoundError,
+  UserNotFound,
 } from "@/lib/errors";
 import {
   ALREADY_BLOCKED,
@@ -31,7 +31,7 @@ export const BlockResolvers: Resolvers = {
       const otherUser = await db.user.findUnique({ where: { id } });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       if (otherUser.id === user.id) {
@@ -67,7 +67,7 @@ export const BlockResolvers: Resolvers = {
       });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       const existingBlock = await db.block.findUnique({
@@ -117,7 +117,7 @@ export const BlockResolvers: Resolvers = {
       });
 
       if (!otherUser) {
-        throw UserNotFoundError(USER_NOT_FOUND);
+        throw UserNotFound(USER_NOT_FOUND);
       }
 
       const existingBlock = await db.block.findUnique({

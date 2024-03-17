@@ -11,6 +11,29 @@ export const UserDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const ToastDetails = graphql(/* GraphQL */ `
+  fragment ToastDetails on Toast {
+    text
+    type
+  }
+`);
+
+export const StreamDetails = graphql(/* GraphQL */ `
+  fragment StreamDetails on Stream {
+    id
+    name
+    thumbnailUrl
+    ingressId
+    serverUrl
+    streamKey
+    isLive
+    isChatEnabled
+    isChatDelayed
+    isChatFollowersOnly
+    userId
+  }
+`);
+
 export const PaginationDetails = graphql(/* GraphQL */ `
   fragment PaginationDetails on Pagination {
     totalRecords
@@ -77,8 +100,7 @@ export const FollowUser = graphql(/* GraphQL */ `
         }
       }
       toast {
-        text
-        type
+        ...ToastDetails
       }
     }
   }
@@ -96,8 +118,7 @@ export const UnFollowUser = graphql(/* GraphQL */ `
         }
       }
       toast {
-        text
-        type
+        ...ToastDetails
       }
     }
   }
@@ -156,8 +177,7 @@ export const BlockUser = graphql(/* GraphQL */ `
         }
       }
       toast {
-        text
-        type
+        ...ToastDetails
       }
     }
   }
@@ -173,8 +193,7 @@ export const UnBlockUser = graphql(/* GraphQL */ `
         }
       }
       toast {
-        text
-        type
+        ...ToastDetails
       }
     }
   }
@@ -184,6 +203,27 @@ export const GetSelfByName = graphql(/* GraphQL */ `
   query GetSelfByName($input: GetSelfByNameInput!) {
     getSelfByName(input: $input) {
       ...UserDetails
+    }
+  }
+`);
+
+export const GetStreamByUserId = graphql(/* GraphQL */ `
+  query GetStreamByUserId($input: GetStreamByUserIdInput!) {
+    getStreamByUserId(input: $input) {
+      ...StreamDetails
+    }
+  }
+`);
+
+export const UpdateStream = graphql(/* GraphQL */ `
+  mutation UpdateStream($input: UpdateStreamInput!) {
+    updateStream(input: $input) {
+      stream {
+        ...StreamDetails
+      }
+      toast {
+        ...ToastDetails
+      }
     }
   }
 `);
