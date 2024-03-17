@@ -1,8 +1,9 @@
 "use client";
 
+import { notFound } from "next/navigation";
+
 import { useGraphQL } from "@/hooks/use-graphql";
 import { GetStreamByUserIdDocument } from "@/gql/graphql";
-import { STREAM_NOT_FOUND } from "@/constants/message.constants";
 
 import { ToggleCard } from "./toggle-card";
 
@@ -20,7 +21,7 @@ export const Chat = (props: ChatProps) => {
   });
 
   if (!data?.data?.getStreamByUserId) {
-    return STREAM_NOT_FOUND;
+    notFound();
   }
 
   return (
