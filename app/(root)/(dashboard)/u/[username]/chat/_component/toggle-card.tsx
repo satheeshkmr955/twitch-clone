@@ -1,7 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
-
 import { Switch } from "@/components/ui/switch";
 
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
@@ -22,9 +20,7 @@ interface ToggleCardProps {
 export const ToggleCard = (props: ToggleCardProps) => {
   const { label, value, field } = props;
 
-  const [isPending, startTransition] = useTransition();
-
-  const { mutate } = useMutationGraphQL(
+  const { mutate, isPending } = useMutationGraphQL(
     UpdateStreamDocument,
     {
       input: { [field]: !value },
@@ -43,9 +39,7 @@ export const ToggleCard = (props: ToggleCardProps) => {
   );
 
   const onChangeHandler = () => {
-    startTransition(() => {
-      mutate();
-    });
+    mutate();
   };
 
   return (

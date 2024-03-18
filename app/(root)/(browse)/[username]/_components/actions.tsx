@@ -1,7 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
-
 import { Button } from "@/components/ui/button";
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 
@@ -26,9 +24,7 @@ interface ActionProps {
 export const Actions = (props: ActionProps) => {
   const { isFollowingUser, userId, isBlocked } = props;
 
-  const [isPending, startTransition] = useTransition();
-
-  const { mutate: followMutate } = useMutationGraphQL(
+  const { mutate: followMutate, isPending: followPending } = useMutationGraphQL(
     FollowUserDocument,
     {
       input: { id: userId },
@@ -57,7 +53,7 @@ export const Actions = (props: ActionProps) => {
     }
   );
 
-  const { mutate: unFollowMutate } = useMutationGraphQL(
+  const { mutate: unFollowMutate, isPending: unFPending } = useMutationGraphQL(
     UnFollowUserDocument,
     {
       input: { id: userId },
@@ -87,15 +83,11 @@ export const Actions = (props: ActionProps) => {
   );
 
   const onFollowClickHandler = () => {
-    startTransition(() => {
-      followMutate();
-    });
+    followMutate();
   };
 
   const onUnfollowClickHandler = () => {
-    startTransition(() => {
-      unFollowMutate();
-    });
+    unFollowMutate();
   };
 
   const onClickFollowHandler = () => {
@@ -106,7 +98,7 @@ export const Actions = (props: ActionProps) => {
     }
   };
 
-  const { mutate: blockMutate } = useMutationGraphQL(
+  const { mutate: blockMutate, isPending: blockPending } = useMutationGraphQL(
     BlockUserDocument,
     {
       input: { id: userId },
@@ -128,7 +120,7 @@ export const Actions = (props: ActionProps) => {
     }
   );
 
-  const { mutate: unBlockMutate } = useMutationGraphQL(
+  const { mutate: unBlockMutate, isPending: unBlkPending } = useMutationGraphQL(
     UnBlockUserDocument,
     {
       input: { id: userId },
@@ -151,15 +143,11 @@ export const Actions = (props: ActionProps) => {
   );
 
   const onBlockClickHandler = () => {
-    startTransition(() => {
-      blockMutate();
-    });
+    blockMutate();
   };
 
   const onUnblockClickHandler = () => {
-    startTransition(() => {
-      unBlockMutate();
-    });
+    unBlockMutate();
   };
 
   const onClickBlockHandler = () => {
@@ -173,14 +161,14 @@ export const Actions = (props: ActionProps) => {
   return (
     <>
       <Button
-        disabled={isPending}
+        disabled={followPending || unFPending || blockPending || unBlkPending}
         onClick={onClickFollowHandler}
         variant={"primary"}
       >
         {isFollowingUser ? "Unfollow" : "Follow"}
       </Button>
       <Button
-        disabled={isPending}
+        disabled={followPending || unFPending || blockPending || unBlkPending}
         onClick={onClickBlockHandler}
         variant={"primary"}
       >
