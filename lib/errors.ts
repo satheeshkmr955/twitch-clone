@@ -196,3 +196,17 @@ export const NotBlocked = (message: string) => {
     extensions,
   });
 };
+
+export const IngressCreatedFailed = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "INGRESS_CREATED_FAILED",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};

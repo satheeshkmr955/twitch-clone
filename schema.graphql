@@ -18,6 +18,8 @@ type Mutation {
   blockUser(input: BlockUserInput!): BlockedUser!
   unBlockUser(input: UnBlockUserInput!): BlockedUser!
   updateStream(input: UpdateStreamInput!): UpdatedStream!
+  createIngress(input: CreateIngressInput!): UpdatedStream!
+  resetIngress(input: ResetIngressInput): UpdatedStream!
 }
 
 type IsUserBlocked {
@@ -129,6 +131,14 @@ input IsBlockedByUserInput {
 
 input GetUserByNameWithAllDetailsInput {
   name: String!
+}
+
+input CreateIngressInput {
+  ingressType: Int!
+}
+
+input ResetIngressInput {
+  hostIdentity: String!
 }
 
 input GetUserByNameInput {

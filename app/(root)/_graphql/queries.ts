@@ -227,3 +227,29 @@ export const UpdateStream = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export const CreateIngress = graphql(/* GraphQL */ `
+  mutation CreateIngress($input: CreateIngressInput!) {
+    createIngress(input: $input) {
+      stream {
+        ...StreamDetails
+      }
+      toast {
+        ...ToastDetails
+      }
+    }
+  }
+`);
+
+export const ResetIngress = graphql(/* GraphQL */ `
+  mutation ResetIngress($input: ResetIngressInput!) {
+    resetIngress(input: $input) {
+      stream {
+        ...StreamDetails
+      }
+      toast {
+        ...ToastDetails
+      }
+    }
+  }
+`);
