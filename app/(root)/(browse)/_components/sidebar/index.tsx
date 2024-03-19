@@ -1,7 +1,11 @@
 "use client";
 
 import { useGraphQL } from "@/hooks/use-graphql";
-import { Follow, GetFollowedAndRecommendedUserDocument } from "@/gql/graphql";
+import {
+  Follow,
+  GetFollowedAndRecommendedUserDocument,
+  User,
+} from "@/gql/graphql";
 
 import { Recommended, RecommendedSkeleton } from "./recommended";
 import { Toggle, ToggleSkeleton } from "./toggle";
@@ -29,7 +33,9 @@ export const Sidebar = () => {
             <Following
               data={(data?.data?.getFollowedUsers.items as Follow[]) || []}
             />
-            <Recommended data={data?.data?.getRecommended.items || []} />
+            <Recommended
+              data={(data?.data?.getRecommended.items as User[]) || []}
+            />
           </>
         )}
       </div>

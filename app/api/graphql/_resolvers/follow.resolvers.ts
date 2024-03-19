@@ -114,7 +114,11 @@ export const FollowResolvers: Resolvers = {
           },
         },
         include: {
-          following: true,
+          following: {
+            include: {
+              stream: true,
+            },
+          },
         },
       });
 

@@ -119,6 +119,7 @@ type User {
   slugName: String!
   email: String!
   image: String
+  stream: Stream
 }
 
 input IsFollowingUserInput {

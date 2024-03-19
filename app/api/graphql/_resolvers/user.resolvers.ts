@@ -32,6 +32,7 @@ export const UsersResolvers: Resolvers = {
       const query: Prisma.UserFindManyArgs = {
         skip: defaultPage * defaultLimit,
         take: defaultLimit + 1,
+        include: { stream: true },
         orderBy: { createdAt: "desc" },
       };
 

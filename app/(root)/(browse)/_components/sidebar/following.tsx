@@ -27,7 +27,11 @@ export const Following = (props: FollowingProps) => {
       )}
       <ul className="space-y-2 px-2">
         {data.map((follow) => (
-          <UserItem key={follow.following.id} {...follow.following} />
+          <UserItem
+            key={follow.following.id}
+            {...follow.following}
+            isLive={follow.following.stream?.isLive}
+          />
         ))}
       </ul>
     </div>

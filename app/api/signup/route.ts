@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         name,
         slugName,
-        Stream: {
+        stream: {
           create: {
             name: `${slugName}'s stream`,
           },

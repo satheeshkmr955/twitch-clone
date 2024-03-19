@@ -11,13 +11,6 @@ export const UserDetails = graphql(/* GraphQL */ `
   }
 `);
 
-export const ToastDetails = graphql(/* GraphQL */ `
-  fragment ToastDetails on Toast {
-    text
-    type
-  }
-`);
-
 export const StreamDetails = graphql(/* GraphQL */ `
   fragment StreamDetails on Stream {
     id
@@ -31,6 +24,22 @@ export const StreamDetails = graphql(/* GraphQL */ `
     isChatDelayed
     isChatFollowersOnly
     userId
+  }
+`);
+
+export const UserWithStreamDetails = graphql(/* GraphQL */ `
+  fragment UserWithStreamDetails on User {
+    ...UserDetails
+    stream {
+      ...StreamDetails
+    }
+  }
+`);
+
+export const ToastDetails = graphql(/* GraphQL */ `
+  fragment ToastDetails on Toast {
+    text
+    type
   }
 `);
 
@@ -49,6 +58,9 @@ export const GetRecommendedUsers = graphql(/* GraphQL */ `
       items {
         ...UserDetails
         image
+        stream {
+          ...StreamDetails
+        }
       }
       pagination {
         ...PaginationDetails
@@ -130,7 +142,7 @@ export const GetFollowedUsers = graphql(/* GraphQL */ `
       items {
         id
         following {
-          ...UserDetails
+          ...UserWithStreamDetails
         }
       }
     }
@@ -151,6 +163,9 @@ export const GetFollowedAndRecommendedUser = graphql(/* GraphQL */ `
       items {
         ...UserDetails
         image
+        stream {
+          ...StreamDetails
+        }
       }
       pagination {
         ...PaginationDetails

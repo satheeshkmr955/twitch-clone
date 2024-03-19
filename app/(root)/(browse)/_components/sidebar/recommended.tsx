@@ -28,7 +28,7 @@ export const Recommended = (props: RecommendedProps) => {
       )}
       <ul className="space-y-2 px-2">
         {data.map((user) => (
-          <UserItem key={user.id} {...user} isLive={true} />
+          <UserItem key={user.id} {...user} isLive={user.stream?.isLive} />
         ))}
       </ul>
     </div>
