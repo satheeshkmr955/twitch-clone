@@ -26,7 +26,7 @@ import {
   UnBlockUserProps,
 } from "@/app/_types";
 
-import { getUserById } from "./user.service";
+import { getUserById } from '@/services/user.service';
 
 export const isBlockedByUser = async (inputObj: IsBlockedByUserProps) => {
   const { input, user } = inputObj;

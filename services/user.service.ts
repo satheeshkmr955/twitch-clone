@@ -39,7 +39,13 @@ export const getRecommended = async (inputObj: GetRecommendedProps) => {
   const query: Prisma.UserFindManyArgs = {
     skip: defaultPage * defaultLimit,
     take: defaultLimit + 1,
-    include: { stream: true },
+    include: {
+      stream: {
+        select: {
+          isLive: true,
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
   };
 
@@ -87,7 +93,14 @@ export const getUserByName = async (inputObj: GetUserByNameProps) => {
   const { input } = inputObj;
   const { name } = input || {};
 
-  return await db.user.findFirst({ where: { slugName: name } });
+  return await db.user.findFirst({
+    where: {
+      slugName: name,
+    },
+    include: {
+      stream: true,
+    },
+  });
 };
 
 export const getSelfByName = async (inputObj: GetSelfByNameProps) => {
@@ -115,6 +128,13 @@ export const getSelfByName = async (inputObj: GetSelfByNameProps) => {
 export const getUserById = async (inputObj: GetUserByIdProps) => {
   const { id } = inputObj;
 
-  const user = await db.user.findUnique({ where: { id } });
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      stream: true,
+    },
+  });
   return user;
 };

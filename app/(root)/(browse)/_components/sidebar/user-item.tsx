@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-import { User } from "@/gql/graphql";
+import { UserPublic } from "@/gql/graphql";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/store/use-sidebar";
@@ -11,7 +11,7 @@ import { UserAvatar } from "@/components/UserAvatar/UserAvatar";
 import { LiveBadge } from "@/components/live-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface UserItemProps extends User {
+interface UserItemProps extends UserPublic {
   isLive?: boolean;
 }
 

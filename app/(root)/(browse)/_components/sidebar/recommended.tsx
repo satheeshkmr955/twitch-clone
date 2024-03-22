@@ -2,12 +2,12 @@
 
 import { useIsClient } from "usehooks-ts";
 
-import { User } from "@/gql/graphql";
+import { UserPublic } from "@/gql/graphql";
 import { useSidebar } from "@/store/use-sidebar";
 import { UserItem, UserItemSkeleton } from "./user-item";
 
 interface RecommendedProps {
-  data: User[];
+  data: UserPublic[];
 }
 
 export const Recommended = (props: RecommendedProps) => {

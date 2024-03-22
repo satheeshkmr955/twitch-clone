@@ -11,6 +11,15 @@ export const UserDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const UserPublicDetails = graphql(/* GraphQL */ `
+  fragment UserPublicDetails on UserPublic {
+    id
+    name
+    email
+    slugName
+  }
+`);
+
 export const StreamDetails = graphql(/* GraphQL */ `
   fragment StreamDetails on Stream {
     id
@@ -27,11 +36,26 @@ export const StreamDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const StreamPublicDetails = graphql(/* GraphQL */ `
+  fragment StreamPublicDetails on StreamPublic {
+    isLive
+  }
+`);
+
 export const UserWithStreamDetails = graphql(/* GraphQL */ `
   fragment UserWithStreamDetails on User {
     ...UserDetails
     stream {
       ...StreamDetails
+    }
+  }
+`);
+
+export const UserPublicWithStreamDetails = graphql(/* GraphQL */ `
+  fragment UserPublicWithStreamDetails on UserPublic {
+    ...UserPublicDetails
+    stream {
+      ...StreamPublicDetails
     }
   }
 `);
@@ -56,10 +80,10 @@ export const GetRecommendedUsers = graphql(/* GraphQL */ `
   query GetRecommended($input: GetRecommendedInput) {
     getRecommended(input: $input) {
       items {
-        ...UserDetails
+        ...UserPublicDetails
         image
         stream {
-          ...StreamDetails
+          ...StreamPublicDetails
         }
       }
       pagination {
@@ -142,7 +166,7 @@ export const GetFollowedUsers = graphql(/* GraphQL */ `
       items {
         id
         following {
-          ...UserWithStreamDetails
+          ...UserPublicWithStreamDetails
         }
       }
     }
@@ -155,16 +179,16 @@ export const GetFollowedAndRecommendedUser = graphql(/* GraphQL */ `
       items {
         id
         following {
-          ...UserDetails
+          ...UserPublicDetails
         }
       }
     }
     getRecommended(input: $input) {
       items {
-        ...UserDetails
+        ...UserPublicDetails
         image
         stream {
-          ...StreamDetails
+          ...StreamPublicDetails
         }
       }
       pagination {
@@ -218,6 +242,9 @@ export const GetSelfByName = graphql(/* GraphQL */ `
   query GetSelfByName($input: GetSelfByNameInput!) {
     getSelfByName(input: $input) {
       ...UserDetails
+      stream {
+        ...StreamDetails
+      }
     }
   }
 `);
@@ -265,6 +292,14 @@ export const ResetIngress = graphql(/* GraphQL */ `
       toast {
         ...ToastDetails
       }
+    }
+  }
+`);
+
+export const CreateViewerToken = graphql(/* GraphQL */ `
+  mutation CreateViewerToken($input: CreateViewerTokenInput!) {
+    createViewerToken(input: $input) {
+      token
     }
   }
 `);

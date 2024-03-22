@@ -11,9 +11,12 @@ const config: CodegenConfig = {
         mapperTypeSuffix: "Modal",
         mappers: {
           User: "@prisma/client#User",
+          UserPublic: "@prisma/client#User",
           Follow: "@prisma/client#Follow",
+          FollowPublic: "@prisma/client#Follow",
           Block: "@prisma/client#Block",
           Stream: "@prisma/client#Stream",
+          StreamPublic: "@prisma/client#Stream",
         },
         contextType: "../app/api/graphql/route#GraphQLContext",
       },

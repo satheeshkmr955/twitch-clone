@@ -20,6 +20,7 @@ type Mutation {
   updateStream(input: UpdateStreamInput!): UpdatedStream!
   createIngress(input: CreateIngressInput!): UpdatedStream!
   resetIngress(input: ResetIngressInput): UpdatedStream!
+  createViewerToken(input: CreateViewerTokenInput!): ViewerToken!
 }
 
 type IsUserBlocked {
@@ -31,11 +32,11 @@ type IsUserFollowing {
 }
 
 type FollowedUsers {
-  items: [Follow!]!
+  items: [FollowPublic!]!
 }
 
 type Users {
-  items: [User!]!
+  items: [UserPublic!]!
   pagination: Pagination!
 }
 
@@ -86,6 +87,10 @@ type FollowUser {
   toast: Toast!
 }
 
+type ViewerToken {
+  token: String!
+}
+
 enum ToastTypes {
   success
   info
@@ -106,6 +111,14 @@ type Follow {
   following: User!
 }
 
+type FollowPublic {
+  id: ID!
+  followerId: String!
+  followingId: String!
+  follower: UserPublic!
+  following: UserPublic!
+}
+
 type Pagination {
   totalRecords: Int!
   currentLimit: Int!
@@ -120,6 +133,19 @@ type User {
   email: String!
   image: String
   stream: Stream
+}
+
+type StreamPublic {
+  isLive: Boolean!
+}
+
+type UserPublic {
+  id: ID!
+  name: String!
+  slugName: String!
+  email: String!
+  image: String
+  stream: StreamPublic
 }
 
 input IsFollowingUserInput {
@@ -167,6 +193,10 @@ input UpdateStreamInput {
 
 input GetSelfByNameInput {
   name: String!
+}
+
+input CreateViewerTokenInput {
+  hostIdentity: String!
 }
 
 input GetRecommendedInput {

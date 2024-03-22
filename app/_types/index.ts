@@ -16,6 +16,7 @@ import {
   MutationUpdateStreamArgs,
   MutationCreateIngressArgs,
   MutationResetIngressArgs,
+  MutationCreateViewerTokenArgs,
 } from "@/gql/types";
 
 import type { User } from "@prisma/client";
@@ -142,4 +143,14 @@ export interface UpdateStreamByIdProps {
     serverUrl: string | null;
     streamKey: string | null;
   };
+}
+
+export interface CurrentUser {
+  id: string;
+  name: string | null;
+  slugName: string | null;
+}
+
+export interface CreateViewerTokenProps extends MutationCreateViewerTokenArgs {
+  user: User | null;
 }

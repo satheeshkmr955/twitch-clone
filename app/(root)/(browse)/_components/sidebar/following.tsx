@@ -1,12 +1,10 @@
-import { Skeleton } from "@/components/ui/skeleton";
-
-import { Follow } from "@/gql/graphql";
+import { Follow, UserPublic } from "@/gql/graphql";
 import { useSidebar } from "@/store/use-sidebar";
 
 import { UserItem, UserItemSkeleton } from "./user-item";
 
 interface FollowingProps {
-  data: Follow[];
+  data: Follow & { following: UserPublic }[];
 }
 
 export const Following = (props: FollowingProps) => {

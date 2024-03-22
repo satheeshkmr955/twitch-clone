@@ -169,6 +169,20 @@ export const AlreadyBlocked = (message: string) => {
   });
 };
 
+export const BlockedByUser = (message: string) => {
+  const extensions: CustomerExtensions = {
+    code: "BLOCKED_BY_USER",
+    toast: {
+      text: message,
+      type: "error",
+    },
+  };
+
+  return new GraphQLError(message, {
+    extensions,
+  });
+};
+
 export const StreamNotFound = (message: string) => {
   const extensions: CustomerExtensions = {
     code: "STREAM_NOT_FOUND",

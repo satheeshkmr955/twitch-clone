@@ -121,7 +121,11 @@ export const getFollowedUsers = async (inputObj: GetFollowedUsersProps) => {
     include: {
       following: {
         include: {
-          stream: true,
+          stream: {
+            select: {
+              isLive: true,
+            },
+          },
         },
       },
     },

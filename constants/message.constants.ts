@@ -24,12 +24,14 @@ export const YOU_HAVE_BLOCKED = "You have blocked";
 export const YOU_HAVE_UN_BLOCKED = "You have unblocked";
 export const STREAM_NOT_FOUND = "Stream not found";
 export const UPDATE_STREAM_SUCCESS = "Stream Settings Updated";
+export const BLOCKED_BY_USER = "Blocked by user";
 export const INGRESS_CREATED = "Ingress created";
 export const INGRESS_RESET_DONE = "Ingress reset done";
 export const INGRESS_CREATED_FAILED = "Ingress created failed";
 export const ALREADY_FOLLOWING = "Already Following";
 export const NOT_AUTHORIZED = "Not authorized";
 export const FOLLOWED_THE_USER = "Followed the user";
+export const SOMETHING_WENT_WRONG = "Something went wrong!";
 export const YOU_ARE_NOW_FOLLOWING = "You are now following";
 
 export const SUCCESS = "success";
