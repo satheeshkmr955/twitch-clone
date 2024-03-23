@@ -10,9 +10,19 @@ import {
 } from "@livekit/components-react";
 
 import { ChatVariant, useChatSidebar } from "@/store/use-chat-sidebar";
-import { ChatHeader } from "@/components/stream-player/chat-header";
-import { ChatForm } from "@/components/stream-player/chat-form";
-import { ChatList } from "@/components/stream-player/chat-list";
+import {
+  ChatHeader,
+  ChatHeaderSkeleton,
+} from "@/components/stream-player/chat-header";
+import {
+  ChatForm,
+  ChatFormSkeleton,
+} from "@/components/stream-player/chat-form";
+import {
+  ChatList,
+  ChatListSkeleton,
+} from "@/components/stream-player/chat-list";
+import { ChatCommunity } from "@/components/stream-player/chat-community";
 
 interface ChatProps {
   hostName: string;
@@ -86,10 +96,24 @@ export const Chat = (props: ChatProps) => {
         </>
       )}
       {variant === ChatVariant.COMMUNITY && (
-        <>
-          <p>Community mode</p>
-        </>
+        <ChatCommunity
+          viewerName={viewerName}
+          hostName={hostName}
+          isHidden={isHidden}
+        />
       )}
     </div>
   );
 };
+
+export const ChatSkeleton = () => {
+  return (
+    <div className="flex flex-col border-l border-b pt-0 h-[calc(100vh-80px)] border-2">
+      <ChatHeaderSkeleton />
+      <ChatListSkeleton />
+      <ChatFormSkeleton />
+    </div>
+  );
+};
+
+Chat.Skeleton = ChatSkeleton;
