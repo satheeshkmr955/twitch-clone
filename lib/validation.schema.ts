@@ -88,4 +88,5 @@ export const streamUpdateInputSchema = z.object({
   isChatEnabled: z.boolean().optional(),
   isChatDelayed: z.boolean().optional(),
   isChatFollowersOnly: z.boolean().optional(),
+  thumbnailUrl: z.string().nullable().optional(),
 });

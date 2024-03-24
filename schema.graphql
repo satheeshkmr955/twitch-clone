@@ -189,6 +189,7 @@ input UpdateStreamInput {
   isChatEnabled: Boolean
   isChatDelayed: Boolean
   isChatFollowersOnly: Boolean
+  thumbnailUrl: String
 }
 
 input GetSelfByNameInput {

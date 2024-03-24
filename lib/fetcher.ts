@@ -71,3 +71,8 @@ publicAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const axiosFileUpload = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/documents`,
+  method: "POST",
+});

@@ -32,3 +32,6 @@
 - [ ] verify email in graphql
 - [ ] need to add rating limiting, ban on fail
 - [ ] learn theming
+- [ ] app/(root)/(dashboard)/u/[username]/(home)/page.tsx => isFollowing-> true
+- [x] file size 
+- [x] file upload progress (loader)
