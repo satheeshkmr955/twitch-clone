@@ -21,6 +21,7 @@ type Mutation {
   createIngress(input: CreateIngressInput!): UpdatedStream!
   resetIngress(input: ResetIngressInput): UpdatedStream!
   createViewerToken(input: CreateViewerTokenInput!): ViewerToken!
+  updateUser(input: UpdateUserInput!): UserUpdated!
 }
 
 type IsUserBlocked {
@@ -64,6 +65,11 @@ type Stream {
 
   userId: String!
   user: User!
+}
+
+type UserUpdated {
+  user: User!
+  toast: Toast!
 }
 
 type BlockedUser {
@@ -126,6 +132,10 @@ type Pagination {
   hasNextPage: Boolean!
 }
 
+type UserCount {
+  followedBy: Int!
+}
+
 type User {
   id: ID!
   name: String!
@@ -133,6 +143,8 @@ type User {
   email: String!
   image: String
   stream: Stream
+  bio: String
+  _count: UserCount!
 }
 
 type StreamPublic {
@@ -158,6 +170,10 @@ input IsBlockedByUserInput {
 
 input GetUserByNameWithAllDetailsInput {
   name: String!
+}
+
+input UpdateUserInput {
+  bio: String
 }
 
 input CreateIngressInput {

@@ -11,6 +11,12 @@ export const UserDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const UserCountDetails = graphql(/* GraphQL */ `
+  fragment UserCountDetails on UserCount {
+    followedBy
+  }
+`);
+
 export const UserPublicDetails = graphql(/* GraphQL */ `
   fragment UserPublicDetails on UserPublic {
     id
@@ -242,8 +248,12 @@ export const GetSelfByName = graphql(/* GraphQL */ `
   query GetSelfByName($input: GetSelfByNameInput!) {
     getSelfByName(input: $input) {
       ...UserDetails
+      bio
       stream {
         ...StreamDetails
+      }
+      _count {
+        ...UserCountDetails
       }
     }
   }
@@ -300,6 +310,20 @@ export const CreateViewerToken = graphql(/* GraphQL */ `
   mutation CreateViewerToken($input: CreateViewerTokenInput!) {
     createViewerToken(input: $input) {
       token
+    }
+  }
+`);
+
+export const UpdateUser = graphql(/* GraphQL */ `
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      user {
+        ...UserDetails
+        bio
+      }
+      toast {
+        ...ToastDetails
+      }
     }
   }
 `);

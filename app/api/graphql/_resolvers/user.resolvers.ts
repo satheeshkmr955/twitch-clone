@@ -4,6 +4,7 @@ import {
   getRecommended,
   getSelfByName,
   getUserByName,
+  updateUser,
 } from "@/services/user.service";
 
 export const UsersResolvers: Resolvers = {
@@ -18,6 +19,12 @@ export const UsersResolvers: Resolvers = {
     },
     getSelfByName: async (_, { input }, { user }) => {
       const responseObj = await getSelfByName({ input, user });
+      return responseObj;
+    },
+  },
+  Mutation: {
+    updateUser: async (_, { input }, { user }) => {
+      const responseObj = await updateUser({ input, user });
       return responseObj;
     },
   },

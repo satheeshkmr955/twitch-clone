@@ -12,6 +12,7 @@ import { InfoCard } from "@/components/stream-player/info-card";
 import { cn } from "@/lib/utils";
 import { useChatSidebar } from "@/store/use-chat-sidebar";
 import { useViewerToken } from "@/hooks/use-viewer-token";
+import { AboutCard } from "./about-card";
 
 interface StreamPlayerProps {
   user: User;
@@ -59,6 +60,13 @@ export const StreamPlayer = (props: StreamPlayerProps) => {
             viewerIdentity={identity}
             name={stream.name}
             thumbnailUrl={stream.thumbnailUrl || null}
+          />
+          <AboutCard
+            hostName={user.name}
+            hostIdentity={user.id}
+            viewerIdentity={identity}
+            bio={user.bio || null}
+            followedByCount={user._count.followedBy}
           />
         </div>
         <div className={cn("col-span-1", collapsed && "hidden")}>

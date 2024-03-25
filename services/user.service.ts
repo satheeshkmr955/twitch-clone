@@ -1,4 +1,8 @@
-import { NOT_AUTHORIZED, USER_NOT_FOUND } from "@/constants/message.constants";
+import {
+  NOT_AUTHORIZED,
+  USER_DETAILS_UPDATED,
+  USER_NOT_FOUND,
+} from "@/constants/message.constants";
 import {
   DEFAULT_LIMIT,
   DEFAULT_PAGE,
@@ -13,8 +17,10 @@ import {
   GetSelfByNameProps,
   GetUserByIdProps,
   GetUserByNameProps,
+  UpdateUserProps,
 } from "@/app/_types";
 import type { Prisma } from "@prisma/client";
+import { Toast, ToastTypes } from "@/gql/types";
 
 export const getRecommended = async (inputObj: GetRecommendedProps) => {
   const { input, user } = inputObj;
@@ -99,6 +105,11 @@ export const getUserByName = async (inputObj: GetUserByNameProps) => {
     },
     include: {
       stream: true,
+      _count: {
+        select: {
+          followedBy: true,
+        },
+      },
     },
   });
 };
@@ -137,4 +148,26 @@ export const getUserById = async (inputObj: GetUserByIdProps) => {
     },
   });
   return user;
+};
+
+export const updateUser = async (inputObj: UpdateUserProps) => {
+  const { user, input } = inputObj;
+
+  if (!user) {
+    throw NotAuthorized(NOT_AUTHORIZED);
+  }
+
+  const updatedUser = await db.user.update({
+    where: {
+      id: user.id,
+    },
+    data: { ...input },
+  });
+
+  const toast: Toast = {
+    text: `${USER_DETAILS_UPDATED}`,
+    type: ToastTypes.Success,
+  };
+
+  return { user: updatedUser, toast };
 };

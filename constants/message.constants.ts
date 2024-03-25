@@ -33,6 +33,7 @@ export const NOT_AUTHORIZED = "Not authorized";
 export const FOLLOWED_THE_USER = "Followed the user";
 export const SOMETHING_WENT_WRONG = "Something went wrong!";
 export const YOU_ARE_NOW_FOLLOWING = "You are now following";
+export const USER_DETAILS_UPDATED = "User details updated";
 
 export const SUCCESS = "success";
 export const INFO = "info";

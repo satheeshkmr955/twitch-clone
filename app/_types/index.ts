@@ -17,6 +17,7 @@ import {
   MutationCreateIngressArgs,
   MutationResetIngressArgs,
   MutationCreateViewerTokenArgs,
+  MutationUpdateUserArgs,
 } from "@/gql/types";
 
 import type { User } from "@prisma/client";
@@ -152,5 +153,9 @@ export interface CurrentUser {
 }
 
 export interface CreateViewerTokenProps extends MutationCreateViewerTokenArgs {
+  user: User | null;
+}
+
+export interface UpdateUserProps extends MutationUpdateUserArgs {
   user: User | null;
 }
