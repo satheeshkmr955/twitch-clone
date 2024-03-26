@@ -35,7 +35,7 @@ export const Actions = (props: ActionsProps) => {
   const { mutate: followMutate, isPending: followPending } = useMutationGraphQL(
     FollowUserDocument,
     {
-      input: { id: userId },
+      input: { id: hostIdentity },
     },
     {
       onSuccess: (data) => {
@@ -64,7 +64,7 @@ export const Actions = (props: ActionsProps) => {
   const { mutate: unFollowMutate, isPending: unFPending } = useMutationGraphQL(
     UnFollowUserDocument,
     {
-      input: { id: userId },
+      input: { id: hostIdentity },
     },
     {
       onSuccess: (data) => {

@@ -26,7 +26,8 @@ import {
   UnBlockUserProps,
 } from "@/app/_types";
 
-import { getUserById } from '@/services/user.service';
+import { getUserById } from "@/services/user.service";
+import { roomService } from "./ingress.service";
 
 export const isBlockedByUser = async (inputObj: IsBlockedByUserProps) => {
   const { input, user } = inputObj;
@@ -70,8 +71,18 @@ export const blockUser = async (inputObj: BlockUserProps) => {
 
   const otherUser = await getUserById({ id });
 
+
+  try {
+    await roomService.removeParticipant(user.id, id);
+  } catch (error) {}
+
+  const toast: Toast = {
+    text: `${YOU_HAVE_BLOCKED}`,
+    type: ToastTypes.Success,
+  };
+
   if (!otherUser) {
-    throw UserNotFound(USER_NOT_FOUND);
+    return { toast };
   }
 
   const existingBlock = await getBlockById({
@@ -92,11 +103,6 @@ export const blockUser = async (inputObj: BlockUserProps) => {
       blocked: true,
     },
   });
-
-  const toast: Toast = {
-    text: `${YOU_HAVE_BLOCKED} ${block.blocked.name}`,
-    type: ToastTypes.Success,
-  };
 
   return { block, toast };
 };

@@ -31,7 +31,7 @@ export const CommunityItem = (props: CommunityItemProps) => {
   const { mutate, isPending } = useMutationGraphQL(
     BlockUserDocument,
     {
-      input: { id: "" },
+      input: { id: participantIdentity },
     },
     {
       onSuccess: (data) => {

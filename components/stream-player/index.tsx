@@ -66,7 +66,7 @@ export const StreamPlayer = (props: StreamPlayerProps) => {
             hostIdentity={user.id}
             viewerIdentity={identity}
             bio={user.bio || null}
-            followedByCount={user._count.followedBy}
+            followedByCount={user._count?.followedBy!}
           />
         </div>
         <div className={cn("col-span-1", collapsed && "hidden")}>

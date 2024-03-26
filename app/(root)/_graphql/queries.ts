@@ -112,6 +112,9 @@ export const GetUserByNameWithAllDetails = graphql(/* GraphQL */ `
     getUserByNameWithAllDetails(input: $input) {
       user {
         ...UserDetails
+        stream {
+          ...StreamDetails
+        }
       }
       isFollowing
       isBlocked

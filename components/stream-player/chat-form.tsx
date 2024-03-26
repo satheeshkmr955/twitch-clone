@@ -45,6 +45,7 @@ export const ChatForm = (props: ChatFormProps) => {
       setIsDelayedBlocked(true);
       setTimeout(() => {
         setIsDelayedBlocked(false);
+        onSubmit();
       }, 3000);
     } else {
       onSubmit();
@@ -69,7 +70,7 @@ export const ChatForm = (props: ChatFormProps) => {
           placeholder="Send a message"
           className={cn(
             "border-white/10",
-            isFollowingsOnly && "rounded-t-none border-t-0"
+            (isFollowingsOnly || isDelayed) && "rounded-t-none border-t-0"
           )}
         />
       </div>

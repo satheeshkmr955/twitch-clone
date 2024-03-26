@@ -2,12 +2,16 @@
 
 import { notFound } from "next/navigation";
 
-import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
+import {
+  GetUserByNameWithAllDetailsDocument,
+  Stream,
+  User,
+} from "@/gql/graphql";
 import { useGraphQL } from "@/hooks/use-graphql";
 
 import { UserProps } from "./types";
-import { Actions } from "../_components/actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { StreamPlayer } from "@/components/stream-player";
 
 const User = (props: UserProps) => {
   const { params } = props;
@@ -19,23 +23,25 @@ const User = (props: UserProps) => {
 
   const isUserExists = data?.data?.getUserByNameWithAllDetails.user || null;
 
-  const isFollowing = data?.data?.getUserByNameWithAllDetails.isFollowing;
-  const isBlocked = data?.data?.getUserByNameWithAllDetails.isBlocked;
-
   if (!isUserExists) {
     notFound();
   }
 
+  const isFollowing = data?.data?.getUserByNameWithAllDetails.isFollowing;
+  const isBlocked = data?.data?.getUserByNameWithAllDetails.isBlocked;
+
+  if (isBlocked) {
+    notFound();
+  }
+
   return (
-    <div className="flex flex-col gap-y-4">
-      <p>name: {isUserExists.name}</p>
-      <p>slugName: {isUserExists.slugName}</p>
-      <p>email: {isUserExists.email}</p>
-      <p>id: {isUserExists.id}</p>
-      <p>is following: {`${isFollowing!}`}</p>
-      <p>is blocked by this user: {`${isBlocked}`}</p>
-      <Actions userId={isUserExists.id} isFollowingUser={isFollowing!} isBlocked={isBlocked!} />
-    </div>
+    <>
+      <StreamPlayer
+        user={isUserExists as User}
+        isFollowing={isFollowing!}
+        stream={isUserExists.stream as Stream}
+      />
+    </>
   );
 };
 

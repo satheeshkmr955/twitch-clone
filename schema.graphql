@@ -73,7 +73,7 @@ type UserUpdated {
 }
 
 type BlockedUser {
-  block: Block!
+  block: Block
   toast: Toast!
 }
 
@@ -144,7 +144,7 @@ type User {
   image: String
   stream: Stream
   bio: String
-  _count: UserCount!
+  _count: UserCount
 }
 
 type StreamPublic {

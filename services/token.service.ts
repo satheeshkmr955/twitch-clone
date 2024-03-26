@@ -3,21 +3,13 @@ import { AccessToken } from "livekit-server-sdk";
 
 import { getUserById } from "@/services/user.service";
 import { getBlockById } from "@/services/block.service";
-import { BlockedByUser, NotAuthorized, UserNotFound } from "@/lib/errors";
-import {
-  BLOCKED_BY_USER,
-  NOT_AUTHORIZED,
-  USER_NOT_FOUND,
-} from "@/constants/message.constants";
+import { BlockedByUser, UserNotFound } from "@/lib/errors";
+import { BLOCKED_BY_USER, USER_NOT_FOUND } from "@/constants/message.constants";
 
 import { CreateViewerTokenProps, CurrentUser } from "@/app/_types";
 
 export const createViewerToken = async (inputObj: CreateViewerTokenProps) => {
   const { user, input } = inputObj;
-
-  if (!user) {
-    throw NotAuthorized(NOT_AUTHORIZED);
-  }
 
   let currentUser: CurrentUser;
 
@@ -46,7 +38,7 @@ export const createViewerToken = async (inputObj: CreateViewerTokenProps) => {
 
   const isBlocked = await getBlockById({
     blockerId: host.id,
-    blockedId: user.id,
+    blockedId: user?.id || "",
   });
 
   if (isBlocked) {

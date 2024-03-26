@@ -23,7 +23,7 @@ const BrowseLayout = async ({
   return (
     <>
       <Navbar />
-      <div className="flex h-full pt-20">
+      <div className="flex h-screen pt-20">
         <Suspense fallback={<SidebarSkeleton />}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Sidebar />
