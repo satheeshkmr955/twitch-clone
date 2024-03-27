@@ -10,6 +10,7 @@ type Query {
   ): UserWithAllDetails!
   getFollowedUsers: FollowedUsers!
   getStreamByUserId(input: GetStreamByUserIdInput!): Stream
+  getStreams: Streams!
 }
 
 type Mutation {
@@ -65,6 +66,21 @@ type Stream {
 
   userId: String!
   user: User!
+}
+
+type StreamPublicWithUser {
+  id: ID!
+  name: String!
+  thumbnailUrl: String
+
+  isLive: Boolean!
+
+  userId: String!
+  user: User!
+}
+
+type Streams {
+  streams: [StreamPublicWithUser!]!
 }
 
 type UserUpdated {

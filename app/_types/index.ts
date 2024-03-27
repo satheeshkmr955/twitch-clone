@@ -159,3 +159,7 @@ export interface CreateViewerTokenProps extends MutationCreateViewerTokenArgs {
 export interface UpdateUserProps extends MutationUpdateUserArgs {
   user: User | null;
 }
+
+export interface GetStreamsProps {
+  user: User | null;
+}

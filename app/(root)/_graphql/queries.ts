@@ -42,6 +42,16 @@ export const StreamDetails = graphql(/* GraphQL */ `
   }
 `);
 
+export const StreamPublicDetailsWithUser = graphql(/* GraphQL */ `
+  fragment StreamPublicDetailsWithUser on StreamPublicWithUser {
+    id
+    name
+    thumbnailUrl
+    isLive
+    userId
+  }
+`);
+
 export const StreamPublicDetails = graphql(/* GraphQL */ `
   fragment StreamPublicDetails on StreamPublic {
     isLive
@@ -326,6 +336,19 @@ export const UpdateUser = graphql(/* GraphQL */ `
       }
       toast {
         ...ToastDetails
+      }
+    }
+  }
+`);
+
+export const GetStreams = graphql(/* GraphQL */ `
+  query GetStreams {
+    getStreams {
+      streams {
+        ...StreamPublicDetailsWithUser
+        user {
+          ...UserDetails
+        }
       }
     }
   }

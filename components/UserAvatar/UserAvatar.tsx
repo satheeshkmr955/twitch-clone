@@ -45,7 +45,7 @@ export const UserAvatar = React.forwardRef<HTMLDivElement, UserAvatarProps>(
     } = props;
     const canShowBadge = showBadge && isLive;
 
-    const { isLive: _, ...avatarProps } = props;
+    const { isLive: _, showBadge: a, ...avatarProps } = props;
 
     return (
       <div className="relative">

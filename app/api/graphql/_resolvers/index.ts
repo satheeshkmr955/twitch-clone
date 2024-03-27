@@ -8,6 +8,7 @@ import { BlockResolvers } from "./block.resolvers";
 import { StreamResolvers } from "./stream.resolvers";
 import { IngressResolvers } from "./ingress.resolvers";
 import { TokenResolvers } from "./token.resolvers";
+import { FeedResolvers } from "./feed.resolvers";
 
 export const RootResolvers: Resolvers = _.merge(
   {},
@@ -16,5 +17,6 @@ export const RootResolvers: Resolvers = _.merge(
   StreamResolvers,
   TokenResolvers,
   IngressResolvers,
+  FeedResolvers,
   BlockResolvers
 );
