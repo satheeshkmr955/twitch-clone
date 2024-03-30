@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { HOME } from "@/constants/route.constants";
+import { SEARCH } from "@/constants/route.constants";
 
 export const Search = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ export const Search = () => {
 
     const url = qs.stringifyUrl(
       {
-        url: HOME,
+        url: SEARCH,
         query: { term: value },
       },
       {

@@ -49,6 +49,7 @@ export const StreamPublicDetailsWithUser = graphql(/* GraphQL */ `
     thumbnailUrl
     isLive
     userId
+    updatedAt
   }
 `);
 
@@ -344,6 +345,19 @@ export const UpdateUser = graphql(/* GraphQL */ `
 export const GetStreams = graphql(/* GraphQL */ `
   query GetStreams {
     getStreams {
+      streams {
+        ...StreamPublicDetailsWithUser
+        user {
+          ...UserDetails
+        }
+      }
+    }
+  }
+`);
+
+export const GetSearch = graphql(/* GraphQL */ `
+  query GetSearch($input: GetSearchInput!) {
+    getSearch(input: $input) {
       streams {
         ...StreamPublicDetailsWithUser
         user {

@@ -18,6 +18,7 @@ import {
   MutationResetIngressArgs,
   MutationCreateViewerTokenArgs,
   MutationUpdateUserArgs,
+  QueryGetSearchArgs,
 } from "@/gql/types";
 
 import type { User } from "@prisma/client";
@@ -161,5 +162,9 @@ export interface UpdateUserProps extends MutationUpdateUserArgs {
 }
 
 export interface GetStreamsProps {
+  user: User | null;
+}
+
+export interface GetSearchProps extends QueryGetSearchArgs {
   user: User | null;
 }

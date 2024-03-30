@@ -11,6 +11,7 @@ type Query {
   getFollowedUsers: FollowedUsers!
   getStreamByUserId(input: GetStreamByUserIdInput!): Stream
   getStreams: Streams!
+  getSearch(input: GetSearchInput!): Streams!
 }
 
 type Mutation {
@@ -77,6 +78,8 @@ type StreamPublicWithUser {
 
   userId: String!
   user: User!
+
+  updatedAt: String!
 }
 
 type Streams {
@@ -178,6 +181,10 @@ type UserPublic {
 
 input IsFollowingUserInput {
   id: ID!
+}
+
+input GetSearchInput {
+  term: String
 }
 
 input IsBlockedByUserInput {
