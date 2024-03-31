@@ -168,3 +168,7 @@ export interface GetStreamsProps {
 export interface GetSearchProps extends QueryGetSearchArgs {
   user: User | null;
 }
+
+export interface GetBlockedUsersProps {
+  user: User | null;
+}

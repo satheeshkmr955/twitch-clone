@@ -24,6 +24,7 @@ import {
   GetBlockByIdProps,
   IsBlockedByUserProps,
   UnBlockUserProps,
+  GetBlockedUsersProps,
 } from "@/app/_types";
 
 import { getUserById } from "@/services/user.service";
@@ -70,7 +71,6 @@ export const blockUser = async (inputObj: BlockUserProps) => {
   }
 
   const otherUser = await getUserById({ id });
-
 
   try {
     await roomService.removeParticipant(user.id, id);
@@ -165,4 +165,24 @@ export const getBlockById = async (inputObj: GetBlockByIdProps) => {
   });
 
   return block;
+};
+
+export const getBlockedUsers = async (inputObj: GetBlockedUsersProps) => {
+  const { user } = inputObj;
+
+  if (!user) {
+    throw NotAuthorized(NOT_AUTHORIZED);
+  }
+
+  const blockedUsers = await db.block.findMany({
+    where: {
+      blockerId: user.id,
+    },
+    include: {
+      blocked: true,
+      blocker: true,
+    },
+  });
+
+  return { block: blockedUsers };
 };

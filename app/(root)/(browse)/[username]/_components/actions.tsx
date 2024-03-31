@@ -6,6 +6,7 @@ import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import {
   BlockUserDocument,
   FollowUserDocument,
+  GetBlockedUsersDocument,
   GetFollowedAndRecommendedUserDocument,
   GetUserByNameWithAllDetailsDocument,
   UnBlockUserDocument,
@@ -111,6 +112,8 @@ export const Actions = (props: ActionProps) => {
             getCacheKey(GetFollowedAndRecommendedUserDocument),
           ];
           const queryClient = getQueryClient();
+          const queryKey1 = [getCacheKey(GetBlockedUsersDocument)];
+          queryClient.invalidateQueries({ queryKey: queryKey1 });
           queryClient.invalidateQueries({ queryKey: queryKey2 });
         }
       },
@@ -133,6 +136,8 @@ export const Actions = (props: ActionProps) => {
             getCacheKey(GetFollowedAndRecommendedUserDocument),
           ];
           const queryClient = getQueryClient();
+          const queryKey1 = [getCacheKey(GetBlockedUsersDocument)];
+          queryClient.invalidateQueries({ queryKey: queryKey1 });
           queryClient.invalidateQueries({ queryKey: queryKey2 });
         }
       },

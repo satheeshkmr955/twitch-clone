@@ -367,3 +367,19 @@ export const GetSearch = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export const GetBlockedUsers = graphql(/* GraphQL */ `
+  query GetBlockedUsers {
+    getBlockedUsers {
+      block {
+        id
+        blocked {
+          ...UserDetails
+          image
+          updatedAt
+          createdAt
+        }
+      }
+    }
+  }
+`);

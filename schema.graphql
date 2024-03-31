@@ -12,6 +12,7 @@ type Query {
   getStreamByUserId(input: GetStreamByUserIdInput!): Stream
   getStreams: Streams!
   getSearch(input: GetSearchInput!): Streams!
+  getBlockedUsers: BlockedUsers!
 }
 
 type Mutation {
@@ -91,6 +92,10 @@ type UserUpdated {
   toast: Toast!
 }
 
+type BlockedUsers {
+  block: [Block!]!
+}
+
 type BlockedUser {
   block: Block
   toast: Toast!
@@ -164,6 +169,8 @@ type User {
   stream: Stream
   bio: String
   _count: UserCount
+  updatedAt: String
+  createdAt: String
 }
 
 type StreamPublic {
