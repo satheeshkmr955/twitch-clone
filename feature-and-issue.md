@@ -23,6 +23,7 @@
   - [x] toast[toastObj.type]
   - [x] useMutationGraphQL
     - [x] onSuccess 
+- [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
   - [ ] user update
