@@ -143,9 +143,9 @@ type Follow {
 
 type FollowPublic {
   id: ID!
-  followerId: String!
-  followingId: String!
-  follower: UserPublic!
+  followerId: String
+  followingId: String
+  follower: UserPublic
   following: UserPublic!
 }
 

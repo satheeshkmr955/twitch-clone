@@ -17,6 +17,7 @@ const config: CodegenConfig = {
           Block: "@prisma/client#Block",
           Stream: "@prisma/client#Stream",
           StreamPublic: "@prisma/client#Stream",
+          StreamPublicWithUser: "@prisma/client#Stream",
         },
         contextType: "../app/api/graphql/route#GraphQLContext",
       },

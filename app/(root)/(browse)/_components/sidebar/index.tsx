@@ -2,9 +2,9 @@
 
 import { useGraphQL } from "@/hooks/use-graphql";
 import {
-  Follow,
+  FollowPublic,
   GetFollowedAndRecommendedUserDocument,
-  User,
+  UserPublic,
 } from "@/gql/graphql";
 
 import { Recommended, RecommendedSkeleton } from "./recommended";
@@ -31,10 +31,10 @@ export const Sidebar = () => {
         {!isLoading && (
           <>
             <Following
-              data={(data?.data?.getFollowedUsers.items as Follow[]) || []}
+              data={(data?.data?.getFollowedUsers.items as FollowPublic[]) || []}
             />
             <Recommended
-              data={(data?.data?.getRecommended.items as User[]) || []}
+              data={(data?.data?.getRecommended.items as UserPublic[]) || []}
             />
           </>
         )}

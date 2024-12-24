@@ -48,7 +48,7 @@ const port: number = Number(process.env.PORT!);
 
 const app = next({ dev, hostname, port });
 
-export async function createContext(
+async function createContext(
   defaultContext: ContextType
 ): Promise<GraphQLContext> {
   const { request, req } = defaultContext;
@@ -83,7 +83,7 @@ const schema = createSchema({
   resolvers: RootResolvers,
 });
 
-export const cache = createRedisCache({ redis });
+const cache = createRedisCache({ redis });
 
 const yoga = createYoga({
   graphqlEndpoint,

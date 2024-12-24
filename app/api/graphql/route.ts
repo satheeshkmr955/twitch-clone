@@ -2,7 +2,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { createSchema, createYoga } from "graphql-yoga";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 // import DataLoader from "dataloader";
 // import { useLogger } from "@envelop/core";
@@ -29,7 +29,7 @@ export interface GraphQLContext extends ContextType {
 
 const graphqlEndpoint: string = "/api/graphql";
 
-export async function createContext(
+async function createContext(
   defaultContext: ContextType
 ): Promise<GraphQLContext> {
   const { request } = defaultContext;
@@ -62,7 +62,7 @@ const schema = createSchema({
   resolvers: RootResolvers,
 });
 
-export const cache = createRedisCache({ redis });
+const cache = createRedisCache({ redis });
 
 const { handleRequest } = createYoga({
   graphqlEndpoint,
@@ -81,10 +81,10 @@ const { handleRequest } = createYoga({
       logger.error(args);
     },
   },
-  fetchAPI: {
-    Request: NextRequest,
-    Response: NextResponse,
-  },
+  // fetchAPI: {
+  //   Request: NextRequest,
+  //   Response: NextResponse,
+  // },
   context: createContext,
   plugins: [
     // useLogger({
