@@ -9,6 +9,7 @@ RUN npm install
 
 # Copy the rest of your Next.js app
 COPY ./ ./
+RUN npm run db:generate
 
 # Build the app
 RUN npm run build
