@@ -9,7 +9,11 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export const Community = () => {
-  const { data } = useGraphQL(GetBlockedUsersDocument);
+  const { data, isLoading } = useGraphQL(GetBlockedUsersDocument);
+
+  if (isLoading) {
+    return null;
+  }
 
   const blocks = data?.data?.getBlockedUsers.block || [];
 

@@ -10,6 +10,10 @@ import { ResultCard, ResultCardSkeleton } from "./result-card";
 export const Results = () => {
   const { data, isLoading } = useGraphQL(GetStreamsDocument);
 
+  if (isLoading) {
+    return null;
+  }
+
   const streams = data?.data?.getStreams.streams || [];
 
   return (

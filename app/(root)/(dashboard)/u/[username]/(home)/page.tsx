@@ -18,9 +18,13 @@ const CreatorPage = (props: CreatorPageProps) => {
 
   const { data: session } = useSession();
 
-  const { data } = useGraphQL(GetSelfByNameDocument, {
+  const { data, isLoading } = useGraphQL(GetSelfByNameDocument, {
     input: { name: decodeURI(username) },
   });
+
+  if (isLoading) {
+    return null;
+  }
 
   const self = data?.data?.getSelfByName || null;
 

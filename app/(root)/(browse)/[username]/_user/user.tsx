@@ -17,9 +17,13 @@ const User = (props: UserProps) => {
   const { params } = props;
   const { username } = params;
 
-  const { data } = useGraphQL(GetUserByNameWithAllDetailsDocument, {
+  const { data, isLoading } = useGraphQL(GetUserByNameWithAllDetailsDocument, {
     input: { name: decodeURI(username) },
   });
+
+  if (isLoading) {
+    return null;
+  }
 
   const isUserExists = data?.data?.getUserByNameWithAllDetails.user || null;
 

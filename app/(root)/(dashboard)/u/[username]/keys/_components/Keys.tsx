@@ -18,9 +18,13 @@ interface KeysProps {
 export const Keys = (props: KeysProps) => {
   const { session } = props;
 
-  const { data } = useGraphQL(GetStreamByUserIdDocument, {
+  const { data, isLoading } = useGraphQL(GetStreamByUserIdDocument, {
     input: { userId: session.user?.id! },
   });
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!data?.data?.getStreamByUserId) {
     notFound();
