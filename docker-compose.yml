@@ -20,11 +20,14 @@ services:
     container_name: nextjs
     expose:
       - "3000"
+    depends_on:
+      - twitch_db
+      - twitch_redis
     environment:
       - NODE_ENV=production
     restart: always
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
 
   twitch_db:
     image: postgres

@@ -1,0 +1,7 @@
+.vscode
+build
+logs
+node_modules
+.dockerignore
+.git
+.next

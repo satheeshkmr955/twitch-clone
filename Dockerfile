@@ -20,14 +20,8 @@ WORKDIR /app
 
 RUN apt-get update -y && apt-get install -y openssl
 
-# Install production dependencies
-COPY --from=builder /app/package.json /app/package-lock.json ./
-RUN npm install --production
-
 # Copy the built app from the builder
 COPY --from=builder /app ./
-COPY --from=builder /app/build /app/build
-COPY --from=builder /app/public /app/public
 RUN npm run db:generate
 
 # Expose the port the app will run on
