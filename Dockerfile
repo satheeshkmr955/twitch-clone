@@ -15,11 +15,11 @@ RUN npm run db:generate
 RUN npm run build
 
 # Step 2: Production Stage
-FROM node:22-slim
+FROM node:22-alpine
 
 WORKDIR /app
 
-RUN apt-get update -y && apt-get install -y openssl
+RUN apk update && apk add openssl
 
 # Copy the built app from the builder
 COPY --from=builder /app ./
