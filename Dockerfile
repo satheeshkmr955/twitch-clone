@@ -24,6 +24,7 @@ RUN apk update && apk add openssl
 # Copy the built app from the builder
 COPY --from=builder /app ./
 RUN npm run db:generate
+RUN npm run codegen
 
 # Expose the port the app will run on
 EXPOSE 3000
