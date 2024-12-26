@@ -3,8 +3,7 @@ services:
     image: nginx:alpine
     container_name: nginx
     depends_on:
-      - nextjs_app_1
-      - nextjs_app_2
+      - nextjs
     volumes:
       - ./nginx/default.conf:/etc/nginx/nginx.conf
       # - ./nginx/certificates:/etc/letsencrypt
@@ -13,37 +12,50 @@ services:
       - "443:443"
     restart: always
 
-  nextjs_app_1:
+  nextjs:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nextjs_app_1
+    image: nextjs:1.0.0
     expose:
       - "3000"
     depends_on:
       - twitch_db
       - twitch_redis
+    deploy:
+      replicas: 1
     environment:
       - NODE_ENV=production
     restart: always
     ports:
-      - "3001:3000"
+      - "3000"
 
-  nextjs_app_2:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nextjs_app_2
-    expose:
-      - "3000"
-    depends_on:
-      - twitch_db
-      - twitch_redis
-    environment:
-      - NODE_ENV=production
-    restart: always
+  nginx_proxy_manager:
+    image: 'jc21/nginx-proxy-manager'
+    container_name: nginx_proxy_manager
+    restart: unless-stopped
     ports:
-      - "3002:3000"
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    env_file:
+      - .env
+    volumes:
+      - nginx_proxy_manager_data:/data
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - mariadb_aria
+
+  mariadb_aria:
+    image: 'jc21/mariadb-aria'
+    container_name: mariadb_aria
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - mariadb_db:/var/lib/mysql
+    ports:
+      - '3306:3306'
 
   twitch_db:
     image: postgres
@@ -69,3 +81,5 @@ services:
 volumes:
   twitch_data:
   redis_db:
+  mariadb_db:
+  nginx_proxy_manager_data:

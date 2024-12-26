@@ -20,9 +20,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
             - AWS_REGION
             - AWS_ACCESS_KEY_ID
             - AWS_SECRET_ACCESS_KEY
-- Run below to get 
+- Run below to build image
     ```
-    docker compose up -d --build
+    docker compose build nextjs
+    ```
+- Run below to start all service
+    ```
+    docker compose up -d
+    ```
+- Run below to scale as per needs
+    ```
+    docker compose up --scale nextjs=2 -d
     ```
 - Install node modules `npm i` use node `22.x.x`
 - Generate codegen `npm run codegen`
