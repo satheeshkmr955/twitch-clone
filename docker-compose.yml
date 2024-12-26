@@ -35,8 +35,6 @@ services:
     container_name: nginx_proxy_manager
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '443:443'
       - '81:81'
     env_file:
       - .env
@@ -45,17 +43,20 @@ services:
       - ./nginx/letsencrypt:/etc/letsencrypt
     depends_on:
       - mariadb_aria
+      - nginx
 
   mariadb_aria:
     image: 'jc21/mariadb-aria'
     container_name: mariadb_aria
     restart: unless-stopped
+    expose:
+      - "3306"
     env_file:
       - .env
     volumes:
       - mariadb_db:/var/lib/mysql
     ports:
-      - '3306:3306'
+      - '3307:3306'
 
   twitch_db:
     image: postgres
