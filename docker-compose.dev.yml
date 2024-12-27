@@ -1,6 +1,6 @@
 services:
   twitch_db:
-    image: postgres
+    image: postgres:alpine
     container_name: twitch_db
     restart: always
     environment:
@@ -11,15 +11,8 @@ services:
     ports:
       - "5432:5432"
 
-  twitch_adminer:
-    image: adminer
-    container_name: twitch_adminer
-    restart: always
-    ports:
-      - 8080:8080
-
   twitch_redis:
-    image: redislabs/redismod
+    image: redis:alpine
     container_name: twitch_redis
     restart: always
     ports:
@@ -35,6 +28,13 @@ services:
       - "8006:5540"
     volumes:
       - redis_db:/db
+
+  twitch_adminer:
+    image: adminer
+    container_name: twitch_adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
   twitch_data:

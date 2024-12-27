@@ -15,39 +15,10 @@ services:
       - NODE_ENV=production
     restart: always
     ports:
-      - "3000"
-
-  nginx_proxy_manager:
-    image: 'jc21/nginx-proxy-manager'
-    container_name: nginx_proxy_manager
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - '81:81'
-    env_file:
-      - .env
-    volumes:
-      - nginx_proxy_manager_data:/data
-      - ./nginx/letsencrypt:/etc/letsencrypt
-    depends_on:
-      - mariadb_aria
-
-  mariadb_aria:
-    image: 'jc21/mariadb-aria'
-    container_name: mariadb_aria
-    restart: unless-stopped
-    expose:
-      - "3306"
-    env_file:
-      - .env
-    volumes:
-      - mariadb_db:/var/lib/mysql
-    ports:
-      - '3307:3306'
+      - "3000:3000"
 
   twitch_db:
-    image: postgres
+    image: postgres:alpine
     container_name: twitch_db
     restart: always
     environment:
@@ -59,7 +30,7 @@ services:
       - "5432:5432"
 
   twitch_redis:
-    image: redislabs/redismod
+    image: redis:alpine
     container_name: twitch_redis
     restart: always
     ports:
@@ -70,5 +41,3 @@ services:
 volumes:
   twitch_data:
   redis_db:
-  mariadb_db:
-  nginx_proxy_manager_data:
