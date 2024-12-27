@@ -2,6 +2,7 @@
 build
 logs
 node_modules
+nginx
 .dockerignore
 .git
 .next
