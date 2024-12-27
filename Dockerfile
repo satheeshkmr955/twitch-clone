@@ -9,6 +9,7 @@ RUN npm install
 
 # Copy the rest of your Next.js app
 COPY ./ ./
+RUN npm run codegen
 RUN npm run db:generate
 
 # Build the app
@@ -23,8 +24,8 @@ RUN apk update && apk add openssl
 
 # Copy the built app from the builder
 COPY --from=builder /app ./
-RUN npm run db:generate
 RUN npm run codegen
+RUN npm run db:generate
 
 # Expose the port the app will run on
 EXPOSE 3000
