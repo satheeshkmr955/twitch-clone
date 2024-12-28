@@ -20,6 +20,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
             - AWS_REGION
             - AWS_ACCESS_KEY_ID
             - AWS_SECRET_ACCESS_KEY
+- Create custom docker network so that traefik can access docker container create by other docker compose file
+    ```
+    docker network ls
+    docker network create traefik_network
+    ```
+- Run docker-compose.yml of traefik
 - Run below to build image
     ```
     docker compose build nextjs

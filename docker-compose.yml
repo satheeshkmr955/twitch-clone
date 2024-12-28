@@ -9,17 +9,24 @@ services:
     depends_on:
       - twitch_db
       - twitch_redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
+      - "traefik.http.routers.nextjs.entrypoints=http"
+      - "traefik.http.services.nextjs.loadbalancer.server.port=3000"
+    networks:
+      - traefik_network
     deploy:
       replicas: 1
     environment:
       - NODE_ENV=production
     restart: always
-    ports:
-      - "3000:3000"
 
   twitch_db:
     image: postgres:alpine
     container_name: twitch_db
+    networks:
+      - traefik_network
     restart: always
     environment:
       POSTGRES_PASSWORD: example
@@ -32,6 +39,8 @@ services:
   twitch_redis:
     image: redis:alpine
     container_name: twitch_redis
+    networks:
+      - traefik_network
     restart: always
     ports:
       - 6380:6379
@@ -41,3 +50,7 @@ services:
 volumes:
   twitch_data:
   redis_db:
+
+networks:
+  traefik_network:
+    external: true

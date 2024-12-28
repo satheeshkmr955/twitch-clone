@@ -22,6 +22,7 @@ import type { PrismaClient, User } from "@prisma/client";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { logger } from "@/lib/logger";
+// import { useSetResponseHeader } from "@/lib/utils";
 
 import { RootResolvers } from "./_resolvers";
 
@@ -116,6 +117,7 @@ const yoga = createYoga({
     //     logger.debug({ eventName, args });
     //   },
     // }),
+    // useSetResponseHeader(),
     useResponseCache({
       cache,
       session: ({ user }: GraphQLContext) => user?.id ?? null,
