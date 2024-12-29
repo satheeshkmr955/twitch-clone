@@ -112,7 +112,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="m-6 w-1/4">
+    <div className="w-[95%] md:m-6 md:w-4/6 lg:w-1/4">
       <Card className="shadow-gray-500 shadow-md">
         <CardHeader>
           <CardTitle className="text-xl">Create your account</CardTitle>

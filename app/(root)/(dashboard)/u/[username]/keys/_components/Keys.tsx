@@ -32,7 +32,7 @@ export const Keys = (props: KeysProps) => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap">
         <h1 className="text-2xl font-bold">Keys & Urls</h1>
         <ConnectModal />
       </div>
