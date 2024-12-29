@@ -12,10 +12,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
-      - "traefik.http.routers.nextjs.entrypoints=http"
+      - "traefik.http.routers.nextjs.entrypoints=nextjs"
       - "traefik.http.services.nextjs.loadbalancer.server.port=3000"
     networks:
       - traefik_network
+      - twitch_network
     deploy:
       replicas: 1
     environment:
@@ -26,7 +27,7 @@ services:
     image: postgres:alpine
     container_name: twitch_db
     networks:
-      - traefik_network
+      - twitch_network
     restart: always
     environment:
       POSTGRES_PASSWORD: example
@@ -40,7 +41,7 @@ services:
     image: redis:alpine
     container_name: twitch_redis
     networks:
-      - traefik_network
+      - twitch_network
     restart: always
     ports:
       - 6380:6379
@@ -54,3 +55,5 @@ volumes:
 networks:
   traefik_network:
     external: true
+  twitch_network:
+    driver: bridge
