@@ -6,3 +6,14 @@ nginx
 .dockerignore
 .git
 .next
+gql
+.env.dev
+.env.sample
+.gitignore
+Dockerfile
+docker-compose.yml
+docker-compose.dev.yml
+feature-and-issue.md
+next-env.d.ts
+README.md
+videos.txt

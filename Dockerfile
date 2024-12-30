@@ -1,31 +1,28 @@
 # Step 1: Build Stage
-FROM node:22 AS builder
+FROM node:22-alpine AS builder
+
+RUN apk update && apk add --no-cache openssl
 
 WORKDIR /app
 
 # Install dependencies
 COPY ./package.json ./package-lock.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of your Next.js app
 COPY ./ ./
-RUN npm run codegen
-RUN npm run db:generate
-
-# Build the app
-RUN npm run build
+RUN npm run codegen && npm run db:generate && npm run build
 
 # Step 2: Production Stage
 FROM node:22-alpine
 
 WORKDIR /app
 
-RUN apk update && apk add openssl
+# Install runtime dependencies (openssl in this case)
+RUN apk update && apk add --no-cache openssl
 
 # Copy the built app from the builder
 COPY --from=builder /app ./
-RUN npm run codegen
-RUN npm run db:generate
 
 # Expose the port the app will run on
 EXPOSE 3000
