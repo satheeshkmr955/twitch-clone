@@ -14,11 +14,18 @@ services:
       - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
       - "traefik.http.routers.nextjs.entrypoints=nextjs"
       - "traefik.http.services.nextjs.loadbalancer.server.port=3000"
+      - "traefik.http.services.nextjs.loadbalancer.healthcheck.path=/api/health"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
     networks:
       - traefik_network
       - twitch_network
     deploy:
-      replicas: 1
+      replicas: 2
     environment:
       - NODE_ENV=production
     restart: always

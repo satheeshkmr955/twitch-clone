@@ -1,7 +1,7 @@
 # Step 1: Build Stage
 FROM node:22-alpine AS builder
 
-RUN apk update && apk add --no-cache openssl
+RUN apk update && apk add --no-cache openssl curl
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ FROM node:22-alpine
 WORKDIR /app
 
 # Install runtime dependencies (openssl in this case)
-RUN apk update && apk add --no-cache openssl
+RUN apk update && apk add --no-cache openssl curl
 
 # Copy the built app from the builder
 COPY --from=builder /app ./
