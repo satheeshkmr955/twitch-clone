@@ -22,6 +22,7 @@ import type { PrismaClient, User } from "@prisma/client";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { logger } from "@/lib/logger";
+import { usePrometheusWithRegistry } from "@/lib/prometheus";
 // import { useSetResponseHeader } from "@/lib/utils";
 
 import { RootResolvers } from "./_resolvers";
@@ -131,6 +132,7 @@ const yoga = createYoga({
       // includeExtensionMetadata: false,
       ttl: 1000 * 60 * 60 * 1,
     }),
+    usePrometheusWithRegistry(),
   ],
 });
 
