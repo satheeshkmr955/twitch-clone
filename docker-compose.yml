@@ -6,9 +6,6 @@ services:
     image: nextjs:1.2.0
     expose:
       - "3000"
-    depends_on:
-      - twitch_db
-      - twitch_redis
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
@@ -30,37 +27,8 @@ services:
       - NODE_ENV=production
     restart: always
 
-  twitch_db:
-    image: postgres:alpine
-    container_name: twitch_db
-    networks:
-      - twitch_network
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: twitch
-    volumes:
-      - twitch_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
-  twitch_redis:
-    image: redis:alpine
-    container_name: twitch_redis
-    networks:
-      - twitch_network
-    restart: always
-    ports:
-      - 6380:6379
-    volumes:
-      - redis_db:/db
-
-volumes:
-  twitch_data:
-  redis_db:
-
 networks:
   traefik_network:
     external: true
   twitch_network:
-    driver: bridge
+    external: true

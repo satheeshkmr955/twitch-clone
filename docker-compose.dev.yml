@@ -1,25 +1,4 @@
 services:
-  twitch_db:
-    image: postgres:alpine
-    container_name: twitch_db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: twitch
-    volumes:
-      - twitch_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
-  twitch_redis:
-    image: redis:alpine
-    container_name: twitch_redis
-    restart: always
-    ports:
-      - 6380:6379
-    volumes:
-      - redis_db:/db
-
   twitch_redisinsight:
     image: oblakstudio/redisinsight
     container_name: twitch_redisinsight
@@ -37,5 +16,4 @@ services:
       - 8080:8080
 
 volumes:
-  twitch_data:
   redis_db:

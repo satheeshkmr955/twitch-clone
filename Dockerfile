@@ -1,7 +1,10 @@
-# Step 1: Build Stage
-FROM node:22-alpine AS builder
+# Step 1: Base Stage
+FROM node:22-alpine AS base
 
 RUN apk update && apk add --no-cache openssl curl
+
+# Step 2: Build Stage
+FROM base AS builder
 
 WORKDIR /app
 
@@ -13,13 +16,10 @@ RUN npm ci
 COPY ./ ./
 RUN npm run codegen && npm run db:generate && npm run build
 
-# Step 2: Production Stage
-FROM node:22-alpine
+# Step 3: Production Stage
+FROM base
 
 WORKDIR /app
-
-# Install runtime dependencies (openssl in this case)
-RUN apk update && apk add --no-cache openssl curl
 
 # Copy the built app from the builder
 COPY --from=builder /app ./
