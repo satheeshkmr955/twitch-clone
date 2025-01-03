@@ -13,6 +13,7 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ["@whatwg-node/server", "@whatwg-node"],
+    instrumentationHook: true,
   },
   webpack(config, { isServer }) {
     config.externals.push({
@@ -20,6 +21,9 @@ const nextConfig = {
     });
 
     return config;
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

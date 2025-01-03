@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const uploadStatus = await Promise.all(
       files.map(async (file) => {
         // not sure why I have to override the types here
-        const Body = (await file.arrayBuffer()) as Buffer;
+        const Body = (await file.arrayBuffer()) as unknown as Buffer;
         const Key = `${PROFILE_IMAGE_PREFIX}${file.name}`;
         const command = new PutObjectCommand({
           Bucket,

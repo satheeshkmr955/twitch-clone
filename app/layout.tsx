@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
+import { initOpenTelemetry } from "@/lib/opentelemetry";
+
+initOpenTelemetry();
 
 const inter = Lato({
   subsets: ["latin"],

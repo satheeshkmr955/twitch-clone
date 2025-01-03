@@ -2,12 +2,10 @@
 
 import { notFound } from "next/navigation";
 
-import {
-  GetUserByNameWithAllDetailsDocument,
-  Stream,
-  User,
-} from "@/gql/graphql";
+import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
 import { useGraphQL } from "@/hooks/use-graphql";
+
+import type { Stream, User } from "@/gql/graphql";
 
 import { UserProps } from "./types";
 import { Skeleton } from "@/components/ui/skeleton";
