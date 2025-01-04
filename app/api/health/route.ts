@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   );
 
   return NextResponse.json(
-    { status: "ok" },
+    { status: "OK" },
     { status: HttpStatusCode.Ok, headers }
   );
 }

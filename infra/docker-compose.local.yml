@@ -1,0 +1,27 @@
+services:
+  twitch_redisinsight:
+    image: oblakstudio/redisinsight
+    container_name: twitch_redisinsight
+    restart: always
+    ports:
+      - "8006:5540"
+    volumes:
+      - redis_db:/db
+    networks:
+      - twitch_network
+
+  twitch_adminer:
+    image: adminer
+    container_name: twitch_adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - twitch_network
+
+volumes:
+  redis_db:
+
+networks:
+  twitch_network:
+    external: true

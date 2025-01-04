@@ -12,7 +12,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverComponentsExternalPackages: ["@whatwg-node/server", "@whatwg-node"],
+    serverComponentsExternalPackages: ["@whatwg-node/server", "@whatwg-node", "@opentelemetry/sdk-node"],
     instrumentationHook: true,
   },
   webpack(config, { isServer }) {

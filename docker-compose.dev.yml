@@ -1,19 +1,44 @@
 services:
-  twitch_redisinsight:
-    image: oblakstudio/redisinsight
-    container_name: twitch_redisinsight
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: nextjs-dev:1.2.0
+    expose:
+      - "3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
+      - "traefik.http.routers.nextjs.entrypoints=nextjs"
+      - "traefik.http.services.nextjs.loadbalancer.server.port=3000"
+      - "traefik.http.services.nextjs.loadbalancer.healthcheck.path=/api/health"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+    networks:
+      - traefik_network
+      - twitch_network
+      - prometheus_network
+    deploy:
+      replicas: 2
+    environment:
+      - NODE_ENV=development
     restart: always
-    ports:
-      - "8006:5540"
-    volumes:
-      - redis_db:/db
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /app
+        - action: rebuild
+          path: package.json
 
-  twitch_adminer:
-    image: adminer
-    container_name: twitch_adminer
-    restart: always
-    ports:
-      - 8080:8080
-
-volumes:
-  redis_db:
+networks:
+  traefik_network:
+    external: true
+  twitch_network:
+    external: true
+  prometheus_network:
+    external: true

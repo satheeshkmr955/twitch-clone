@@ -6,6 +6,8 @@ import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 // import DataLoader from "dataloader";
 // import { useLogger } from "@envelop/core";
+import { trace } from "@opentelemetry/api";
+import { useOpenTelemetry } from "@envelop/opentelemetry";
 import { useResponseCache } from "@envelop/response-cache";
 import { createRedisCache } from "@envelop/response-cache-redis";
 // import { useDataLoader } from "@envelop/dataloader";
@@ -109,6 +111,14 @@ const { handleRequest } = createYoga({
       ttl: 1000 * 60 * 60 * 1,
     }),
     usePrometheusWithRegistry(),
+    useOpenTelemetry(
+      {
+        resolvers: true, // Tracks resolvers calls, and tracks resolvers thrown errors
+        variables: true, // Includes the operation variables values as part of the metadata collected
+        result: true, // Includes execution result object as part of the metadata collected
+      },
+      trace.getTracerProvider()
+    ),
   ],
 });
 
