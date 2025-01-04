@@ -8,6 +8,7 @@ services:
       - "3000"
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_network"
       - "traefik.http.routers.nextjs.rule=Host(`localhost`)"
       - "traefik.http.routers.nextjs.entrypoints=nextjs"
       - "traefik.http.services.nextjs.loadbalancer.server.port=3000"

@@ -25,7 +25,7 @@
     - [x] onSuccess 
 - [x] useOpentelemetry
 - [x] jaeger not receiving GET or POST traces
-- [ ] traekif marks status for docker container red
+- [x] traekif marks status for docker container red
 - [ ] for production graphql packages
 - [ ] useServerGraphql cann't be used in async function
   - [ ] remove ignoreDuringBuilds from next.config.mjs
