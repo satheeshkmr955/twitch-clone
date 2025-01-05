@@ -43,7 +43,7 @@ export function useGraphQL<TResult, TVariables>(
   });
 }
 
-export async function useServerGraphQL<TResult, TVariables>(
+export async function getServerGraphQL<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   variables?: TVariables extends Record<string, never> ? {} : TVariables
 ) {

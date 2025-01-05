@@ -13,6 +13,7 @@ import { getToken } from "next-auth/jwt";
 // import { useLogger } from "@envelop/core";
 import { trace } from "@opentelemetry/api";
 import { useOpenTelemetry } from "@envelop/opentelemetry";
+import { EnvelopArmorPlugin } from "@escape.tech/graphql-armor";
 import { useResponseCache } from "@envelop/response-cache";
 import { createRedisCache } from "@envelop/response-cache-redis";
 // import { useDataLoader } from "@envelop/dataloader";
@@ -115,6 +116,7 @@ const yoga = createYoga({
   // },
   context: createContext,
   plugins: [
+    EnvelopArmorPlugin(),
     // useLogger({
     //   logFn: (eventName, args) => {
     //     logger.debug({ eventName, args });

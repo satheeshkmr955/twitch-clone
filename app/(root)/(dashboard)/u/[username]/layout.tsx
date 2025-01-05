@@ -1,6 +1,6 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
-import { useServerGraphQL } from "@/hooks/use-graphql";
+import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetSelfByNameDocument } from "@/gql/graphql";
 
 import { Navbar } from "./_components/navbar/index";
@@ -17,7 +17,7 @@ const CreatorLayout = async (props: CreatorLayoutProps) => {
 
   const { username } = params;
 
-  const queryClient = await useServerGraphQL(GetSelfByNameDocument, {
+  const queryClient = await getServerGraphQL(GetSelfByNameDocument, {
     input: { name: decodeURI(username) },
   });
 

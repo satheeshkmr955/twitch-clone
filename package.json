@@ -25,6 +25,7 @@
     "@envelop/opentelemetry": "^6.3.1",
     "@envelop/response-cache": "^6.1.2",
     "@envelop/response-cache-redis": "^4.1.2",
+    "@escape.tech/graphql-armor": "^3.1.2",
     "@graphql-yoga/plugin-prometheus": "^6.5.5",
     "@graphql-yoga/redis-event-target": "^3.0.0",
     "@hookform/resolvers": "^3.3.4",

@@ -4,7 +4,7 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 import { HOME } from "@/constants/route.constants";
 
-import { useServerGraphQL } from "@/hooks/use-graphql";
+import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetSearchDocument } from "@/gql/graphql";
 
 import { Results, ResultsSkeleton } from "./_components/results";
@@ -23,7 +23,7 @@ const SearchPage = async (props: SearchPageProps) => {
     redirect(HOME);
   }
 
-  const queryClient = await useServerGraphQL(GetSearchDocument, {
+  const queryClient = await getServerGraphQL(GetSearchDocument, {
     input: { term },
   });
 

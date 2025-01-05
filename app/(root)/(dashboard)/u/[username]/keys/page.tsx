@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { GetStreamByUserIdDocument } from "@/gql/graphql";
 import { getSession } from "@/lib/auth";
 import { HOME } from "@/constants/route.constants";
-import { useServerGraphQL } from "@/hooks/use-graphql";
+import { getServerGraphQL } from "@/hooks/use-graphql";
 
 import { Keys } from "./_components/Keys";
 
@@ -15,7 +15,7 @@ const KeyPage = async () => {
     redirect(HOME);
   }
 
-  const queryClient = await useServerGraphQL(GetStreamByUserIdDocument, {
+  const queryClient = await getServerGraphQL(GetStreamByUserIdDocument, {
     input: { userId: session?.user?.id! },
   });
 

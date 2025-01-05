@@ -1,7 +1,7 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
-import { useServerGraphQL } from "@/hooks/use-graphql";
+import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetStreamByUserIdDocument } from "@/gql/graphql";
 
 import { Chat } from "./_component/Chat";
@@ -15,7 +15,7 @@ const ChatPage = async () => {
     redirect(HOME);
   }
 
-  const queryClient = await useServerGraphQL(GetStreamByUserIdDocument, {
+  const queryClient = await getServerGraphQL(GetStreamByUserIdDocument, {
     input: { userId: session?.user?.id! },
   });
 

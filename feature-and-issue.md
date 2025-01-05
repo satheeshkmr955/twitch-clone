@@ -26,9 +26,9 @@
 - [x] useOpentelemetry
 - [x] jaeger not receiving GET or POST traces
 - [x] traekif marks status for docker container red
-- [ ] for production graphql packages
-- [ ] useServerGraphql cann't be used in async function
-  - [ ] remove ignoreDuringBuilds from next.config.mjs
+- [x] for production graphql packages (graphql-armor)
+- [x] useServerGraphql can't be used in async function
+  - [x] remove ignoreDuringBuilds from next.config.mjs
 - [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
@@ -37,7 +37,7 @@
   - [ ] user deletion
 - [ ] error constructor/class
 - [ ] verify email in graphql
-- [ ] need to add rating limiting, ban on fail
+- [ ] need to add rating limiting, ban on fail via traefik
 - [ ] learn theming
 - [ ] app/(root)/(dashboard)/u/[username]/(home)/page.tsx => isFollowing-> true
 - [x] file size 

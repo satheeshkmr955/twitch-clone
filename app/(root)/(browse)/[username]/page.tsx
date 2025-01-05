@@ -1,6 +1,6 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
-import { useServerGraphQL } from "@/hooks/use-graphql";
+import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
 
 import User from "./_user/user";
@@ -10,7 +10,7 @@ const UserPage = async (props: UserProps) => {
   const { params } = props;
   const { username } = params;
 
-  const queryClient = await useServerGraphQL(
+  const queryClient = await getServerGraphQL(
     GetUserByNameWithAllDetailsDocument,
     {
       input: { name: decodeURI(username) },
