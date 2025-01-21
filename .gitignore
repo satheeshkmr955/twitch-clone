@@ -39,3 +39,5 @@ gql/
 .env*
 logs/
 nginx/letsencrypt
+"$(pwd)"
+slim.report.json
