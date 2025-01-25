@@ -43,7 +43,7 @@ export async function initOpenTelemetry() {
 
   sdk.start();
 
-  console.log("OpenTelemetry initialized");
+  console.log("OpenTelemetry initialized backend");
 
   process.on("SIGTERM", () => {
     sdk
