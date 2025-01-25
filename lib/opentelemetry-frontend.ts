@@ -1,5 +1,7 @@
 import {
   BatchSpanProcessor,
+  // ConsoleSpanExporter,
+  // SimpleSpanProcessor,
   WebTracerProvider,
 } from "@opentelemetry/sdk-trace-web";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
@@ -12,6 +14,7 @@ import {
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { Resource } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
+import { getWebAutoInstrumentations } from '../node_modules/@opentelemetry/auto-instrumentations-web/build/esm/utils';
 
 console.log(
   "metrics and trace urls",
@@ -40,6 +43,7 @@ const tracerProvider = new WebTracerProvider({
       scheduledDelayMillis: 500,
       exportTimeoutMillis: 30000,
     }),
+    // new SimpleSpanProcessor(new ConsoleSpanExporter()),
   ],
 });
 
@@ -58,6 +62,9 @@ const meterProvider = new MeterProvider({
 registerInstrumentations({
   tracerProvider: tracerProvider,
   meterProvider: meterProvider,
+  instrumentations: [
+    getWebAutoInstrumentations({}),
+  ],
 });
 
 tracerProvider.register();
