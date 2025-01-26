@@ -1,7 +1,7 @@
 # Step 1: Base Stage
 FROM node:22-alpine AS base
 
-RUN apk update && apk add --no-cache openssl curl
+RUN apk update --no-cache && apk add --no-cache openssl curl
 
 # Step 2: Build Stage
 FROM base AS builder

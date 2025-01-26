@@ -3,6 +3,8 @@ import DailyRotateFile from "winston-daily-rotate-file";
 
 const { combine, timestamp, json } = winston.format;
 
+const hostname = process.env.HOSTNAME!;
+
 const debugFilter = winston.format((info, opts) => {
   return info.level === "debug" ? info : false;
 });
@@ -24,14 +26,14 @@ export const logger = winston.createLogger({
   format: combine(timestamp(), json()),
   transports: [
     new DailyRotateFile({
-      filename: "./logs/default-%DATE%.log",
+      filename: "./logs/default-" + hostname + "-%DATE%.log",
       datePattern: "YYYY-MM-DD-HH",
       zippedArchive: true,
       maxSize: "20m",
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/debug-%DATE%.log",
+      filename: "./logs/debug-" + hostname + "-%DATE%.log",
       level: "debug",
       format: combine(debugFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -40,7 +42,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/info-%DATE%.log",
+      filename: "./logs/info-" + hostname + "-%DATE%.log",
       level: "info",
       format: combine(infoFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -49,7 +51,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/warn-%DATE%.log",
+      filename: "./logs/warn-" + hostname + "-%DATE%.log",
       level: "warn",
       format: combine(warnFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -58,7 +60,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/error-%DATE%.log",
+      filename: "./logs/error-" + hostname + "-%DATE%.log",
       level: "error",
       format: combine(errorFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
