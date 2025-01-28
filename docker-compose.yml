@@ -19,6 +19,8 @@ services:
       retries: 3
       start_period: 10s
       timeout: 10s
+    volumes:
+      - ./logs/:/app/logs/:rw
     networks:
       - traefik_network
       - twitch_network
@@ -30,6 +32,28 @@ services:
       - NODE_ENV=production
     restart: always
 
+  filebeat:
+    container_name: filebeat_nextjs
+    image: docker.elastic.co/beats/filebeat:8.17.1
+    restart: always
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs/:/usr/share/filebeat/logs/:rw
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - filebeat_data:/usr/share/filebeat/data:rw
+    environment:
+      - xpack.monitoring.enabled=false
+      - FILEBEAT_OUTPUT_LOGSTASH_HOST=logstash:5044
+    networks:
+      - twitch_network
+      - logstash_network
+
+volumes:
+  filebeat_data:
+    name: filebeat_nextjs_data
+
 networks:
   traefik_network:
     external: true
@@ -38,4 +62,6 @@ networks:
   prometheus_network:
     external: true
   otel_network:
+    external: true
+  logstash_network:
     external: true

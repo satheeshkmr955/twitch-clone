@@ -26,14 +26,15 @@ export const logger = winston.createLogger({
   format: combine(timestamp(), json()),
   transports: [
     new DailyRotateFile({
-      filename: "./logs/default-" + hostname + "-%DATE%.log",
+      filename: "./logs/graphql-default-" + hostname + "-%DATE%.log",
       datePattern: "YYYY-MM-DD-HH",
+      level: "info",
       zippedArchive: true,
       maxSize: "20m",
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/debug-" + hostname + "-%DATE%.log",
+      filename: "./logs/graphql-debug-" + hostname + "-%DATE%.log",
       level: "debug",
       format: combine(debugFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -42,7 +43,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/info-" + hostname + "-%DATE%.log",
+      filename: "./logs/graphql-info-" + hostname + "-%DATE%.log",
       level: "info",
       format: combine(infoFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -51,7 +52,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/warn-" + hostname + "-%DATE%.log",
+      filename: "./logs/graphql-warn-" + hostname + "-%DATE%.log",
       level: "warn",
       format: combine(warnFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -60,7 +61,7 @@ export const logger = winston.createLogger({
       maxFiles: "14d",
     }),
     new DailyRotateFile({
-      filename: "./logs/error-" + hostname + "-%DATE%.log",
+      filename: "./logs/graphql-error-" + hostname + "-%DATE%.log",
       level: "error",
       format: combine(errorFilter(), timestamp(), json()),
       datePattern: "YYYY-MM-DD-HH",
@@ -77,4 +78,45 @@ if (process.env.NODE_ENV !== "production") {
   //     format: winston.format.simple(),
   //   })
   // );
+}
+
+let startTime;
+let duration;
+let logObj;
+export function writeLogs(eventName: any, args: any) {
+  const query = args?.args?.contextValue?.params?.query || "";
+  const variables = args?.args?.contextValue?.params?.variables || "";
+
+  switch (eventName) {
+    case "execute-start":
+      startTime = Date.now();
+      break;
+
+    case "execute-end":
+      duration = Date.now() - startTime!;
+      logObj = {
+        query,
+        variables,
+        duration_ms: duration,
+      };
+      logger.info(JSON.stringify(logObj));
+      break;
+
+    case "subscribe-start":
+      startTime = Date.now();
+      break;
+
+    case "subscribe-end":
+      duration = Date.now() - startTime!;
+      logObj = {
+        query,
+        variables,
+        duration_ms: duration,
+      };
+      logger.info(JSON.stringify(logObj));
+      break;
+
+    default:
+      break;
+  }
 }

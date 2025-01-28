@@ -5,7 +5,7 @@ import { createSchema, createYoga } from "graphql-yoga";
 import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 // import DataLoader from "dataloader";
-// import { useLogger } from "@envelop/core";
+import { useLogger } from "@envelop/core";
 import { trace } from "@opentelemetry/api";
 import { useOpenTelemetry } from "@envelop/opentelemetry";
 import { EnvelopArmorPlugin } from "@escape.tech/graphql-armor";
@@ -17,7 +17,7 @@ import type { PrismaClient, User } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
-import { logger } from "@/lib/logger";
+import { logger, writeLogs } from "@/lib/logger";
 import { usePrometheusWithRegistry } from "@/lib/prometheus";
 // import { useSetResponseHeader } from "@/lib/utils";
 
@@ -93,11 +93,9 @@ const { handleRequest } = createYoga({
   context: createContext,
   plugins: [
     EnvelopArmorPlugin(),
-    // useLogger({
-    //   logFn: (eventName, args) => {
-    //     logger.debug({ eventName, args });
-    //   },
-    // }),
+    useLogger({
+      logFn: writeLogs,
+    }),
     // useSetResponseHeader(),
     useResponseCache({
       cache,
