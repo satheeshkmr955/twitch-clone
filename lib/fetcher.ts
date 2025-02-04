@@ -4,6 +4,7 @@ import { GraphQLError } from "graphql";
 import { Error, Success, TriggerToastProps } from "@/app/_types";
 import { getSession } from "./auth";
 import { triggerToast } from "./utils";
+// import { logger } from "@/lib/logger";
 
 export const axiosGraphQL = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
@@ -19,11 +20,16 @@ axiosGraphQL.interceptors.request.use(
       if (session?.accessToken) {
         config.headers["Authorization"] = `Bearer ${session.accessToken}`;
       }
+      config.baseURL = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/graphql`;
     }
 
     return config;
   },
   function (error) {
+    const isServer = typeof window === "undefined";
+    if (isServer) {
+      // logger && logger.error(error);
+    }
     return Promise.reject(error);
   }
 );
@@ -45,12 +51,20 @@ axiosGraphQL.interceptors.response.use(
         });
       }
 
+      const isServer = typeof window === "undefined";
+      if (isServer) {
+        // logger && logger.error(response.data?.errors);
+      }
       return Promise.reject(response.data?.errors);
     }
 
     return response;
   },
   function (error) {
+    const isServer = typeof window === "undefined";
+    if (isServer) {
+      // logger && logger.error(error);
+    }
     return Promise.reject(error);
   }
 );
@@ -68,6 +82,10 @@ publicAxios.interceptors.response.use(
   function (error: AxiosError) {
     const data = error.response?.data as Error;
     triggerToast(data?.toast as TriggerToastProps);
+    const isServer = typeof window === "undefined";
+    if (isServer) {
+      // logger && logger.error(error);
+    }
     return Promise.reject(error);
   }
 );

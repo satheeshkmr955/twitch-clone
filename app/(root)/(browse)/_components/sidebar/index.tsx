@@ -1,6 +1,9 @@
 "use client";
 
-import { useGraphQL } from "@/hooks/use-graphql";
+import { Suspense } from "react";
+import { DehydratedState, HydrationBoundary } from "@tanstack/react-query";
+
+import { useSuspenseQueryGraphQL } from "@/hooks/use-graphql";
 import {
   FollowPublic,
   GetFollowedAndRecommendedUserDocument,
@@ -12,8 +15,14 @@ import { Toggle, ToggleSkeleton } from "./toggle";
 import { Wrapper } from "./wrapper";
 import { Following, FollowingSkeleton } from "./following";
 
-export const Sidebar = () => {
-  const { data, isLoading } = useGraphQL(
+type SidebarProps = {
+  dehydratedState: DehydratedState;
+};
+
+export const Sidebar = (props: SidebarProps) => {
+  const { dehydratedState } = props;
+
+  const { data, isLoading } = useSuspenseQueryGraphQL(
     GetFollowedAndRecommendedUserDocument,
     {
       input: { limit: 10, page: 0 },
@@ -25,21 +34,29 @@ export const Sidebar = () => {
   }
 
   return (
-    <Wrapper>
-      <Toggle />
-      <div className="space-y-4 pt-4 lg:pt-0">
-        {!isLoading && (
-          <>
-            <Following
-              data={(data?.data?.getFollowedUsers.items as FollowPublic[]) || []}
-            />
-            <Recommended
-              data={(data?.data?.getRecommended.items as UserPublic[]) || []}
-            />
-          </>
-        )}
-      </div>
-    </Wrapper>
+    <Suspense fallback={<SidebarSkeleton />}>
+      <HydrationBoundary state={dehydratedState}>
+        <Wrapper>
+          <Toggle />
+          <div className="space-y-4 pt-4 lg:pt-0">
+            {!isLoading && (
+              <>
+                <Following
+                  data={
+                    (data?.data?.getFollowedUsers.items as FollowPublic[]) || []
+                  }
+                />
+                <Recommended
+                  data={
+                    (data?.data?.getRecommended.items as UserPublic[]) || []
+                  }
+                />
+              </>
+            )}
+          </div>
+        </Wrapper>
+      </HydrationBoundary>
+    </Suspense>
   );
 };
 

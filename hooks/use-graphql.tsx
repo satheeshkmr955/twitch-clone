@@ -6,6 +6,8 @@ import {
   useMutation,
   type UseMutationResult,
   UseMutationOptions,
+  type UseSuspenseQueryResult,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
 import { HttpStatusCode } from "axios";
 
@@ -38,6 +40,16 @@ export function useGraphQL<TResult, TVariables>(
   variables?: TVariables extends Record<string, never> ? {} : TVariables
 ): UseQueryResult<ExecutionResult<TResult>> {
   return useQuery({
+    queryKey: [getCacheKey(document), variables],
+    queryFn: () => customFetcher(document, variables!),
+  });
+}
+
+export function useSuspenseQueryGraphQL<TResult, TVariables>(
+  document: TypedDocumentNode<TResult, TVariables>,
+  variables?: TVariables extends Record<string, never> ? {} : TVariables
+): UseSuspenseQueryResult<ExecutionResult<TResult>> {
+  return useSuspenseQuery({
     queryKey: [getCacheKey(document), variables],
     queryFn: () => customFetcher(document, variables!),
   });

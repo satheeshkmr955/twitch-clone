@@ -16,6 +16,13 @@ const nextConfig = {
     instrumentationHook: true,
   },
   webpack(config, { isServer }) {
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+      };
+    }
+
     config.externals.push({
       "node:crypto": "commonjs crypto",
     });

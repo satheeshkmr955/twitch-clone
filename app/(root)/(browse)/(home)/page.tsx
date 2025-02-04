@@ -1,7 +1,6 @@
-import { Suspense } from "react";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
-import { Results, ResultsSkeleton } from "./_components/results";
+import { Results } from "./_components/results";
 import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetStreamsDocument } from "@/gql/graphql";
 
@@ -10,11 +9,7 @@ export default async function Home() {
 
   return (
     <div className="h-full p-8 max-w-screen-2xl mx-auto">
-      <Suspense fallback={<ResultsSkeleton />}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Results />
-        </HydrationBoundary>
-      </Suspense>
+      <Results dehydratedState={dehydrate(queryClient)} />
     </div>
   );
 }

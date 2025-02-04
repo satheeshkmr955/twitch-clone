@@ -29,6 +29,8 @@
 - [x] for production graphql packages (graphql-armor)
 - [x] useServerGraphql can't be used in async function
   - [x] remove ignoreDuringBuilds from next.config.mjs
+- [ ] useSuspenseQuery
+- [ ] logger in server 
 - [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
