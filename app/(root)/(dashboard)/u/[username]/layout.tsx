@@ -1,4 +1,4 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
 import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetSelfByNameDocument } from "@/gql/graphql";
@@ -23,13 +23,13 @@ const CreatorLayout = async (props: CreatorLayoutProps) => {
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Navbar />
-        <div className="flex h-full pt-20">
-          <Sidebar />
-          <Container>{children}</Container>
-        </div>
-      </HydrationBoundary>
+      <Navbar />
+      <div className="flex h-full pt-20">
+        <Sidebar />
+        <Container dehydratedState={dehydrate(queryClient)}>
+          {children}
+        </Container>
+      </div>
     </>
   );
 };

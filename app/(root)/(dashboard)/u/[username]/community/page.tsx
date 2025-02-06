@@ -1,4 +1,4 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
 import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetBlockedUsersDocument } from "@/gql/graphql";
@@ -10,9 +10,7 @@ const CommunityPage = async () => {
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Community />
-      </HydrationBoundary>
+      <Community dehydratedState={dehydrate(queryClient)} />
     </>
   );
 };

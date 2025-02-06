@@ -1,13 +1,12 @@
-import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
 import { HOME } from "@/constants/route.constants";
 
 import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetSearchDocument } from "@/gql/graphql";
 
-import { Results, ResultsSkeleton } from "./_components/results";
+import { Results } from "./_components/results";
 
 interface SearchPageProps {
   searchParams: {
@@ -29,11 +28,7 @@ const SearchPage = async (props: SearchPageProps) => {
 
   return (
     <div className="h-full p-8 max-w-screen-2xl mx-auto">
-      <Suspense fallback={<ResultsSkeleton />}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Results term={term} />
-        </HydrationBoundary>
-      </Suspense>
+      <Results term={term} dehydratedState={dehydrate(queryClient)} />
     </div>
   );
 };

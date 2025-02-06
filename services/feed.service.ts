@@ -1,15 +1,13 @@
 import { GetStreamsProps } from "@/app/_types";
-import { NOT_AUTHORIZED } from "@/constants/message.constants";
-import { NotAuthorized } from "@/lib/errors";
 import { db } from "@/lib/db";
 
 export const getStreams = async (inputObj: GetStreamsProps) => {
   const { user } = inputObj;
   let userId: string | null = null;
-  let streams = [];
+  let streams: any = [];
 
   if (!user) {
-    throw NotAuthorized(NOT_AUTHORIZED);
+    return { streams };
   } else {
     userId = user.id;
   }

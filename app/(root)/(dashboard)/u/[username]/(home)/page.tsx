@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSuspenseQueryGraphQL } from "@/hooks/use-graphql";
 
-import { useGraphQL } from "@/hooks/use-graphql";
 import { GetSelfByNameDocument, Stream, User } from "@/gql/graphql";
 import { HOME } from "@/constants/route.constants";
 import { StreamPlayer } from "@/components/stream-player";
@@ -18,7 +18,7 @@ const CreatorPage = (props: CreatorPageProps) => {
 
   const { data: session } = useSession();
 
-  const { data, isLoading } = useGraphQL(GetSelfByNameDocument, {
+  const { data, isLoading } = useSuspenseQueryGraphQL(GetSelfByNameDocument, {
     input: { name: decodeURI(username) },
   });
 

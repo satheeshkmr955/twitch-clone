@@ -1,15 +1,23 @@
 "use client";
 
 import { format } from "date-fns";
+import { Suspense } from "react";
+import { DehydratedState, HydrationBoundary } from "@tanstack/react-query";
 
-import { useGraphQL } from "@/hooks/use-graphql";
+import { useSuspenseQueryGraphQL } from "@/hooks/use-graphql";
 import { GetBlockedUsersDocument } from "@/gql/graphql";
 
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-export const Community = () => {
-  const { data, isLoading } = useGraphQL(GetBlockedUsersDocument);
+type CommunityProps = {
+  dehydratedState: DehydratedState;
+};
+
+export const Community = (props: CommunityProps) => {
+  const { dehydratedState } = props;
+
+  const { data, isLoading } = useSuspenseQueryGraphQL(GetBlockedUsersDocument);
 
   if (isLoading) {
     return null;
@@ -33,11 +41,15 @@ export const Community = () => {
   }));
 
   return (
-    <div className="p-6">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold">Community Settings</h1>
-      </div>
-      <DataTable columns={columns} data={formattedData} />
-    </div>
+    <Suspense>
+      <HydrationBoundary state={dehydratedState}>
+        <div className="p-6">
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold">Community Settings</h1>
+          </div>
+          <DataTable columns={columns} data={formattedData} />
+        </div>
+      </HydrationBoundary>
+    </Suspense>
   );
 };

@@ -1,4 +1,4 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
 import { getServerGraphQL } from "@/hooks/use-graphql";
@@ -19,11 +19,7 @@ const ChatPage = async () => {
     input: { userId: session?.user?.id! },
   });
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Chat session={session} />
-    </HydrationBoundary>
-  );
+  return <Chat dehydratedState={dehydrate(queryClient)} session={session} />;
 };
 
 export default ChatPage;

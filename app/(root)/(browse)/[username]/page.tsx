@@ -1,4 +1,4 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
 import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
@@ -19,9 +19,7 @@ const UserPage = async (props: UserProps) => {
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <User {...props} />
-      </HydrationBoundary>
+      <User {...props} dehydratedState={dehydrate(queryClient)} />
     </>
   );
 };

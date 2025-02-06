@@ -42,6 +42,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/images/spooky.svg" sizes="any" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );

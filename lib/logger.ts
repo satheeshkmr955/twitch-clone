@@ -9,11 +9,31 @@ declare global {
   var logger: undefined | winston.Logger;
 }
 
+const debugFilter = winston.format((info, opts) => {
+  return info.level === "debug" ? info : false;
+});
+
+const errorFilter = winston.format((info, opts) => {
+  return info.level === "error" ? info : false;
+});
+
+const infoFilter = winston.format((info, opts) => {
+  return info.level === "info" ? info : false;
+});
+
+const warnFilter = winston.format((info, opts) => {
+  return info.level === "warn" ? info : false;
+});
+
 const isServer = typeof window === "undefined";
 
-const logger = globalThis.logger ?? (isServer ? null : createLogger());
+const logger = globalThis.logger ?? (isServer ? createLogger() : null);
 
 function createLogger() {
+  if (globalThis.logger) {
+    return globalThis.logger;
+  }
+
   const tempLogger = winston.createLogger({
     level: process.env.LOG_LEVEL || "debug",
     format: combine(timestamp(), json()),
@@ -71,27 +91,12 @@ function createLogger() {
     //     format: winston.format.simple(),
     //   })
     // );
-    globalThis.logger = tempLogger;
   }
+
+  globalThis.logger = tempLogger;
 
   return tempLogger;
 }
-
-const debugFilter = winston.format((info, opts) => {
-  return info.level === "debug" ? info : false;
-});
-
-const errorFilter = winston.format((info, opts) => {
-  return info.level === "error" ? info : false;
-});
-
-const infoFilter = winston.format((info, opts) => {
-  return info.level === "info" ? info : false;
-});
-
-const warnFilter = winston.format((info, opts) => {
-  return info.level === "warn" ? info : false;
-});
 
 let startTime;
 let duration;
@@ -134,4 +139,4 @@ export function writeLogs(eventName: any, args: any) {
   }
 }
 
-export { logger };
+export { logger, createLogger };

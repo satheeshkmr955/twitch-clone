@@ -1,4 +1,4 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
 import { GetStreamByUserIdDocument } from "@/gql/graphql";
@@ -19,11 +19,7 @@ const KeyPage = async () => {
     input: { userId: session?.user?.id! },
   });
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Keys session={session} />
-    </HydrationBoundary>
-  );
+  return <Keys dehydratedState={dehydrate(queryClient)} session={session} />;
 };
 
 export default KeyPage;
