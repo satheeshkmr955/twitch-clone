@@ -4,6 +4,7 @@ import { HttpStatusCode } from "axios";
 import { db } from "@/lib/db";
 import { checkEmailsExistsSchema } from "@/lib/validation.schema";
 import { jsonParse } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 import { DEFAULT_API_ERROR, ERROR } from "@/constants/message.constants";
 
 export async function POST(req: NextRequest) {
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {
+    logger && logger.error(error);
     console.error(error);
     return NextResponse.json(
       {

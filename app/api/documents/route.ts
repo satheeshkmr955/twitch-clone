@@ -6,6 +6,7 @@ import {
   IMAGE_PROFILE_UPLOAD_BUCKET,
   PROFILE_IMAGE_PREFIX,
 } from "@/constants/common.constants";
+import { logger } from '@/lib/logger';
 import { SOMETHING_WENT_WRONG } from "@/constants/message.constants";
 
 const Bucket = IMAGE_PROFILE_UPLOAD_BUCKET;
@@ -16,6 +17,7 @@ export async function GET() {
     const response = await s3.send(new ListObjectsCommand({ Bucket }));
     return NextResponse.json(response?.Contents ?? []);
   } catch (error) {
+    logger && logger.error(error);
     console.error(error);
     return NextResponse.json([]);
   }
@@ -44,6 +46,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(uploadStatus);
   } catch (error) {
+    logger && logger.error(error);
     console.error(error);
     return NextResponse.json(SOMETHING_WENT_WRONG);
   }

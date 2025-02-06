@@ -182,6 +182,7 @@ async function start(
           await handle(req, res, url);
         }
       } catch (err) {
+        logger && logger.error(err);
         console.error(`Error while handling ${req.url}`, err);
         res.writeHead(HttpStatusCode.InternalServerError).end();
       }
@@ -263,6 +264,7 @@ GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
 `
       );
     } catch (error) {
+      logger && logger.error(error);
       console.error(error);
     }
   })();

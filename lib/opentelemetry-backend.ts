@@ -6,6 +6,7 @@ import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { Resource } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
+import { logger } from "@/lib/logger";
 
 // Function to set up OpenTelemetry
 export async function initOpenTelemetry() {
@@ -49,9 +50,10 @@ export async function initOpenTelemetry() {
     sdk
       .shutdown()
       .then(() => console.log("OpenTelemetry shut down gracefully"))
-      .catch((error) =>
-        console.error("Error shutting down OpenTelemetry", error)
-      )
+      .catch((error) => {
+        logger && logger.error(error);
+        console.error("Error shutting down OpenTelemetry", error);
+      })
       .finally(() => process.exit(0));
   });
 }

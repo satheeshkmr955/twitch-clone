@@ -3,6 +3,7 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { s3 } from "@/lib/s3";
+import { logger } from "@/lib/logger";
 import {
   IMAGE_PROFILE_UPLOAD_BUCKET,
   PROFILE_IMAGE_PREFIX,
@@ -22,6 +23,7 @@ export async function GET(_: Request, { params }: { params: { key: string } }) {
 
     return NextResponse.json({ src });
   } catch (error) {
+    logger && logger.error(error);
     console.error(error);
     return NextResponse.json(SOMETHING_WENT_WRONG);
   }
