@@ -9,27 +9,12 @@ declare global {
   var logger: undefined | winston.Logger;
 }
 
-const debugFilter = winston.format((info, opts) => {
-  return info.level === "debug" ? info : false;
-});
-
-const errorFilter = winston.format((info, opts) => {
-  return info.level === "error" ? info : false;
-});
-
-const infoFilter = winston.format((info, opts) => {
-  return info.level === "info" ? info : false;
-});
-
-const warnFilter = winston.format((info, opts) => {
-  return info.level === "warn" ? info : false;
-});
-
 const isServer = typeof window === "undefined";
 
-const logger = globalThis.logger ?? (isServer ? createLogger() : null);
+const logger =
+  globalThis.logger ?? (isServer ? createServerLogger() : createClientLogger());
 
-function createLogger() {
+function createServerLogger() {
   if (globalThis.logger) {
     return globalThis.logger;
   }
@@ -38,64 +23,89 @@ function createLogger() {
     level: process.env.LOG_LEVEL || "debug",
     format: combine(timestamp(), json()),
     transports: [
-      new DailyRotateFile({
-        filename: "./logs/graphql-default-" + hostname + "-%DATE%.log",
-        datePattern: "YYYY-MM-DD-HH",
-        level: "info",
-        zippedArchive: true,
-        maxSize: "20m",
-        maxFiles: "14d",
-      }),
-      new DailyRotateFile({
-        filename: "./logs/graphql-debug-" + hostname + "-%DATE%.log",
-        level: "debug",
-        format: combine(debugFilter(), timestamp(), json()),
-        datePattern: "YYYY-MM-DD-HH",
-        zippedArchive: true,
-        maxSize: "20m",
-        maxFiles: "14d",
-      }),
-      new DailyRotateFile({
-        filename: "./logs/graphql-info-" + hostname + "-%DATE%.log",
-        level: "info",
-        format: combine(infoFilter(), timestamp(), json()),
-        datePattern: "YYYY-MM-DD-HH",
-        zippedArchive: true,
-        maxSize: "20m",
-        maxFiles: "14d",
-      }),
-      new DailyRotateFile({
-        filename: "./logs/graphql-warn-" + hostname + "-%DATE%.log",
-        level: "warn",
-        format: combine(warnFilter(), timestamp(), json()),
-        datePattern: "YYYY-MM-DD-HH",
-        zippedArchive: true,
-        maxSize: "20m",
-        maxFiles: "14d",
-      }),
-      new DailyRotateFile({
-        filename: "./logs/graphql-error-" + hostname + "-%DATE%.log",
-        level: "error",
-        format: combine(errorFilter(), timestamp(), json()),
-        datePattern: "YYYY-MM-DD-HH",
-        zippedArchive: true,
-        maxSize: "20m",
-        maxFiles: "14d",
-      }),
+      // General transports
+      createTransport(
+        `./logs/graphql-default-${hostname}-%DATE%.log`,
+        "info",
+        combine(timestamp(), json())
+      ),
+      createTransport(
+        `./logs/graphql-debug-${hostname}-%DATE%.log`,
+        "debug",
+        combine(createLevelFilter("debug"), timestamp(), json())
+      ),
+      createTransport(
+        `./logs/graphql-info-${hostname}-%DATE%.log`,
+        "info",
+        combine(createLevelFilter("info"), timestamp(), json())
+      ),
+      createTransport(
+        `./logs/graphql-warn-${hostname}-%DATE%.log`,
+        "warn",
+        combine(createLevelFilter("warn"), timestamp(), json())
+      ),
+      createTransport(
+        `./logs/graphql-error-${hostname}-%DATE%.log`,
+        "error",
+        combine(createLevelFilter("error"), timestamp(), json())
+      ),
     ],
   });
-
-  if (process.env.NODE_ENV !== "production") {
-    // tempLogger.add(
-    //   new winston.transports.Console({
-    //     format: winston.format.simple(),
-    //   })
-    // );
-  }
 
   globalThis.logger = tempLogger;
 
   return tempLogger;
+}
+
+// Function to create the logger with different log levels
+function createClientLogger() {
+  if (globalThis.logger) {
+    return globalThis.logger;
+  }
+
+  const levels = ["debug", "info", "warn", "error"];
+
+  const tempLogger = winston.createLogger({
+    transports: levels.map((level) => createFluentdTransport(level)),
+  });
+
+  globalThis.logger = tempLogger;
+
+  return tempLogger;
+}
+
+// Function to create a Fluentd transport with a specific log level
+function createFluentdTransport(level: string) {
+  return new winston.transports.Http({
+    level: level, // The log level passed to the function
+    format: winston.format.json(),
+    host: "fluentd-server.local", // Fluentd server URL
+    port: 24224, // default Fluentd port for HTTP input
+    path: "/api/logs", // Adjust according to your Fluentd configuration
+  });
+}
+
+function createTransport(
+  filenamePattern: string,
+  level: string,
+  format: winston.Logform.Format
+) {
+  return new DailyRotateFile({
+    filename: filenamePattern,
+    level: level,
+    datePattern: "YYYY-MM-DD-HH",
+    zippedArchive: true,
+    maxSize: "20m",
+    maxFiles: "14d",
+    format: format,
+  });
+}
+
+// Helper function to create level-specific filters
+function createLevelFilter(level: string) {
+  return winston.format((info, opts) => {
+    return info.level === level ? info : false;
+  }) as unknown as winston.Logform.Format;
 }
 
 let startTime;
@@ -139,4 +149,4 @@ export function writeLogs(eventName: any, args: any) {
   }
 }
 
-export { logger, createLogger };
+export { logger };

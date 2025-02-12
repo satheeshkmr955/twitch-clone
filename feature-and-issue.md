@@ -33,6 +33,7 @@
 - [ ] logger
   - [x] server 
   - [ ] client
+    Fluentd and nextjs client side collect error and send to logstash docker compose setup
 - [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
