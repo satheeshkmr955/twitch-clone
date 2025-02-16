@@ -172,3 +172,15 @@ export interface GetSearchProps extends QueryGetSearchArgs {
 export interface GetBlockedUsersProps {
   user: User | null;
 }
+
+export interface ClientLog {
+  clientip: string;
+  username: string;
+  user_id: string;
+  timestamp: string;
+  request_url: string;
+  user_agent_raw: string;
+  message_data: string;
+  log_level: string;
+  level_value: number;
+}

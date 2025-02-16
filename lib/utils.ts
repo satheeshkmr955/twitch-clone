@@ -4,8 +4,17 @@ import os from "os";
 import { Plugin } from "graphql-yoga";
 import { twMerge } from "tailwind-merge";
 import { NextRequest } from "next/server";
+import { getSession } from "next-auth/react";
+import axios, { AxiosResponse } from "axios";
 
-import { Toast, ToastTypes, TriggerToastProps } from "@/app/_types";
+import { publicAxios } from "@/lib/fetcher";
+
+import { GET } from "@/constants/message.constants";
+import { GET_CLIENT_PUBLIC_IP } from "@/constants/api.constants";
+
+import { ClientLog, Toast, ToastTypes, TriggerToastProps } from "@/app/_types";
+import type pino from "pino";
+import type { Session } from "next-auth";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -73,4 +82,58 @@ export function useSetResponseHeader(): Plugin {
       response.headers.set("X-Server-Date-Time", date);
     },
   };
+}
+
+export const getUserSession = async (): Promise<Session | null> => {
+  const session = await getSession();
+  return session;
+};
+
+export async function getClientPublicIP() {
+  let ip = "-";
+  try {
+    const response: AxiosResponse = await publicAxios({
+      url: GET_CLIENT_PUBLIC_IP,
+      method: GET,
+    });
+    if (response.data.ip) {
+      ip = response.data.ip;
+    }
+    return ip;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(error);
+    } else {
+      console.error(error);
+    }
+    return ip;
+  }
+}
+
+export async function convertToApacheJsonLog(jsonData: pino.LogEvent) {
+  const timestamp = new Date(jsonData.ts).toISOString();
+
+  const session = await getUserSession();
+  const clientip = await getClientPublicIP();
+
+  let username = "-";
+  let user_id = "-";
+  if (session && session?.user) {
+    username = session.user.slugName;
+    user_id = session.user.id;
+  }
+
+  const apacheJsonLog: ClientLog = {
+    clientip,
+    username,
+    user_id,
+    timestamp,
+    request_url: window.location.href,
+    user_agent_raw: navigator.userAgent,
+    message_data: jsonData.messages[0],
+    log_level: jsonData.level.label,
+    level_value: jsonData.level.value,
+  };
+
+  return apacheJsonLog;
 }

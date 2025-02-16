@@ -41,3 +41,4 @@ export const WARNING = "warning";
 export const ERROR = "error";
 
 export const POST = "POST";
+export const GET = "GET";

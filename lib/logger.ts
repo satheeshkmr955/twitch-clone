@@ -1,9 +1,15 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
+import pino from "pino";
+import axios from "axios";
+
+import { convertToApacheJsonLog } from "@/lib/utils";
+import { ClientLog } from "@/app/_types";
 
 const { combine, timestamp, json } = winston.format;
 
 const hostname = process.env.HOSTNAME!;
+const FLUENTD_URL = process.env.NEXT_PUBLIC_FLUENTD_ENDPOINT!;
 
 declare global {
   var logger: undefined | winston.Logger;
@@ -19,43 +25,50 @@ function createServerLogger() {
     return globalThis.logger;
   }
 
+  const levels = [
+    { fileName: "default", type: "info" },
+    { fileName: "debug", type: "debug" },
+    { fileName: "info", type: "info" },
+    { fileName: "warn", type: "warn" },
+    { fileName: "error", type: "error" },
+  ];
+
+  const transports = levels.map(({ fileName, type }) =>
+    createServerTransport(
+      `./logs/graphql-${fileName}-${hostname}-%DATE%.log`,
+      type,
+      fileName === "default"
+        ? combine(timestamp(), json())
+        : combine(createLevelFilter(type), timestamp(), json())
+    )
+  );
+
   const tempLogger = winston.createLogger({
     level: process.env.LOG_LEVEL || "debug",
     format: combine(timestamp(), json()),
-    transports: [
-      // General transports
-      createTransport(
-        `./logs/graphql-default-${hostname}-%DATE%.log`,
-        "info",
-        combine(timestamp(), json())
-      ),
-      createTransport(
-        `./logs/graphql-debug-${hostname}-%DATE%.log`,
-        "debug",
-        combine(createLevelFilter("debug"), timestamp(), json())
-      ),
-      createTransport(
-        `./logs/graphql-info-${hostname}-%DATE%.log`,
-        "info",
-        combine(createLevelFilter("info"), timestamp(), json())
-      ),
-      createTransport(
-        `./logs/graphql-warn-${hostname}-%DATE%.log`,
-        "warn",
-        combine(createLevelFilter("warn"), timestamp(), json())
-      ),
-      createTransport(
-        `./logs/graphql-error-${hostname}-%DATE%.log`,
-        "error",
-        combine(createLevelFilter("error"), timestamp(), json())
-      ),
-    ],
+    transports: transports,
   });
 
   globalThis.logger = tempLogger;
 
   return tempLogger;
 }
+
+const logToFluentd = async (level: string, logEvent: ClientLog) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    const config = {
+      headers,
+    };
+    await axios.post(FLUENTD_URL + `/fluent.${level}`, logEvent, config);
+  } catch (error) {
+    console.error("Error sending log to Fluentd:", error);
+  }
+};
 
 // Function to create the logger with different log levels
 function createClientLogger() {
@@ -63,29 +76,24 @@ function createClientLogger() {
     return globalThis.logger;
   }
 
-  const levels = ["debug", "info", "warn", "error"];
-
-  const tempLogger = winston.createLogger({
-    transports: levels.map((level) => createFluentdTransport(level)),
-  });
+  const tempLogger = pino({
+    browser: {
+      transmit: {
+        level: "info",
+        async send(level, logEvent) {
+          const clientLogs = await convertToApacheJsonLog(logEvent);
+          logToFluentd(level, clientLogs);
+        },
+      },
+    },
+  }) as unknown as winston.Logger;
 
   globalThis.logger = tempLogger;
 
   return tempLogger;
 }
 
-// Function to create a Fluentd transport with a specific log level
-function createFluentdTransport(level: string) {
-  return new winston.transports.Http({
-    level: level, // The log level passed to the function
-    format: winston.format.json(),
-    host: "fluentd-server.local", // Fluentd server URL
-    port: 24224, // default Fluentd port for HTTP input
-    path: "/api/logs", // Adjust according to your Fluentd configuration
-  });
-}
-
-function createTransport(
+function createServerTransport(
   filenamePattern: string,
   level: string,
   format: winston.Logform.Format
@@ -105,7 +113,7 @@ function createTransport(
 function createLevelFilter(level: string) {
   return winston.format((info, opts) => {
     return info.level === level ? info : false;
-  }) as unknown as winston.Logform.Format;
+  })();
 }
 
 let startTime;
