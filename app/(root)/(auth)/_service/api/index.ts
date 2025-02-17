@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { CHECK_EMAIL_EXISTS, SIGNUP_EXISTS } from "@/constants/api.constants";
 import { publicAxios } from "@/lib/fetcher";
+import { logger } from "@/lib/logger";
 import {
   Success,
   Error,
@@ -29,11 +30,11 @@ export const checkEmailsExistsApiHandler = async (
     const data: Success = response.data;
     return data.isEmailExists;
   } catch (error) {
+    let tempError = error;
     if (axios.isAxiosError(error)) {
-      console.log(error.response?.data);
-    } else {
-      console.error(error);
+      tempError = error.response?.data;
     }
+    logger.error(tempError);
     return false;
   }
 };
@@ -55,10 +56,11 @@ export const signUpApiHandler = async (obj: SignUpApiProps) => {
     });
     onSuccess?.(response.data, response.status);
   } catch (error) {
+    let tempError = error;
     if (axios.isAxiosError(error)) {
+      tempError = error.response?.data;
       onError?.(error.response?.data, error.response?.status!);
-    } else {
-      console.error(error);
     }
+    logger.error(tempError);
   }
 };

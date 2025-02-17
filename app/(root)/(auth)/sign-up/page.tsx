@@ -31,6 +31,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { HOME, SIGN_IN } from "@/constants/route.constants";
 import { signUpSchema } from "@/lib/validation.schema";
+import { logger } from "@/lib/logger";
 import { SignUpApiProps, signUpApiHandler } from "../_service/api";
 import { Error } from "@/app/_types";
 
@@ -101,6 +102,7 @@ const SignUp = () => {
             );
           });
         }
+        logger.error(error);
       },
     };
 

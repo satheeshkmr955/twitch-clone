@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {
-    logger && logger.error(error);
+    logger.error(error);
     console.error(error);
     return NextResponse.json(
       {

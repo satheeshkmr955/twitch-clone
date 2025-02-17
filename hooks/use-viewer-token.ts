@@ -7,6 +7,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useMutationGraphQL } from "@/hooks/use-graphql";
 import { SOMETHING_WENT_WRONG } from "@/constants/message.constants";
 import { CreateViewerTokenDocument } from "@/gql/graphql";
+import { logger } from "@/lib/logger";
 
 export const useViewerToken = (hostIdentity: string) => {
   const [token, setToken] = useState("");
@@ -41,7 +42,8 @@ export const useViewerToken = (hostIdentity: string) => {
         }
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
         toast.error(SOMETHING_WENT_WRONG);
       },
     }

@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ],
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
+  },
   experimental: {
     serverComponentsExternalPackages: ["@whatwg-node/server", "@whatwg-node", "@opentelemetry/sdk-node"],
     instrumentationHook: true,

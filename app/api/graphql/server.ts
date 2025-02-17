@@ -98,16 +98,16 @@ const yoga = createYoga({
   schema,
   logging: {
     debug(...args) {
-      logger && logger.debug(args);
+      logger.debug(args);
     },
     info(...args) {
-      logger && logger.info(args);
+      logger.info(args);
     },
     warn(...args) {
-      logger && logger.warn(args);
+      logger.warn(args);
     },
     error(...args) {
-      logger && logger.error(args);
+      logger.error(args);
     },
   },
   // fetchAPI: {
@@ -182,7 +182,7 @@ async function start(
           await handle(req, res, url);
         }
       } catch (err) {
-        logger && logger.error(err);
+        logger.error(err);
         console.error(`Error while handling ${req.url}`, err);
         res.writeHead(HttpStatusCode.InternalServerError).end();
       }
@@ -264,7 +264,7 @@ GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
 `
       );
     } catch (error) {
-      logger && logger.error(error);
+      logger.error(error);
       console.error(error);
     }
   })();

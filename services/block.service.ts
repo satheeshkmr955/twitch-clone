@@ -28,7 +28,8 @@ import {
 } from "@/app/_types";
 
 import { getUserById } from "@/services/user.service";
-import { roomService } from "./ingress.service";
+import { roomService } from "@/services/ingress.service";
+import { logger } from "@/lib/logger";
 
 export const isBlockedByUser = async (inputObj: IsBlockedByUserProps) => {
   const { input, user } = inputObj;
@@ -74,7 +75,9 @@ export const blockUser = async (inputObj: BlockUserProps) => {
 
   try {
     await roomService.removeParticipant(user.id, id);
-  } catch (error) {}
+  } catch (error) {
+    logger.error(error);
+  }
 
   const toast: Toast = {
     text: `${YOU_HAVE_BLOCKED}`,

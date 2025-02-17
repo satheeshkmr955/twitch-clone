@@ -20,6 +20,7 @@ import {
 } from "@/gql/graphql";
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import { triggerToast } from "@/lib/utils";
+import { logger } from '@/lib/logger';
 import { getQueryClient } from "@/lib/queryclient";
 
 import { TriggerToastProps } from "@/app/_types";
@@ -68,7 +69,8 @@ export const BioModal = (props: BioModalProps) => {
         closeRef.current?.click();
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );

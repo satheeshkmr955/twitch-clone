@@ -6,6 +6,7 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 
 import { cn, stringToColor, triggerToast } from "@/lib/utils";
+import { logger } from '@/lib/logger';
 import { getQueryClient } from "@/lib/queryclient";
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import {
@@ -41,7 +42,8 @@ export const CommunityItem = (props: CommunityItemProps) => {
         queryClient.invalidateQueries({ queryKey });
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );

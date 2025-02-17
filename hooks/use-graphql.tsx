@@ -12,6 +12,7 @@ import {
 import { HttpStatusCode } from "axios";
 
 import { axiosGraphQL } from "@/lib/fetcher";
+import { logger } from "@/lib/logger";
 import { getServerQueryClient } from "@/lib/queryclient";
 
 /** Your custom fetcher function */
@@ -27,9 +28,9 @@ async function customFetcher<TResult, TVariables>(
   });
 
   if (responseAxios.status !== HttpStatusCode.Ok) {
-    throw new Error(
-      `Failed to fetch: ${responseAxios.statusText}. Body: ${responseAxios.request?.responseText}`
-    );
+    const error = `Failed to fetch: ${responseAxios.statusText}. Body: ${responseAxios.request?.responseText}`;
+    logger.error(error);
+    throw new Error(error);
   }
 
   return await responseAxios.data;

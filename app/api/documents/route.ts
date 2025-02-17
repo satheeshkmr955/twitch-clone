@@ -17,7 +17,7 @@ export async function GET() {
     const response = await s3.send(new ListObjectsCommand({ Bucket }));
     return NextResponse.json(response?.Contents ?? []);
   } catch (error) {
-    logger && logger.error(error);
+    logger.error(error);
     console.error(error);
     return NextResponse.json([]);
   }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(uploadStatus);
   } catch (error) {
-    logger && logger.error(error);
+    logger.error(error);
     console.error(error);
     return NextResponse.json(SOMETHING_WENT_WRONG);
   }

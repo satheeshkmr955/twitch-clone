@@ -6,6 +6,7 @@ import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import { GetStreamByUserIdDocument, UpdateStreamDocument } from "@/gql/graphql";
 import { TriggerToastProps } from "@/app/_types";
 import { triggerToast } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 import { getQueryClient } from "@/lib/queryclient";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -33,7 +34,8 @@ export const ToggleCard = (props: ToggleCardProps) => {
         queryClient.invalidateQueries({ queryKey });
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );

@@ -26,10 +26,7 @@ axiosGraphQL.interceptors.request.use(
     return config;
   },
   function (error) {
-    const isServer = typeof window === "undefined";
-    if (isServer) {
-      logger && logger.error(error);
-    }
+    logger.error(error);
     return Promise.reject(error);
   }
 );
@@ -51,20 +48,14 @@ axiosGraphQL.interceptors.response.use(
         });
       }
 
-      const isServer = typeof window === "undefined";
-      if (isServer) {
-        logger && logger.error(response.data?.errors);
-      }
+      logger.error(response.data?.errors);
       return Promise.reject(response.data?.errors);
     }
 
     return response;
   },
   function (error) {
-    const isServer = typeof window === "undefined";
-    if (isServer) {
-      logger && logger.error(error);
-    }
+    logger.error(error);
     return Promise.reject(error);
   }
 );
@@ -82,10 +73,7 @@ publicAxios.interceptors.response.use(
   function (error: AxiosError) {
     const data = error.response?.data as Error;
     triggerToast(data?.toast as TriggerToastProps);
-    const isServer = typeof window === "undefined";
-    if (isServer) {
-      logger && logger.error(error);
-    }
+    logger.error(error);
     return Promise.reject(error);
   }
 );

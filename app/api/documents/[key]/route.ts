@@ -23,7 +23,7 @@ export async function GET(_: Request, { params }: { params: { key: string } }) {
 
     return NextResponse.json({ src });
   } catch (error) {
-    logger && logger.error(error);
+    logger.error(error);
     console.error(error);
     return NextResponse.json(SOMETHING_WENT_WRONG);
   }

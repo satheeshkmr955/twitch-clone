@@ -11,6 +11,7 @@ import { publicAxios } from "@/lib/fetcher";
 
 import { GET } from "@/constants/message.constants";
 import { GET_CLIENT_PUBLIC_IP } from "@/constants/api.constants";
+import { logger } from "@/lib/logger";
 
 import { ClientLog, Toast, ToastTypes, TriggerToastProps } from "@/app/_types";
 import type pino from "pino";
@@ -25,6 +26,7 @@ export async function jsonParse(req: NextRequest) {
   try {
     jsonBody = await req.json();
   } catch (error) {
+    logger.error(error);
     jsonBody = {};
   }
   return jsonBody;
@@ -101,11 +103,8 @@ export async function getClientPublicIP() {
     }
     return ip;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(error);
-    } else {
-      console.error(error);
-    }
+    console.error(error);
+    logger.error(error);
     return ip;
   }
 }

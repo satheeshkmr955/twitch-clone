@@ -29,6 +29,7 @@ import {
 import { triggerToast } from "@/lib/utils";
 import { getQueryClient } from "@/lib/queryclient";
 import { axiosFileUpload } from "@/lib/fetcher";
+import { logger } from "@/lib/logger";
 
 import {
   FILE_UPLOAD_SIZE_LIMIT,
@@ -68,7 +69,8 @@ export const InfoModal = (props: InfoModalProps) => {
         closeRef.current?.click();
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );
@@ -113,6 +115,8 @@ export const InfoModal = (props: InfoModalProps) => {
           setIsPendingFile(true);
           onFileUploadHandler({ formData });
         } catch (error) {
+          console.error(error);
+          logger.error(error);
           toast.error("File upload failed");
           setIsPendingFile(false);
         }

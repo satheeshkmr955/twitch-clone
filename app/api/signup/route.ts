@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       { status: HttpStatusCode.Created }
     );
   } catch (error) {
-    logger && logger.error(error);
+    logger.error(error);
     console.error(error);
     return NextResponse.json(
       {

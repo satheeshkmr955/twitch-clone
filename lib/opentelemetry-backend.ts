@@ -51,7 +51,7 @@ export async function initOpenTelemetry() {
       .shutdown()
       .then(() => console.log("OpenTelemetry shut down gracefully"))
       .catch((error) => {
-        logger && logger.error(error);
+        logger.error(error);
         console.error("Error shutting down OpenTelemetry", error);
       })
       .finally(() => process.exit(0));

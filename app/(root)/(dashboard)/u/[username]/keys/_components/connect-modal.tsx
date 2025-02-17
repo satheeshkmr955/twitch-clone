@@ -30,6 +30,7 @@ import {
 import { TriggerToastProps } from "@/app/_types";
 import { getQueryClient } from "@/lib/queryclient";
 import { triggerToast } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 const RTMP = String(IngressInput.RTMP_INPUT);
 const WHIP = String(IngressInput.WHIP_INPUT);
@@ -54,7 +55,8 @@ export const ConnectModal = () => {
         closeRef.current?.click();
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );

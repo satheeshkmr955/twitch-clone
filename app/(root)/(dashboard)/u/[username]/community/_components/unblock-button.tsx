@@ -3,6 +3,7 @@
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import { getQueryClient } from "@/lib/queryclient";
 import { triggerToast } from "@/lib/utils";
+import { logger } from '@/lib/logger';
 import {
   UnBlockUserDocument,
   GetFollowedAndRecommendedUserDocument,
@@ -33,7 +34,8 @@ export const UnblockButton = (props: UnblockButtonProps) => {
         queryClient.invalidateQueries({ queryKey: queryKey2 });
       },
       onError(error) {
-        // console.log("error", error);
+        console.error(error);
+        logger.error(error);
       },
     }
   );

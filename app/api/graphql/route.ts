@@ -74,16 +74,16 @@ const { handleRequest } = createYoga({
   schema,
   logging: {
     debug(...args) {
-      logger && logger.debug(args);
+      logger.debug(args);
     },
     info(...args) {
-      logger && logger.info(args);
+      logger.info(args);
     },
     warn(...args) {
-      logger && logger.warn(args);
+      logger.warn(args);
     },
     error(...args) {
-      logger && logger.error(args);
+      logger.error(args);
     },
   },
   // fetchAPI: {

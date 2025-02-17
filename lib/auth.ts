@@ -90,7 +90,7 @@ export const authConfigOptions = {
 
           return user;
         } catch (error) {
-          logger && logger.error(error);
+          logger.error(error);
           console.error(error);
           return null;
         }
