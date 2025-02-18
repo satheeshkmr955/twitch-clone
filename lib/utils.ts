@@ -5,7 +5,7 @@ import { Plugin } from "graphql-yoga";
 import { twMerge } from "tailwind-merge";
 import { NextRequest } from "next/server";
 import { getSession } from "next-auth/react";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import { publicAxios } from "@/lib/fetcher";
 
@@ -16,6 +16,8 @@ import { logger } from "@/lib/logger";
 import { ClientLog, Toast, ToastTypes, TriggerToastProps } from "@/app/_types";
 import type pino from "pino";
 import type { Session } from "next-auth";
+import { useGetClientPublicIP } from "@/store/use-get-public-ip";
+import { useGetSession } from "@/store/use-get-session";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -87,11 +89,28 @@ export function useSetResponseHeader(): Plugin {
 }
 
 export const getUserSession = async (): Promise<Session | null> => {
+  const reduxSession = useGetSession.getState().session;
+  const isLogged = useGetSession.getState().isLogged;
+
+  if (reduxSession !== null || isLogged !== null) {
+    return reduxSession;
+  }
+
   const session = await getSession();
+
+  useGetSession.getState().onUpdate(session, !!session);
+
   return session;
 };
 
 export async function getClientPublicIP() {
+  const reduxIp = useGetClientPublicIP.getState().ip;
+  const isFetched = useGetClientPublicIP.getState().isFetched;
+
+  if (reduxIp !== "-" || isFetched !== null) {
+    return reduxIp;
+  }
+
   let ip = "-";
   try {
     const response: AxiosResponse = await publicAxios({
@@ -101,10 +120,12 @@ export async function getClientPublicIP() {
     if (response.data.ip) {
       ip = response.data.ip;
     }
+
+    useGetClientPublicIP.getState().onUpdate(ip, true);
+
     return ip;
   } catch (error) {
     console.error(error);
-    logger.error(error);
     return ip;
   }
 }

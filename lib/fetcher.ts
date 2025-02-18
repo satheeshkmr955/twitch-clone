@@ -73,7 +73,7 @@ publicAxios.interceptors.response.use(
   function (error: AxiosError) {
     const data = error.response?.data as Error;
     triggerToast(data?.toast as TriggerToastProps);
-    logger.error(error);
+    console.error(error);
     return Promise.reject(error);
   }
 );

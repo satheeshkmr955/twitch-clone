@@ -20,20 +20,24 @@ async function customFetcher<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   variables: TVariables extends Record<string, never> ? {} : TVariables
 ): Promise<ExecutionResult<TResult>> {
-  const responseAxios = await axiosGraphQL({
-    data: {
-      query: print(document),
-      variables,
-    },
-  });
+  try {
+    const responseAxios = await axiosGraphQL({
+      data: {
+        query: print(document),
+        variables,
+      },
+    });
 
-  if (responseAxios.status !== HttpStatusCode.Ok) {
-    const error = `Failed to fetch: ${responseAxios.statusText}. Body: ${responseAxios.request?.responseText}`;
-    logger.error(error);
-    throw new Error(error);
+    if (responseAxios.status !== HttpStatusCode.Ok) {
+      const error = `Failed to fetch: ${responseAxios.statusText}. Body: ${responseAxios.request?.responseText}`;
+      logger.error(error);
+    }
+
+    return await responseAxios.data;
+  } catch (error) {
+    console.error(error);
+    return {};
   }
-
-  return await responseAxios.data;
 }
 
 export function useGraphQL<TResult, TVariables>(

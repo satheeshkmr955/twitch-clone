@@ -30,10 +30,11 @@
 - [x] useServerGraphql can't be used in async function
   - [x] remove ignoreDuringBuilds from next.config.mjs
 - [x] useSuspenseQuery
-- [ ] logger
+- [x] logger
   - [x] server 
-  - [ ] client
+  - [x] client
     Fluentd and nextjs client side collect error and send to logstash docker compose setup using pino
+- [x] use redux slice for ip fetch api
 - [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
