@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
 const nextConfig = {
   distDir: "build",
   images: {
@@ -12,14 +14,18 @@ const nextConfig = {
     ],
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   experimental: {
-    serverComponentsExternalPackages: ["@whatwg-node/server", "@whatwg-node", "@opentelemetry/sdk-node"],
+    serverComponentsExternalPackages: [
+      "@whatwg-node/server",
+      "@whatwg-node",
+      "@opentelemetry/sdk-node",
+    ],
     instrumentationHook: true,
   },
   webpack(config, { isServer }) {
-
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
@@ -31,7 +37,10 @@ const nextConfig = {
     });
 
     return config;
-  }
+  },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer({
+  enabled: process.env.NODE_ENV === "development",
+  openAnalyzer: process.env.NODE_ENV === "development",
+})(nextConfig);

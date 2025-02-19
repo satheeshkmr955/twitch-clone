@@ -35,6 +35,7 @@
   - [x] client
     Fluentd and nextjs client side collect error and send to logstash docker compose setup using pino
 - [x] use redux slice for ip fetch api
+- [x] next bundle analysis
 - [ ] graphql-shield and graphql-middleware
 - [ ] loader on sign up and sign in
 - [ ] manage user
