@@ -106,6 +106,7 @@
     "@graphql-codegen/typescript-resolvers": "^4.4.4",
     "@parcel/watcher": "^2.5.1",
     "@redux-devtools/extension": "^3.3.0",
+    "@tailwindcss/postcss": "^4.0.17",
     "@tanstack/react-query-devtools": "^5.69.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/lodash": "^4.17.16",
@@ -120,7 +121,7 @@
     "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "prisma": "^5.12.1",
-    "tailwindcss": "^3.3.0",
+    "tailwindcss": "^4.0.17",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5"

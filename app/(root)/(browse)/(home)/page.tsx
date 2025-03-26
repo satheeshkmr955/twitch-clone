@@ -8,7 +8,7 @@ export default async function Home() {
   const queryClient = await getServerGraphQL(GetStreamsDocument);
 
   return (
-    <div className="h-full p-8 max-w-screen-2xl mx-auto">
+    <div className="h-full p-8 max-w-(--breakpoint-2xl) mx-auto">
       <Results dehydratedState={dehydrate(queryClient)} />
     </div>
   );

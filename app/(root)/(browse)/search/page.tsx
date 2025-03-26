@@ -27,7 +27,7 @@ const SearchPage = async (props: SearchPageProps) => {
   });
 
   return (
-    <div className="h-full p-8 max-w-screen-2xl mx-auto">
+    <div className="h-full p-8 max-w-(--breakpoint-2xl) mx-auto">
       <Results term={term} dehydratedState={dehydrate(queryClient)} />
     </div>
   );

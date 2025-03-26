@@ -161,7 +161,7 @@ export const InfoModal = (props: InfoModalProps) => {
             <Label>Thumbnail</Label>
             {thumbnailUrl ? (
               <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10">
-                <div className="absolute top-2 right-2 z-[10]">
+                <div className="absolute top-2 right-2 z-10">
                   <Hint label="Remove thumbnail" asChild side="left">
                     <Button
                       type="button"

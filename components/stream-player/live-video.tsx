@@ -71,7 +71,7 @@ export const LiveVideo = (props: LiveVideoProps) => {
     <div ref={wrapperRef} className="relative h-full flex">
       <video ref={videoRef} width="100%" />
       <div className="absolute top-0 h-full w-full opacity-0 hover:opacity-100 hover:transition-all">
-        <div className="absolute bottom-0 flex h-14 w-full items-center justify-between bg-gradient-to-r from-neutral-900 px-4">
+        <div className="absolute bottom-0 flex h-14 w-full items-center justify-between bg-linear-to-r from-neutral-900 px-4">
           <VolumeControl
             onChange={onVolumeChange}
             value={volume}
