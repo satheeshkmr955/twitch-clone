@@ -6,7 +6,7 @@ import slugify from "slugify";
 import { db } from "@/lib/db";
 import { signUpApiSchema } from "@/lib/validation.schema";
 import { jsonParse } from "@/lib/utils";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/serverLogger';
 import {
   DEFAULT_API_ERROR,
   EMAIL_EXISTS,

@@ -24,11 +24,7 @@ const UserPage = async (props: UserProps) => {
 
   return (
     <>
-      <User
-        {...props}
-        username={username}
-        dehydratedState={dehydrate(queryClient)}
-      />
+      <User username={username} dehydratedState={dehydrate(queryClient)} />
     </>
   );
 };

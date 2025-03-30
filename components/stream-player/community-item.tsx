@@ -6,7 +6,7 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 
 import { cn, stringToColor, triggerToast } from "@/lib/utils";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/clientLogger';
 import { getQueryClient } from "@/lib/queryclient";
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import {

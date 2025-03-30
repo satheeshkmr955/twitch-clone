@@ -10,7 +10,7 @@ import type { Adapter } from "next-auth/adapters";
 import type { PrismaClient } from "@prisma/client";
 
 import { db } from "@/lib/db";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/clientLogger';
 import { HOME, SIGN_IN } from "@/constants/route.constants";
 import { encode } from "next-auth/jwt";
 import { SLUGIFY_OPTIONS } from "@/constants/common.constants";

@@ -4,7 +4,7 @@ import { GraphQLError } from "graphql";
 import { Error, Success, TriggerToastProps } from "@/app/_types";
 import { getSession } from "./auth";
 import { triggerToast } from "./utils";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 
 export const axiosGraphQL = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,

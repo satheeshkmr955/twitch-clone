@@ -11,7 +11,7 @@ import { publicAxios } from "@/lib/fetcher";
 
 import { GET } from "@/constants/message.constants";
 import { GET_CLIENT_PUBLIC_IP } from "@/constants/api.constants";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 
 import { ClientLog, Toast, ToastTypes, TriggerToastProps } from "@/app/_types";
 import type pino from "pino";

@@ -6,7 +6,7 @@ import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { Resource } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/serverLogger";
 
 // Function to set up OpenTelemetry
 export async function initOpenTelemetry() {

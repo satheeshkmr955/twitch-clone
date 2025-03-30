@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SIGN_IN } from "@/constants/route.constants";
 import { getQueryClient } from "@/lib/queryclient";
 import { cn, triggerToast } from "@/lib/utils";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/clientLogger';
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import {
   FollowUserDocument,

@@ -29,7 +29,7 @@ import {
 
 import { getUserById } from "@/services/user.service";
 import { roomService } from "@/services/ingress.service";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/serverLogger";
 
 export const isBlockedByUser = async (inputObj: IsBlockedByUserProps) => {
   const { input, user } = inputObj;

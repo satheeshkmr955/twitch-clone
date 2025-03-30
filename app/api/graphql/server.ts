@@ -24,7 +24,7 @@ import type { PrismaClient, User } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
-import { logger, writeLogs } from "@/lib/logger";
+import { logger, writeLogs } from "@/lib/serverLogger";
 import { usePrometheusWithRegistry } from "@/lib/prometheus";
 // import { useSetResponseHeader } from "@/lib/utils";
 

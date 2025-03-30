@@ -30,7 +30,7 @@ import {
 import { TriggerToastProps } from "@/app/_types";
 import { getQueryClient } from "@/lib/queryclient";
 import { triggerToast } from "@/lib/utils";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 
 const RTMP = String(IngressInput.RTMP_INPUT);
 const WHIP = String(IngressInput.WHIP_INPUT);

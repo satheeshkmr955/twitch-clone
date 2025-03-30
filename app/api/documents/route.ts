@@ -6,7 +6,7 @@ import {
   IMAGE_PROFILE_UPLOAD_BUCKET,
   PROFILE_IMAGE_PREFIX,
 } from "@/constants/common.constants";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/serverLogger';
 import { SOMETHING_WENT_WRONG } from "@/constants/message.constants";
 
 const Bucket = IMAGE_PROFILE_UPLOAD_BUCKET;

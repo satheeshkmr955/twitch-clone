@@ -14,7 +14,7 @@ import {
 } from "@/gql/graphql";
 import { triggerToast } from "@/lib/utils";
 import { getQueryClient } from "@/lib/queryclient";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 import { TriggerToastProps } from "@/app/_types";
 
 interface ActionProps {

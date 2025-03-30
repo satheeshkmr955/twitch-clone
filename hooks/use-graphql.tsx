@@ -12,7 +12,7 @@ import {
 import { HttpStatusCode } from "axios";
 
 import { axiosGraphQL } from "@/lib/fetcher";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 import { getServerQueryClient } from "@/lib/queryclient";
 
 /** Your custom fetcher function */

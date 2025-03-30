@@ -29,7 +29,7 @@ import {
 import { triggerToast } from "@/lib/utils";
 import { getQueryClient } from "@/lib/queryclient";
 import { axiosFileUpload } from "@/lib/fetcher";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 
 import {
   FILE_UPLOAD_SIZE_LIMIT,

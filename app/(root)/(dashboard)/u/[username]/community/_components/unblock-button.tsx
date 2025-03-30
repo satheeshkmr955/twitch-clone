@@ -3,7 +3,7 @@
 import { getCacheKey, useMutationGraphQL } from "@/hooks/use-graphql";
 import { getQueryClient } from "@/lib/queryclient";
 import { triggerToast } from "@/lib/utils";
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/clientLogger';
 import {
   UnBlockUserDocument,
   GetFollowedAndRecommendedUserDocument,

@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { CHECK_EMAIL_EXISTS, SIGNUP_EXISTS } from "@/constants/api.constants";
 import { publicAxios } from "@/lib/fetcher";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/clientLogger";
 import {
   Success,
   Error,
