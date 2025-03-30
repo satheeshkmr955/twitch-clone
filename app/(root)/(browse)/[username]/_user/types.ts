@@ -1,5 +1,3 @@
 export interface UserProps {
-  params: {
-    username: string;
-  };
+  username: string;
 }

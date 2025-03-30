@@ -4,11 +4,16 @@ import { getServerGraphQL } from "@/hooks/use-graphql";
 import { GetUserByNameWithAllDetailsDocument } from "@/gql/graphql";
 
 import User from "./_user/user";
-import { UserProps } from "./_user/types";
+
+interface UserProps {
+  params: Promise<{
+    username: string;
+  }>;
+}
 
 const UserPage = async (props: UserProps) => {
   const { params } = props;
-  const { username } = params;
+  const { username } = await params;
 
   const queryClient = await getServerGraphQL(
     GetUserByNameWithAllDetailsDocument,
@@ -19,7 +24,11 @@ const UserPage = async (props: UserProps) => {
 
   return (
     <>
-      <User {...props} dehydratedState={dehydrate(queryClient)} />
+      <User
+        {...props}
+        username={username}
+        dehydratedState={dehydrate(queryClient)}
+      />
     </>
   );
 };

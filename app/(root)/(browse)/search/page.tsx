@@ -9,14 +9,14 @@ import { GetSearchDocument } from "@/gql/graphql";
 import { Results } from "./_components/results";
 
 interface SearchPageProps {
-  searchParams: {
+  searchParams: Promise<{
     term?: string;
-  };
+  }>;
 }
 
 const SearchPage = async (props: SearchPageProps) => {
   const { searchParams } = props;
-  const { term = null } = searchParams;
+  const { term = null } = await searchParams;
 
   if (term === null) {
     redirect(HOME);

@@ -12,7 +12,14 @@ import { SOMETHING_WENT_WRONG } from "@/constants/message.constants";
 
 const Bucket = IMAGE_PROFILE_UPLOAD_BUCKET;
 
-export async function GET(_: Request, { params }: { params: { key: string } }) {
+interface GetProps {
+  params: Promise<{
+    key: string;
+  }>;
+}
+
+export async function GET(_: Request, props: GetProps) {
+  const params = await props.params;
   try {
     const command = new GetObjectCommand({
       Bucket,

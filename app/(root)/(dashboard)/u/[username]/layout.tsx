@@ -8,14 +8,14 @@ import { Sidebar } from "./_components/sidebar";
 import { Container } from "./_components/container";
 
 interface CreatorLayoutProps {
-  params: { username: string };
+  params: Promise<{ username: string }>;
   children: React.ReactNode;
 }
 
 const CreatorLayout = async (props: CreatorLayoutProps) => {
   const { children, params } = props;
 
-  const { username } = params;
+  const { username } = await params;
 
   const queryClient = await getServerGraphQL(GetSelfByNameDocument, {
     input: { name: decodeURI(username) },

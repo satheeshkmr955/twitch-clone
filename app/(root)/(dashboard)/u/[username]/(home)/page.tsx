@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSuspenseQueryGraphQL } from "@/hooks/use-graphql";
@@ -9,11 +10,11 @@ import { HOME } from "@/constants/route.constants";
 import { StreamPlayer } from "@/components/stream-player";
 
 interface CreatorPageProps {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }
 
 const CreatorPage = (props: CreatorPageProps) => {
-  const { params } = props;
+  const params = use(props.params);
   const { username } = params;
 
   const { data: session } = useSession();

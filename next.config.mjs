@@ -17,14 +17,7 @@ const nextConfig = {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
-  experimental: {
-    serverComponentsExternalPackages: [
-      "@whatwg-node/server",
-      "@whatwg-node",
-      "@opentelemetry/sdk-node",
-    ],
-    instrumentationHook: true,
-  },
+  serverExternalPackages: ["@opentelemetry/sdk-node"],
   webpack(config, { isServer }) {
     if (!isServer) {
       config.resolve.fallback = {

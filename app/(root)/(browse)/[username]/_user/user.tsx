@@ -18,8 +18,7 @@ interface CustomUserProps extends UserProps {
 }
 
 const User = (props: CustomUserProps) => {
-  const { params, dehydratedState } = props;
-  const { username } = params;
+  const { username, dehydratedState } = props;
 
   const { data, isLoading } = useSuspenseQueryGraphQL(
     GetUserByNameWithAllDetailsDocument,
