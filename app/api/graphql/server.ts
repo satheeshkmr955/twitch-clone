@@ -2,7 +2,7 @@
 import { readFileSync } from "fs";
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/lib/use/ws";
+import { useServer } from "graphql-ws/use/ws";
 import { parse, UrlWithParsedQuery } from "url";
 import next from "next";
 import { join } from "path";
@@ -199,20 +199,21 @@ async function start(
       execute: (args: CustomerExecutionArgs) => args.rootValue?.execute?.(args),
       subscribe: (args: CustomerExecutionArgs) =>
         args.rootValue?.subscribe?.(args),
-      onSubscribe: async (ctx, msg) => {
+      onSubscribe: async (ctx, id, payload) => {
+        const customPayload = { ...payload, id };
         const { schema, execute, subscribe, contextFactory, parse, validate } =
           yoga.getEnveloped({
             ...ctx,
             req: ctx.extra.request,
             socket: ctx.extra.socket,
-            params: msg.payload,
+            params: customPayload,
           });
 
         const args = {
           schema,
-          operationName: msg.payload.operationName,
-          document: parse(msg.payload.query),
-          variableValues: msg.payload.variables,
+          operationName: customPayload.operationName,
+          document: parse(customPayload.query),
+          variableValues: customPayload.variables,
           contextValue: await contextFactory(),
           rootValue: {
             execute,

@@ -122,4 +122,16 @@ const { handleRequest } = createYoga({
   ],
 });
 
-export { handleRequest as GET, handleRequest as POST };
+export async function GET(req: NextRequest) {
+  const context = (await createContext({
+    request: req,
+  } as unknown as ContextType)) as unknown as GraphQLContext;
+  return handleRequest(req, context);
+}
+
+export async function POST(req: NextRequest) {
+  const context = (await createContext({
+    request: req,
+  } as unknown as ContextType)) as unknown as GraphQLContext;
+  return handleRequest(req, context);
+}

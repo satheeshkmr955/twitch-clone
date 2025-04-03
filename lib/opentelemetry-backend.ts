@@ -4,8 +4,8 @@ import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
-import { Resource } from "@opentelemetry/resources";
-import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
+// import { Resource } from "@opentelemetry/resources";
+// import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 import { logger } from "@/lib/serverLogger";
 
 // Function to set up OpenTelemetry
@@ -33,9 +33,9 @@ export async function initOpenTelemetry() {
   const sdk = new NodeSDK({
     traceExporter: traceExporter,
     metricReader: metricReader,
-    resource: new Resource({
-      [ATTR_SERVICE_NAME]: "nextjs-app",
-    }),
+    // resource: new Resource({
+    //   [ATTR_SERVICE_NAME]: "nextjs-app",
+    // }),
     instrumentations: [
       getNodeAutoInstrumentations(),
       new FetchInstrumentation(), // Instrument fetch calls

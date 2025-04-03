@@ -12,8 +12,8 @@ import {
 } from "@opentelemetry/sdk-metrics";
 
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
-import { Resource } from "@opentelemetry/resources";
-import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
+// import { Resource } from "@opentelemetry/resources";
+// import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 import { getWebAutoInstrumentations } from '../node_modules/@opentelemetry/auto-instrumentations-web/build/esm/utils';
 
 console.log(
@@ -33,9 +33,9 @@ const metricExporter = new OTLPMetricExporter({
 });
 
 const tracerProvider = new WebTracerProvider({
-  resource: new Resource({
-    [ATTR_SERVICE_NAME]: "nextjs-app",
-  }),
+  // resource: new Resource({
+  //   [ATTR_SERVICE_NAME]: "nextjs-app",
+  // }),
   spanProcessors: [
     new BatchSpanProcessor(traceExporter, {
       maxQueueSize: 100,
@@ -48,9 +48,9 @@ const tracerProvider = new WebTracerProvider({
 });
 
 const meterProvider = new MeterProvider({
-  resource: new Resource({
-    [ATTR_SERVICE_NAME]: "nextjs-app",
-  }),
+  // resource: new Resource({
+  //   [ATTR_SERVICE_NAME]: "nextjs-app",
+  // }),
   readers: [
     new PeriodicExportingMetricReader({
       exporter: metricExporter,
