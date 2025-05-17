@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { toast } from "sonner";
-import os from "os";
 import { Plugin } from "graphql-yoga";
 import { twMerge } from "tailwind-merge";
 import { NextRequest } from "next/server";
@@ -61,6 +60,7 @@ export function stringToColor(str: string) {
 
 // Function to get the local IP address of the server
 export const getServerIp = () => {
+  const os = require("os");
   const interfaces = os.networkInterfaces() || {};
   let serverIp = "127.0.0.1"; // Default to localhost
 

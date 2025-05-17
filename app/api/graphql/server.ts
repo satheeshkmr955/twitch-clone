@@ -26,7 +26,7 @@ import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { logger, writeLogs } from "@/lib/serverLogger";
 import { usePrometheusWithRegistry } from "@/lib/prometheus";
-// import { useSetResponseHeader } from "@/lib/utils";
+import { useSetResponseHeader } from "@/lib/utils";
 
 import { RootResolvers } from "./_resolvers";
 
@@ -60,6 +60,8 @@ async function createContext(
 
   const token = await getToken({
     req: request ? request : req!,
+    secret: process.env.NEXTAUTH_SECRET!,
+    salt: process.env.AUTH_SECRET!,
   });
 
   let user = null;
@@ -120,7 +122,7 @@ const yoga = createYoga({
     useLogger({
       logFn: writeLogs,
     }),
-    // useSetResponseHeader(),
+    useSetResponseHeader(),
     useResponseCache({
       cache,
       session: ({ user }: GraphQLContext) => user?.id ?? null,

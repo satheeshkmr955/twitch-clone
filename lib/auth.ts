@@ -2,15 +2,15 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { getServerSession } from "next-auth";
+import NextAuth from "next-auth";
 import slugify from "slugify";
 
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import type { PrismaClient } from "@prisma/client";
 
 import { db } from "@/lib/db";
-import { logger } from '@/lib/clientLogger';
+import { logger } from "@/lib/clientLogger";
 import { HOME, SIGN_IN } from "@/constants/route.constants";
 import { encode } from "next-auth/jwt";
 import { SLUGIFY_OPTIONS } from "@/constants/common.constants";
@@ -133,7 +133,11 @@ export const authConfigOptions = {
       return token;
     },
     async session({ session, token }) {
-      const jwt = await encode({ token, secret: process.env.NEXTAUTH_SECRET! });
+      const jwt = await encode({
+        token,
+        secret: process.env.NEXTAUTH_SECRET!,
+        salt: process.env.AUTH_SECRET!,
+      });
       session.accessToken = jwt;
       if (session?.user) {
         session.user.slugName = "";
@@ -147,8 +151,10 @@ export const authConfigOptions = {
       return session;
     },
   },
-} satisfies NextAuthOptions;
+} satisfies NextAuthConfig;
+
+export const { auth, handlers, signIn, signOut } = NextAuth(authConfigOptions);
 
 export const getSession = async () => {
-  return await getServerSession(authConfigOptions);
+  return await auth();
 };
