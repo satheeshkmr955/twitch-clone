@@ -12,6 +12,7 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen-watch": "graphql-codegen --watch --config codegen.ts",
     "db:generate": "prisma generate",
+    "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev --skip-seed",
     "db:reset": "prisma migrate reset --skip-seed",
     "db:studio": "prisma studio"

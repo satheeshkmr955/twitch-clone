@@ -1,0 +1,34 @@
+services:
+  twitch_redis:
+    image: redis:7.4-alpine
+    container_name: twitch_redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - 6380:6379
+    networks:
+      - twitch_network
+    env_file:
+      - ../../.env
+
+networks:
+  twitch_network:
+    external: true
+    name: twitch_network
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local

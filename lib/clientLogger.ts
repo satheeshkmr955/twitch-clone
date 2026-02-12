@@ -11,7 +11,8 @@ declare global {
   var logger: undefined | winston.Logger;
 }
 
-const logger = globalThis.logger ?? createClientLogger();
+// const logger = globalThis.logger ?? createClientLogger();
+const logger = { error: (e: any) => {} };
 
 const logToFluentd = async (level: string, logEvent: ClientLog) => {
   try {

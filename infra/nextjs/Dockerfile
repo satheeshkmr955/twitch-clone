@@ -1,0 +1,33 @@
+# Step 1: Base Stage
+FROM node:22-alpine AS base
+
+RUN apk update --no-cache && apk add --no-cache openssl curl
+
+# Step 2: Build Stage
+FROM base AS builder
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy the rest of your Next.js app
+COPY ./ ./
+RUN npm run codegen && npm run db:generate && npm run build
+
+# Step 3: Production Stage
+FROM base
+
+WORKDIR /app
+
+# Copy the built app from the builder
+COPY --from=builder /app ./
+
+# Expose the port the app will run on
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Start the Next.js application
+CMD ["npm", "start"]

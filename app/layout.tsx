@@ -3,7 +3,7 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import { initOpenTelemetry } from "@/lib/opentelemetry-backend";
 
-initOpenTelemetry();
+// initOpenTelemetry();
 
 const inter = Lato({
   subsets: ["latin"],

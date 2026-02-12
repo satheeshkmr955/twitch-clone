@@ -1,6 +1,7 @@
 .vscode
 build
 logs
+out
 node_modules
 nginx
 .dockerignore
